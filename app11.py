@@ -3,4 +3,4 @@ st.write("""
 # Mi primera app
 Hola *world!*
 """)
-number = st.slider("Pick a number", 0, 100)
+number = st.slider("Elige un número", 0, 100)
