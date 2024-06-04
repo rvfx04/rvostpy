@@ -19,6 +19,7 @@ try:
     engine = create_engine(connection_string)
 
     # Solicitar al usuario el código del pedido
+    #numero = st.number_input("Ingrese el código del pedido que desea visualizar:", min_value=0, max_value=100, value=0)
     pedido_codigo = input("Ingrese el código del pedido que desea visualizar: ")
 
     # Consulta SQL para obtener los datos del pedido y proceso asociados
