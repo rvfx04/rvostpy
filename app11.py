@@ -8,5 +8,4 @@ date = st.date_input("Elige una fecha")
 file = st.file_uploader("Pick a file")
 selected_countries = st.multiselect(
     'Which countries would you like to view?',
-    countries,
     ['CHI', 'PER', 'COL', 'ECU', 'BOL'])
