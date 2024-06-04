@@ -5,4 +5,3 @@ Hola *world!*
 """)
 number = st.slider("Elige un número", 0, 100)
 date = st.date_input("Elige una fecha")
-st.altair_chart(my_chart)
