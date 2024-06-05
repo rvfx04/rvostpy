@@ -30,4 +30,4 @@ rows = run_query("SELECT * from defecto;")
 
 # Print results.
 for row in rows:
-    st.write(f"{row[0]}:{row[1]}:{row[2]}:{row[3]}:")
+    st.write(f"{row[0]},{row[1]},{row[2]},{row[3]}")
