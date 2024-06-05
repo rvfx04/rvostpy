@@ -26,7 +26,7 @@ def run_query(query):
         cur.execute(query)
         return cur.fetchall()
 
-rows = run_query("SELECT * from defecto where idgrupodefecto =5;")
+rows = run_query("SELECT * from defecto ;")
 
 # Print results.
 for row in rows:
