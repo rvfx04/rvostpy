@@ -11,9 +11,7 @@ def init_connection():
         + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]
         + ";UID="+ st.secrets["username"]+ ";PWD="+ st.secrets["password"]
     )
-
 conn = init_connection()
-
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
