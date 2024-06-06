@@ -29,22 +29,24 @@ def run_query(query):
 
 columns, rows = run_query("SELECT * from defecto;")
 
-# Debugging output to verify the shape of data
-#st.write(f"Columns: {columns}")
-#st.write(f"Number of columns: {len(columns)}")
-#st.write(f"First row (if available): {rows[0] if rows else 'No rows returned'}")
-#st.write(f"Number of rows: {len(rows)}")
-
 # Ensure rows are tuples
 rows = [tuple(row) for row in rows]
 
 # Convert data to a pandas DataFrame
-try:
-    df = pd.DataFrame(rows, columns=columns)
-    st.dataframe(df)
-except ValueError as e:
-    st.error(f"Error creating DataFrame: {e}")
-    st.write(f"Shape of passed values: {len(rows)} rows, {len(rows[0]) if rows else 0} columns")
-    st.write(f"Columns: {columns}")
-    st.write(f"Rows: {rows[:5]} (showing first 5 rows)")
+df = pd.DataFrame(rows, columns=columns)
 
+# Custom CSS to inject smaller font sizes and padding for table
+st.markdown(
+    """
+    <style>
+    .dataframe th, .dataframe td {
+        font-size: 11px;    /* Smaller font size */
+        padding: 4px 4px;  /* Smaller padding */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Display the DataFrame
+st.dataframe(df)
