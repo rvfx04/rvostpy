@@ -2,16 +2,23 @@ import streamlit as st
 import pyodbc
 import pandas as pd
 
-# Initialize connection.
-# Uses st.cache_resource to only run once.
+# Initialize connection
 @st.cache_resource
 def init_connection():
-    return pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]
-        + ";UID="+ st.secrets["username"]+ ";PWD="+ st.secrets["password"])
+    return pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+        + st.secrets["server"]
+        + ";DATABASE="
+        + st.secrets["database"]
+        + ";UID="
+        + st.secrets["username"]
+        + ";PWD="
+        + st.secrets["password"]
+    )
+
 conn = init_connection()
-# Perform query.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
+
+# Perform query
 @st.cache_data(ttl=600)
 def run_query(query):
     with conn.cursor() as cur:
@@ -21,13 +28,28 @@ def run_query(query):
     return columns, data
 
 columns, rows = run_query("SELECT * from defecto;")
+
+# Ensure rows are tuples
+rows = [tuple(row) for row in rows]
+
 # Convert data to a pandas DataFrame
-try:
-    # Ensure rows are tuples and not single element tuples
-    rows = [tuple(row) for row in rows]
-    df = pd.DataFrame(rows, columns=columns)
-    # Display the dataframe in Streamlit
-    st.dataframe(df)
-except ValueError as e:
-    st.write(f"Error creating DataFrame: {e}")
-    st.write("Rows data:", rows)
+df = pd.DataFrame(rows, columns=columns)
+
+# Drop the first column which is assumed to be a counter
+df = df.drop(df.columns[0], axis=1)
+
+# Custom CSS to inject smaller font sizes and padding for table
+st.markdown(
+    """
+    <style>
+    .dataframe th, .dataframe td {
+        font-size: 11px;    /* Smaller font size */
+        padding: 4px 4px;  /* Smaller padding */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Display the DataFrame
+st.dataframe(df)
