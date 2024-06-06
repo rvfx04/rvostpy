@@ -1,5 +1,6 @@
 import streamlit as st
 import pyodbc
+import pandas as pd
 
 # Initialize connection.
 # Uses st.cache_resource to only run once.
@@ -20,14 +21,19 @@ conn = init_connection()
 
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
-# @st.cache_data(ttl=600)
+@st.cache_data(ttl=600)
 def run_query(query):
     with conn.cursor() as cur:
         cur.execute(query)
-        return cur.fetchall()
+        columns = [column[0] for column in cur.description]
+        data = cur.fetchall()
+    return columns, data
 
-rows = run_query("SELECT * from defecto ;")
+columns, rows = run_query("SELECT * from defecto;")
 
-# Print results.
-for row in rows:
-    st.write(f"{row[0]},{row[1]},{row[2]},{row[3]}")
+# Convert data to a pandas DataFrame
+df = pd.DataFrame(rows, columns=columns)
+
+# Display the dataframe in Streamlit
+st.dataframe(df)
+
