@@ -31,9 +31,17 @@ def run_query(query):
 
 columns, rows = run_query("SELECT * from defecto;")
 
+# Debugging output
+st.write("Columns:", columns)
+st.write("Number of columns:", len(columns))
+st.write("First row (if available):", rows[0] if rows else "No rows returned")
+st.write("Number of rows:", len(rows))
+
 # Convert data to a pandas DataFrame
-df = pd.DataFrame(rows, columns=columns)
-
-# Display the dataframe in Streamlit
-st.dataframe(df)
-
+try:
+    df = pd.DataFrame(rows, columns=columns)
+    # Display the dataframe in Streamlit
+    st.dataframe(df)
+except ValueError as e:
+    st.write(f"Error creating DataFrame: {e}")
+    st.write("Rows data:", rows)
