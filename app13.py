@@ -36,4 +36,5 @@ rows = [tuple(row) for row in rows]
 df = pd.DataFrame(rows, columns=columns)
 
 # Display the DataFrame without the default index column
-st.dataframe(df.reset_index(drop=True))
+#st.dataframe(df.reset_index(drop=True))
+st.table(df)
