@@ -8,13 +8,8 @@ import pandas as pd
 def init_connection():
     return pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["server"]
-        + ";DATABASE="
-        + st.secrets["database"]
-        + ";UID="
-        + st.secrets["username"]
-        + ";PWD="
-        + st.secrets["password"]
+        + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]
+        + ";UID="+ st.secrets["username"]+ ";PWD="+ st.secrets["password"]
     )
 
 conn = init_connection()
@@ -30,12 +25,6 @@ def run_query(query):
     return columns, data
 
 columns, rows = run_query("SELECT * from defecto;")
-
-# Debugging output
-#st.write("Columns:", columns)
-#st.write("Number of columns:", len(columns))
-#st.write("First row (if available):", rows[0] if rows else "No rows returned")
-#st.write("Number of rows:", len(rows))
 
 # Convert data to a pandas DataFrame
 try:
