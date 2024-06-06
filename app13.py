@@ -6,11 +6,9 @@ import pandas as pd
 # Uses st.cache_resource to only run once.
 @st.cache_resource
 def init_connection():
-    return pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+    return pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER="
         + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]
-        + ";UID="+ st.secrets["username"]+ ";PWD="+ st.secrets["password"]
-    )
+        + ";UID="+ st.secrets["username"]+ ";PWD="+ st.secrets["password"])
 conn = init_connection()
 # Perform query.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
@@ -23,7 +21,6 @@ def run_query(query):
     return columns, data
 
 columns, rows = run_query("SELECT * from defecto;")
-
 # Convert data to a pandas DataFrame
 try:
     # Ensure rows are tuples and not single element tuples
