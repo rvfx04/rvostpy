@@ -35,17 +35,15 @@ rows = [tuple(row) for row in rows]
 # Convert data to a pandas DataFrame
 df = pd.DataFrame(rows, columns=columns)
 
-# Drop the first column if it's an unwanted index column
-# df = df.drop(df.columns[0], axis=1)
+# Reset the index to remove the default index column
+df.reset_index(drop=True, inplace=True)
 
 # Custom CSS to inject smaller font sizes and padding for table
 st.markdown(
     """
     <style>
-    .dataframe {
-        font-size: 11px;    /* Smaller font size */
-    }
     .dataframe th, .dataframe td {
+        font-size: 11px;    /* Smaller font size */
         padding: 4px 4px;  /* Smaller padding */
     }
     </style>
@@ -53,5 +51,5 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Display the DataFrame without the default index column
-st.dataframe(df.style.set_properties(**{'font-size': '11px', 'padding': '4px'}).hide(axis="index"))
+# Display the DataFrame without the index column
+st.table(df.style.set_properties(**{'font-size': '11px', 'padding': '4px'}))
