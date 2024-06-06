@@ -35,18 +35,5 @@ rows = [tuple(row) for row in rows]
 # Convert data to a pandas DataFrame
 df = pd.DataFrame(rows, columns=columns)
 
-# Custom CSS to inject smaller font sizes and padding for table
-st.markdown(
-    """
-    <style>
-    .dataframe th, .dataframe td {
-        font-size: 11px;    /* Smaller font size */
-        padding: 4px 4px;  /* Smaller padding */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Display the DataFrame without the default index column
 st.dataframe(df.reset_index(drop=True))
