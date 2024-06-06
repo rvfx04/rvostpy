@@ -19,7 +19,7 @@ def init_connection():
 conn = init_connection()
 
 # Perform query
-@st.cache_data(ttl=600)
+#@st.cache_data(ttl=600)
 def run_query(query):
     with conn.cursor() as cur:
         cur.execute(query)
