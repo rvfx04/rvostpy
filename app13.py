@@ -39,6 +39,8 @@ st.write("Number of rows:", len(rows))
 
 # Convert data to a pandas DataFrame
 try:
+    # Ensure rows are tuples and not single element tuples
+    rows = [tuple(row) for row in rows]
     df = pd.DataFrame(rows, columns=columns)
     # Display the dataframe in Streamlit
     st.dataframe(df)
