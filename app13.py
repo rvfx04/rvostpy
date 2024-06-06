@@ -35,6 +35,9 @@ rows = [tuple(row) for row in rows]
 # Convert data to a pandas DataFrame
 df = pd.DataFrame(rows, columns=columns)
 
+# Reset the index to remove the default index column
+df.reset_index(drop=True, inplace=True)
+
 # Custom CSS to inject smaller font sizes and padding for table
 st.markdown(
     """
@@ -43,10 +46,13 @@ st.markdown(
         font-size: 11px;    /* Smaller font size */
         padding: 4px 4px;  /* Smaller padding */
     }
+    .stDataFrame {
+        font-size: 11px;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Display the DataFrame as a table without the index column
-st.table(df)
+# Display the DataFrame
+st.dataframe(df)
