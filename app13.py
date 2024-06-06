@@ -35,9 +35,6 @@ rows = [tuple(row) for row in rows]
 # Convert data to a pandas DataFrame
 df = pd.DataFrame(rows, columns=columns)
 
-# Drop the first column which is assumed to be a counter
-df = df.drop(df.columns[0], axis=1)
-
 # Custom CSS to inject smaller font sizes and padding for table
 st.markdown(
     """
@@ -51,5 +48,5 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Display the DataFrame
-st.dataframe(df)
+# Display the DataFrame without the default index column
+st.dataframe(df.reset_index(drop=True))
