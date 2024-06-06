@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.dates as mdates
 from datetime import datetime
-from sqlalchemy import create_engine
+import pyodbc
 
 # Parámetros de conexión
 server = 'SQL5059.site4now.net'
@@ -12,14 +12,14 @@ username = 'db_a6b824_aql_admin'
 password = 'Drake2004'
 
 try:
-    # Cadena de conexión
-    connection_string = f'mssql+pymssql://{username}:{password}@{server}/{database}'
+    # Cadena de conexión con pyodbc
+    connection_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
 
-    # Crear motor de SQLAlchemy
-    engine = create_engine(connection_string)
+    # Conectar a la base de datos
+    conn = pyodbc.connect(connection_string)
 
     # Solicitar al usuario el código del pedido
-    #numero = st.number_input("Ingrese el código del pedido que desea visualizar:", min_value=0, max_value=100, value=0)
+    # numero = st.number_input("Ingrese el código del pedido que desea visualizar:", min_value=0, max_value=100, value=0)
     pedido_codigo = input("Ingrese el código del pedido que desea visualizar: ")
 
     # Consulta SQL para obtener los datos del pedido y proceso asociados
@@ -30,9 +30,8 @@ try:
     WHERE p.Id_Pedido = '{pedido_codigo}'
     """
 
-
     # Leer datos del pedido y proceso en un DataFrame de pandas
-    df = pd.read_sql(sql_query, engine)
+    df = pd.read_sql(sql_query, conn)
 
     if df.empty:
         print(f"No se encontró ningún pedido con el código '{pedido_codigo}'")
@@ -165,3 +164,6 @@ try:
 
 except Exception as e:
     print("Error al conectar a la base de datos:", e)
+finally:
+    # Cerrar la conexión
+    conn.close()
