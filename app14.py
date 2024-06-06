@@ -2,23 +2,16 @@ import streamlit as st
 import pyodbc
 import pandas as pd
 
-# Initialize connection
+# Inicializar conexion
 @st.cache_resource
 def init_connection():
-    return pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["server"]
-        + ";DATABASE="
-        + st.secrets["database"]
-        + ";UID="
-        + st.secrets["username"]
-        + ";PWD="
-        + st.secrets["password"]
-    )
+    return pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+        + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]+ ";UID="
+        + st.secrets["username"]+ ";PWD="+ st.secrets["password"])
 
 conn = init_connection()
 
-# Perform query
+# Se hace la consulta
 @st.cache_data(ttl=600)
 def run_query(query):
     with conn.cursor() as cur:
@@ -29,11 +22,9 @@ def run_query(query):
 
 columns, rows = run_query("SELECT * from defecto;")
 
-# Ensure rows are tuples
+# Asegúrese de que las filas sean tuplas
 rows = [tuple(row) for row in rows]
-
-# Convert data to a pandas DataFrame
+# Convertir datos a un DataFrame de pandas
 df = pd.DataFrame(rows, columns=columns)
-
-# Display the DataFrame
+# Mostrar el DataFrame
 st.dataframe(df)
