@@ -30,10 +30,10 @@ def run_query(query):
 columns, rows = run_query("SELECT * from defecto;")
 
 # Debugging output to verify the shape of data
-st.write(f"Columns: {columns}")
-st.write(f"Number of columns: {len(columns)}")
-st.write(f"First row (if available): {rows[0] if rows else 'No rows returned'}")
-st.write(f"Number of rows: {len(rows)}")
+#st.write(f"Columns: {columns}")
+#st.write(f"Number of columns: {len(columns)}")
+#st.write(f"First row (if available): {rows[0] if rows else 'No rows returned'}")
+#st.write(f"Number of rows: {len(rows)}")
 
 # Ensure rows are tuples
 rows = [tuple(row) for row in rows]
