@@ -110,7 +110,7 @@ FROM (
     UNION ALL
     SELECT * FROM ProducidoPorProceso
 ) sc
-WHERE sc.CoddocOrdenVenta = '0988'
+WHERE sc.CoddocOrdenVenta = '{pedido}'
 GROUP BY 
     sc.CoddocOrdenVenta, 
     sc.NommaeCentroCosto
