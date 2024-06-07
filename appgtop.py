@@ -107,9 +107,9 @@ df = pd.DataFrame(rows, columns=columns)
 # Artificio para anular la columna que numera las filas
 df = df.set_index(df.columns[0])
 
+# Título de la aplicación
+st.title("Consulta de Orden de Producción")
+
 # Mostrar el DataFrame
 #st.dataframe(filtered_df)
 st.dataframe(df) 
-
-# Título de la aplicación
-st.title("Consulta de Orden de Producción")
