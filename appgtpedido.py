@@ -129,6 +129,6 @@ GROUP BY
         # Mostrar el DataFrame
         st.dataframe(df)
     else:
-        st.write("No se encontraron resultados para la OP ingresada.")
+        st.write("No se encontraron resultados para el pedido ingresado.")
 else:
     st.write("")
