@@ -13,7 +13,7 @@ def init_connection():
         + st.secrets["username"]+ ";PWD="+ st.secrets["password"])
     
 # Título de la aplicación
-st.title("Progreso de la Orden de Producción")
+#st.title("Progreso de la Orden de Producción")
 
 conn = init_connection()
 
@@ -29,7 +29,7 @@ def run_query(query):
 # Solicitar al usuario el CoddocOrdenProduccion
 #coddoc_orden_produccion = st.text_input("Ingresa una OP válida:")
 
-st.title("Consulta de Orden de Producción")
+st.title("Progreso de la Orden de Producción")
 with st.expander("Ingresar una OP"):
     coddoc_orden_produccion = st.text_input("Ingrese una OP válida:")
 
