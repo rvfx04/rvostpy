@@ -2,6 +2,9 @@ import streamlit as st
 import pyodbc
 import pandas as pd
 
+# Configurar la página para que sea de ancho completo
+st.set_page_config(layout="wide")
+
 # Inicializar conexión
 #@st.cache_resource
 def init_connection():
@@ -24,7 +27,11 @@ def run_query(query):
     return columns, data
 
 # Solicitar al usuario el CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingresa una OP válida:")
+#coddoc_orden_produccion = st.text_input("Ingresa una OP válida:")
+
+st.title("Consulta de Orden de Producción")
+with st.expander("Ingresar una OP"):
+    coddoc_orden_produccion = st.text_input("Ingrese una OP válida:")
 
 if coddoc_orden_produccion:
     query = f"""
