@@ -24,7 +24,7 @@ def run_query(query):
     return columns, data
 
 # Solicitar al usuario el CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingrese una OP válida:")
+coddoc_orden_produccion = st.text_input("Ingresa una OP válida:")
 
 if coddoc_orden_produccion:
     query = f"""
