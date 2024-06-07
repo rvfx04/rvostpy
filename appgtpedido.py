@@ -10,7 +10,7 @@ def init_connection():
         + st.secrets["username"]+ ";PWD="+ st.secrets["password"])
     
 # Título de la aplicación
-st.title("Progreso de la Orden de Producción")
+st.title("Progreso del Pedido")
 
 conn = init_connection()
 
@@ -23,10 +23,10 @@ def run_query(query):
         data = cur.fetchall()
     return columns, data
 
-# Solicitar al usuario el CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingresa una OP válida:")
+# Solicitar al usuario el pedido
+pedido = st.text_input("Ingresa un Pedido válido:")
 
-if coddoc_orden_produccion:
+if pedido:
     query = f"""
     WITH ProduccionPorProceso AS (
     SELECT 
