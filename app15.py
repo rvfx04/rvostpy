@@ -3,7 +3,7 @@ import pyodbc
 import pandas as pd
 
 # Inicializar conexion
-@st.cache_resource
+#@st.cache_resource
 def init_connection():
     return pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER="
         + st.secrets["server"]+ ";DATABASE="+ st.secrets["database"]+ ";UID="
@@ -12,7 +12,7 @@ def init_connection():
 conn = init_connection()
 
 # Se hace la consulta
-@st.cache_data(ttl=600)
+#@st.cache_data(ttl=600)
 def run_query(query):
     with conn.cursor() as cur:
         cur.execute(query)
