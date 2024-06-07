@@ -1,4 +1,10 @@
 import streamlit as st
+
+def run():
+    st.title("App 12")
+    st.write("""
+
+import streamlit as st
 import pyodbc
 
 # Initialize connection.
@@ -25,7 +31,7 @@ def run_query(query):
     with conn.cursor() as cur:
         cur.execute(query)
         return cur.fetchall()
-
+""")
 rows = run_query("SELECT * from defecto ;")
 
 # Print results.
