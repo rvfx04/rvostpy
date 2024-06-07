@@ -10,7 +10,7 @@ def init_connection():
         + st.secrets["username"]+ ";PWD="+ st.secrets["password"])
     
 # Título de la aplicación
-st.title("Consulta de Orden de Producción")
+st.title("Progreso de la Orden de Producción")
 
 conn = init_connection()
 
