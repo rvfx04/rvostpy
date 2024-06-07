@@ -1,29 +1,23 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
-
-# Importa tus aplicaciones individuales
-import prurvo
-import rvo012
 
 def main():
-    st.title("Aplicación Principal")
+    st.title("Menú de Navegación")
 
-    # Crea el menú de navegación
-    with st.sidebar:
-        selected = option_menu(
-            "Menú",
-            ["App 11", "App 12"],
-            icons=["house", "gear"],
-            menu_icon="cast",
-            default_index=0,
-        )
+    # Crear el menú de navegación
+    menu = ["Home", "App 1: prurvo", "App 2: rvo012"]
+    choice = st.sidebar.selectbox("Selecciona una aplicación", menu)
 
-    # Muestra la aplicación seleccionada
-    if selected == "App 11":
-        app11.py.run()
-    elif selected == "App 12":
-        app12.py.run()
-    
+    if choice == "Home":
+        st.subheader("Bienvenido al Menú de Navegación")
+        st.write("Selecciona una aplicación desde la barra lateral.")
+    elif choice == "App 1: prurvo":
+        st.subheader("App 1: prurvo")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a prurvo](https://prurvo.streamlit.app)")
+    elif choice == "App 2: rvo012":
+        st.subheader("App 2: rvo012")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a rvo012](https://rvo012.streamlit.app)")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
