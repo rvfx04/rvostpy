@@ -2,8 +2,8 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # Importa tus aplicaciones individuales
-import prurvo.streamlit.app
-import rvo012.streamlit.app
+import prurvo
+import rvo012
 
 def main():
     st.title("Aplicación Principal")
