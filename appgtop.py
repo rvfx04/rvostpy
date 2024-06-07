@@ -121,4 +121,4 @@ if coddoc_orden_produccion:
     else:
         st.write("No se encontraron resultados para la OP ingresada.")
 else:
-    st.write("Por favor ingrese una OP válida.")
+    #st.write("Por favor ingrese una OP válida.")
