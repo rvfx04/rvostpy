@@ -21,7 +21,7 @@ def run_query(query):
     return columns, data
 
 # Solicitar al usuario el CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingrese una OP:")
+coddoc_orden_produccion = st.text_input("Ingrese el CoddocOrdenProduccion:")
 
 if coddoc_orden_produccion:
     query = f"""
@@ -105,15 +105,17 @@ if coddoc_orden_produccion:
     
     columns, rows = run_query(query)
 
-    # Asegúrese de que las filas sean tuplas
-    rows = [tuple(row) for row in rows]
-    # Convertir datos a un DataFrame de pandas
-    df = pd.DataFrame(rows, columns=columns)
-    # Artificio para anular la columna que numera las filas
-    df = df.set_index(df.columns[0])
+    if rows:
+        # Asegúrese de que las filas sean tuplas
+        rows = [tuple(row) for row in rows]
+        # Convertir datos a un DataFrame de pandas
+        df = pd.DataFrame(rows, columns=columns)
+        # Artificio para anular la columna que numera las filas
+        df = df.set_index(df.columns[0])
 
-    # Mostrar el DataFrame
-    st.dataframe(df)
+        # Mostrar el DataFrame
+        st.dataframe(df)
+    else:
+        st.write("No se encontraron resultados para el CoddocOrdenProduccion ingresado.")
 else:
-    st.write("Por favor ingrese una OP.")
-
+    st.write("Por favor ingrese un CoddocOrdenProduccion.")
