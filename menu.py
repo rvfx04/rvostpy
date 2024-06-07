@@ -2,8 +2,8 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # Importa tus aplicaciones individuales
-import app11.py
-import app12.py
+import app11
+import app12
 
 def main():
     st.title("Aplicación Principal")
