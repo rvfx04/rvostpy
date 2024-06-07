@@ -11,6 +11,9 @@ def init_connection():
 
 conn = init_connection()
 
+# Título de la aplicación
+st.title("Consulta de Orden de Producción")
+
 # Se hace la consulta
 #@st.cache_data(ttl=600)
 def run_query(query):
