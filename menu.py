@@ -1,28 +1,24 @@
 import streamlit as st
 
 def main():
-    st.title("Men de Navegación")
+    st.title("Menú de Navegación")
 
-    # Instrucciones para usar el menú
-    st.write("Haga clic en uno de los siguientes botones para ir a la aplicación correspondiente:")
+    # Crear el menú de navegación
+    menu = ["Home", "Pedido", "OP"]
+    choice = st.sidebar.selectbox("Selecciona una aplicación", menu)
 
-    # Botón para acceder a la aplicación prurvo
-    if st.button("Ir a App 1: prurvo"):
-        js_code = """
-        <script>
-        window.open('https://prurvo.streamlit.app', '_blank').focus();
-        </script>
-        """
-        st.markdown(js_code, unsafe_allow_html=True)
-    
-    # Botón para acceder a la aplicación rvo012
-    if st.button("Ir a App 2: rvo012"):
-        js_code = """
-        <script>
-        window.open('https://rvo012.streamlit.app', '_blank').focus();
-        </script>
-        """
-        st.markdown(js_code, unsafe_allow_html=True)
+    if choice == "Home":
+        st.subheader("Bienvenido al Menú de Navegación")
+        st.write("Selecciona una aplicación desde la barra lateral.")
+    elif choice == "Pedido":
+        st.subheader("OP")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a Pedido](https://appgtpedido.streamlit.app)")
+    elif choice == "OP":
+        st.subheader("OP")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a rvo012](https://appgtop.streamlit.app)")
 
 if __name__ == '__main__':
     main()
+
