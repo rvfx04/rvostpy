@@ -30,11 +30,7 @@ df = pd.DataFrame(rows, columns=columns)
 df = df.set_index(df.columns[0])
 
 
-# Filtrar el DataFrame según los valores seleccionados
-#if selected_idgrupodefecto:
-#    filtered_df = df[df['idgrupodefecto'].isin(selected_idgrupodefecto)]
-#else:
-#   filtered_df = df
+
 
 # Mostrar el DataFrame filtrado
 #st.dataframe(filtered_df)
