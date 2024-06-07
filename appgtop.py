@@ -110,6 +110,22 @@ df = df.set_index(df.columns[0])
 # Título de la aplicación
 st.title("Consulta de Orden de Producción")
 
+# Entrada del usuario para CoddocOrdenProduccion
+coddoc_orden_produccion = st.text_input("Ingrese CoddocOrdenProduccion:")
+
+# Botón para ejecutar la consulta
+if st.button("Consultar"):
+    if coddoc_orden_produccion:
+        # Obtener datos de la base de datos
+        data = get_data(coddoc_orden_produccion)
+        if not data.empty:
+            # Mostrar los resultados en una tabla
+            st.dataframe(data)
+        else:
+            st.write("No se encontraron resultados para el CoddocOrdenProduccion proporcionado.")
+    else:
+        st.write("Por favor, ingrese la OP.")
+
 # Mostrar el DataFrame
 #st.dataframe(filtered_df)
 st.dataframe(df) 
