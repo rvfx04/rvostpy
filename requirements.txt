@@ -3,5 +3,3 @@ pandas==2.2.2
 SQLAlchemy==2.0.30
 pyodbc
 streamlit_option_menu
-app11
-app12
