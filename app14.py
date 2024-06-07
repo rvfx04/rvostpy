@@ -29,11 +29,6 @@ df = pd.DataFrame(rows, columns=columns)
 # Artificio para anular la columna que numera las filas
 df = df.set_index(df.columns[0])
 
-# Obtener valores únicos del campo 'idgrupodefecto'
-#unique_idgrupodefecto = df['idgrupodefecto'].unique()
-
-# Crear un multiselect para escoger los valores del campo 'idgrupodefecto'
-#selected_idgrupodefecto = st.multiselect('Seleccione idgrupodefecto:', unique_idgrupodefecto)
 
 # Filtrar el DataFrame según los valores seleccionados
 #if selected_idgrupodefecto:
