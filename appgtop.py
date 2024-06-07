@@ -92,7 +92,7 @@ FROM (
     UNION ALL
     SELECT * FROM ProducidoPorProceso
 ) sc
-WHERE sc.CoddocOrdenProduccion = '{coddoc_orden_produccion}'
+WHERE sc.CoddocOrdenProduccion = '{0988-3'
 GROUP BY 
     sc.CoddocOrdenProduccion, 
     sc.NommaeCentroCosto,
@@ -107,26 +107,6 @@ df = pd.DataFrame(rows, columns=columns)
 # Artificio para anular la columna que numera las filas
 df = df.set_index(df.columns[0])
 
-# Título de la aplicación
-st.title("Consulta de Orden de Producción")
-
-# Entrada del usuario para CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingrese una OP:")
-
-# Botón para ejecutar la consulta
-if st.button("Consultar"):
-    if coddoc_orden_produccion:
-        # Obtener datos de la base de datos
-        #data = get_data(coddoc_orden_produccion)
-        st.dataframe(df)
-        #if not data.empty:
-            # Mostrar los resultados en una tabla
-            #st.dataframe(data)
-        #else:
-            #st.write("No se encontraron resultados para el CoddocOrdenProduccion proporcionado.")
-    else:
-        st.write("Por favor, ingrese la OP.")
-
 # Mostrar el DataFrame
 #st.dataframe(filtered_df)
-#st.dataframe(df) 
+st.dataframe(df) 
