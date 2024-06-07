@@ -43,4 +43,4 @@ df = pd.DataFrame(rows, columns=columns)
 
 # Mostrar el DataFrame filtrado
 #st.dataframe(filtered_df)
- st.dataframe(df) 
+st.dataframe(df) 
