@@ -21,7 +21,7 @@ def run_query(query):
     return columns, data
 
 # Solicitar al usuario el CoddocOrdenProduccion
-coddoc_orden_produccion = st.text_input("Ingrese el CoddocOrdenProduccion:")
+coddoc_orden_produccion = st.text_input("Ingrese una OP:")
 
 if coddoc_orden_produccion:
     query = f"""
@@ -115,5 +115,5 @@ if coddoc_orden_produccion:
     # Mostrar el DataFrame
     st.dataframe(df)
 else:
-    st.write("Por favor ingrese un CoddocOrdenProduccion.")
+    st.write("Por favor ingrese una OP.")
 
