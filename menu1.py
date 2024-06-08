@@ -11,11 +11,13 @@ def main():
         st.subheader("Bienvenido al Menú de Navegación")
         st.write("Selecciona una aplicación desde la barra lateral.")
     elif choice == "Pedido":
-        js_code = "window.location.href = 'https://appgtpedido.streamlit.app';"
-        st.components.v1.html(f"<script>{js_code}</script>")
+        st.subheader("Redirigiendo a Pedido...")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a Pedido](https://appgtpedido.streamlit.app)")
     elif choice == "OP":
-        js_code = "window.location.href = 'https://appgtop.streamlit.app';"
-        st.components.v1.html(f"<script>{js_code}</script>")
+        st.subheader("Redirigiendo a OP...")
+        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
+        st.markdown("[Ir a OP](https://appgtop.streamlit.app)")
 
 if __name__ == '__main__':
     main()
