@@ -3,26 +3,33 @@ import streamlit as st
 def main():
     st.title("Menú de Navegación")
 
-    # Instrucciones para usar el menú
-    st.write("Haga clic en uno de los siguientes botones para ir a la aplicación correspondiente:")
+    # Crear el menú de navegación
+    menu = ["Home", "Pedido", "OP"]
+    choice = st.sidebar.selectbox("Selecciona una aplicación", menu)
 
-    # Botón para acceder a la aplicación prurvo
-    if st.button("Ir a App 1: prurvo"):
-        js_code = """
-        <script>
-        window.open('https://prurvo.streamlit.app', '_blank').focus();
-        </script>
-        """
-        st.markdown(js_code, unsafe_allow_html=True)
-    
-    # Botón para acceder a la aplicación rvo012
-    if st.button("Ir a App 2: rvo012"):
-        js_code = """
-        <script>
-        window.open('https://rvo012.streamlit.app', '_blank').focus();
-        </script>
-        """
-        st.markdown(js_code, unsafe_allow_html=True)
+    if choice == "Home":
+        st.subheader("Bienvenido al Menú de Navegación")
+        st.write("Selecciona una aplicación desde la barra lateral.")
+    elif choice == "Pedido":
+        st.experimental_set_query_params(app="pedido")
+        st.write("Redirigiendo a Pedido...")
+        st.experimental_rerun()
+    elif choice == "OP":
+        st.experimental_set_query_params(app="op")
+        st.write("Redirigiendo a OP...")
+        st.experimental_rerun()
 
 if __name__ == '__main__':
     main()
+
+# Manejar la redirección según los parámetros de consulta
+query_params = st.experimental_get_query_params()
+if "app" in query_params:
+    app = query_params["app"][0]
+    if app == "pedido":
+        st.write("Redirigiendo a Pedido...")
+        st.experimental_rerun("https://appgtpedido.streamlit.app")
+    elif app == "op":
+        st.write("Redirigiendo a OP...")
+        st.experimental_rerun("https://appgtop.streamlit.app")
+
