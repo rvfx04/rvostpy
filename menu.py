@@ -11,13 +11,13 @@ def main():
         st.subheader("Bienvenido al Menú de Navegación")
         st.write("Selecciona una aplicación desde la barra lateral.")
     elif choice == "Pedido":
-        st.subheader("OP")
+        st.subheader("Pedido")
         st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
         st.markdown("[Ir a Pedido](https://appgtpedido.streamlit.app)")
     elif choice == "OP":
         st.subheader("OP")
         st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
-        st.markdown("[Ir a rvo012](https://appgtop.streamlit.app)")
+        st.markdown("[Ir a OP](https://appgtop.streamlit.app)")
 
 if __name__ == '__main__':
     main()
