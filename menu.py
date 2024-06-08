@@ -13,7 +13,7 @@ def main():
     elif choice == "Pedido":
         #st.subheader("Pedido")
         #st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
-        st.markdown"(https://appgtpedido.streamlit.app)"
+        st.markdown("(https://appgtpedido.streamlit.app)")
     elif choice == "OP":
         st.subheader("OP")
         st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
