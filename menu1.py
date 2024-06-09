@@ -11,13 +11,24 @@ def main():
         st.subheader("Bienvenido al Menú de Navegación")
         st.write("Selecciona una aplicación desde la barra lateral.")
     elif choice == "Pedido":
-        st.subheader("Redirigiendo a Pedido...")
-        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
-        st.markdown("[Ir a Pedido](https://appgtpedido.streamlit.app)")
+        st.experimental_set_query_params(app="pedido")
+        st.write("Redirigiendo a Pedido...")
+        st.experimental_rerun()
     elif choice == "OP":
-        st.subheader("Redirigiendo a OP...")
-        st.write("Haga clic en el siguiente enlace para ir a la aplicación:")
-        st.markdown("[Ir a OP](https://appgtop.streamlit.app)")
+        st.experimental_set_query_params(app="op")
+        st.write("Redirigiendo a OP...")
+        st.experimental_rerun()
 
 if __name__ == '__main__':
     main()
+
+# Manejar la redirección según los parámetros de consulta
+query_params = st.experimental_get_query_params()
+if "app" in query_params:
+    app = query_params["app"][0]
+    if app == "pedido":
+        st.write("Redirigiendo a Pedido...")
+        st.experimental_rerun("https://appgtpedido.streamlit.app")
+    elif app == "op":
+        st.write("Redirigiendo a OP...")
+        st.experimental_rerun("https://appgtop.streamlit.app")
