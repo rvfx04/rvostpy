@@ -1,7 +1,7 @@
 import streamlit as st
 
 def main():
-    st.title("Menú de Navegación")
+    st.title("Menú")
 
     # Instrucciones para usar el menú
     st.write("Haga clic en uno de los siguientes botones para ir a la aplicación correspondiente:")
