@@ -1,7 +1,7 @@
 import streamlit as st
 
 def main():
-    st.title("Menú de Navegación")
+    st.title("Menú ")
 
     # Botón para acceder a la aplicación prurvo
     if st.button("Ir a App 1: prurvo"):
