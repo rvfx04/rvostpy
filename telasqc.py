@@ -50,7 +50,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     INNER JOIN 
         maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
     WHERE 
-        CONVERT(DATE,a.dtFechaReporte) BETWEEN '01-06-2024' AND '12-06-2024'
+        CONVERT(DATE,a.dtFechaReporte) BETWEEN ? AND ?
         AND e.NommaeAnexoCliente LIKE ?
         AND b.CodmaeItemInventario LIKE ?
         AND b.NommaeItemInventario LIKE ?
