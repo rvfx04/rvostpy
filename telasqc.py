@@ -18,8 +18,8 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-    clientes_placeholder = ', '.join('?' for _ in clientes)
-    acabados_placeholder = ', '.join('?' for _ in acabado)
+    #clientes_placeholder = ', '.join('?' for _ in clientes)
+    #acabados_placeholder = ', '.join('?' for _ in acabado)
     
     query = f"""
     SELECT  
