@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 def get_db_connection():
     conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
-        "SERVER=" + st.secrets["server"] +
-        "DATABASE=" + st.secrets["database"] +
-        "UID=" + st.secrets["username"] +
-        "PWD=" + st.secrets["password"]
+        "SERVER=" + st.secrets["server"] + ";"
+        "DATABASE=" + st.secrets["database"] + ";"
+        "UID=" + st.secrets["username"] + ";"
+        "PWD=" + st.secrets["password"] + ";"
     )
     return conn
 
@@ -18,7 +18,8 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-    
+    clientes_placeholder = ', '.join('?' for _ in clientes)
+    acabados_placeholder = ', '.join('?' for _ in acabado)
     
     query = f"""
     SELECT  
@@ -50,14 +51,14 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
     WHERE 
         a.dtFechaReporte BETWEEN ? AND ?
-        AND e.NommaeAnexoCliente LIKE ?
+        AND e.NommaeAnexoCliente IN ({clientes_placeholder})
         AND b.CodmaeItemInventario LIKE ?
         AND b.NommaeItemInventario LIKE ?
         AND d.nommaecolor LIKE ?
-        AND a.ntDescripcionAcabado LIKE ?
+        AND a.ntDescripcionAcabado IN ({acabados_placeholder})
     """
     
-    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%",f"%{acabado}%"]
+    params = [start_date, end_date] + clientes + [f"%{codigo}%", f"%{tela}%", f"%{color}%"] + acabado
     df = pd.read_sql(query, conn, params=params)
     conn.close()
     return df
@@ -68,23 +69,23 @@ st.title('Consulta de Base de Datos')
 start_date = st.date_input('Fecha de inicio')
 end_date = st.date_input('Fecha de fin')
 
-clientes = st.text_input('Clientes')  
+clientes = st.text_input('Clientes').split(',')  
 codigo = st.text_input('Código')
 tela = st.text_input('Tela')
 color = st.text_input('Color')
-acabado = st.text_input('Acabado')  
+acabado = st.text_input('Acabado').split(',')  
 
 if st.button('Consultar'):
-    #if not clientes:
-        #st.error('Debe seleccionar al menos un cliente')
-    #elif not acabado:
-        #st.error('Debe seleccionar al menos un acabado')
-    #else:
-    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
-    st.write(df)
+    if not clientes or not any(clientes):
+        st.error('Debe seleccionar al menos un cliente')
+    elif not acabado or not any(acabado):
+        st.error('Debe seleccionar al menos un acabado')
+    else:
+        df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
+        st.write(df)
         
         # Histograma de DENSIDAD
-    if 'DENSIDAD' in df.columns:
+        if 'DENSIDAD' in df.columns:
             st.subheader('Histograma de DENSIDAD')
             fig, ax = plt.subplots()
             ax.hist(df['DENSIDAD'].dropna(), bins=30, edgecolor='black')
@@ -93,7 +94,7 @@ if st.button('Consultar'):
             st.pyplot(fig)
 
         # Histograma de ANCHO_ACABADO
-    if 'ANCHO_ACABADO' in df.columns:
+        if 'ANCHO_ACABADO' in df.columns:
             st.subheader('Histograma de ANCHO_ACABADO')
             fig, ax = plt.subplots()
             ax.hist(df['ANCHO_ACABADO'].dropna(), bins=30, edgecolor='black')
