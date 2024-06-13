@@ -18,8 +18,8 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-    clientes_placeholder = ', '.join('?' for _ in clientes)
-    acabados_placeholder = ', '.join('?' for _ in acabado)
+    #clientes_placeholder = ', '.join('?' for _ in clientes)
+    #acabados_placeholder = ', '.join('?' for _ in acabado)
     
     query = f"""
     SELECT  
@@ -58,7 +58,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         AND a.ntDescripcionAcabado IN ({acabados_placeholder})
     """
     
-    params = [start_date, end_date] + clientes + [f"%{codigo}%", f"%{tela}%", f"%{color}%"] + acabado
+    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%"]
     df = pd.read_sql(query, conn, params=params)
     conn.close()
     return df
@@ -69,11 +69,11 @@ st.title('Consulta de Base de Datos')
 start_date = st.date_input('Fecha de inicio')
 end_date = st.date_input('Fecha de fin')
 
-clientes = st.text_input('Clientes').split(',')  
+clientes = st.text_input('Clientes')
 codigo = st.text_input('Código')
 tela = st.text_input('Tela')
 color = st.text_input('Color')
-acabado = st.text_input('Acabado').split(',')  
+acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
     if not clientes or not any(clientes):
