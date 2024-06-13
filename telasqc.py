@@ -76,16 +76,16 @@ color = st.text_input('Color')
 acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
-    if not clientes or not any(clientes):
-        st.error('Debe seleccionar al menos un cliente')
-    elif not acabado or not any(acabado):
+    #if not clientes or not any(clientes):
+        #st.error('Debe seleccionar al menos un cliente')
+    #elif not acabado or not any(acabado):
         st.error('Debe seleccionar al menos un acabado')
-    else:
-        df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
-        st.write(df)
+    #else:
+    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
+    st.write(df)
         
         # Histograma de DENSIDAD
-        if 'DENSIDAD' in df.columns:
+    if 'DENSIDAD' in df.columns:
             st.subheader('Histograma de DENSIDAD')
             fig, ax = plt.subplots()
             ax.hist(df['DENSIDAD'].dropna(), bins=30, edgecolor='black')
@@ -94,7 +94,7 @@ if st.button('Consultar'):
             st.pyplot(fig)
 
         # Histograma de ANCHO_ACABADO
-        if 'ANCHO_ACABADO' in df.columns:
+    if 'ANCHO_ACABADO' in df.columns:
             st.subheader('Histograma de ANCHO_ACABADO')
             fig, ax = plt.subplots()
             ax.hist(df['ANCHO_ACABADO'].dropna(), bins=30, edgecolor='black')
