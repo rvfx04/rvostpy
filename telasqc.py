@@ -74,14 +74,14 @@ tela = st.text_input('Tela')
 color = st.text_input('Color')
 acabado = st.text_input('Acabado')  
 
-#if st.button('Consultar'):
+if st.button('Consultar'):
     #if not clientes:
         #st.error('Debe seleccionar al menos un cliente')
     #elif not acabado:
         #st.error('Debe seleccionar al menos un acabado')
     #else:
-df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
-st.write(df)
+    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
+    st.write(df)
         
         # Histograma de DENSIDAD
 if 'DENSIDAD' in df.columns:
