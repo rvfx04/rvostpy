@@ -63,6 +63,8 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
 # Interfaz de usuario
 st.title('Consulta de Reportes de Calidad')
 
+# Organización en dos columnas
+col1, col2 = st.columns(2)
 with col1:
     start_date = st.date_input('Fecha de inicio')
     clientes = st.text_input('Clientes')
