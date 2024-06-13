@@ -75,7 +75,7 @@ tela = st.text_input('Tela')
 color = st.text_input('Color')
 acabado = st.text_input('Acabado')
 
-    if st.button('Consultar'):
+if st.button('Consultar'):
     #if not clientes or not any(clientes):
         #st.error('Debe seleccionar al menos un cliente')
     #elif not acabado or not any(acabado):
