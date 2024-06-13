@@ -18,8 +18,7 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-    #clientes_placeholder = ', '.join('?' for _ in clientes)
-    #acabados_placeholder = ', '.join('?' for _ in acabado)
+    
     
     query = f"""
     SELECT  
@@ -69,18 +68,18 @@ st.title('Consulta de Base de Datos')
 start_date = st.date_input('Fecha de inicio')
 end_date = st.date_input('Fecha de fin')
 
-clientes = st.text_input('Clientes')  # Actualiza con tus valores de clientes
+clientes = st.text_input('Clientes')  
 codigo = st.text_input('Código')
 tela = st.text_input('Tela')
 color = st.text_input('Color')
-acabado = st.text_input('Acabado')  # Actualiza con tus valores de acabado
+acabado = st.text_input('Acabado')  
 
-if st.button('Consultar'):
-    if not clientes:
-        st.error('Debe seleccionar al menos un cliente')
-    elif not acabado:
-        st.error('Debe seleccionar al menos un acabado')
-    else:
+#if st.button('Consultar'):
+    #if not clientes:
+        #st.error('Debe seleccionar al menos un cliente')
+    #elif not acabado:
+        #st.error('Debe seleccionar al menos un acabado')
+    #else:
         df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
         st.write(df)
         
