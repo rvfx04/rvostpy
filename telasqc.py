@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 def get_db_connection():
     conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
-        "SERVER=" + st.secrets["db"]["server"] + ";"
-        "DATABASE=" + st.secrets["db"]["database"] + ";"
-        "UID=" + st.secrets["db"]["username"] + ";"
-        "PWD=" + st.secrets["db"]["password"]
+        "SERVER=" + st.secrets["server"] +
+        "DATABASE=" + st.secrets["database"] +
+        "UID=" + st.secrets["username"] +
+        "PWD=" + st.secrets["password"]
     )
     return conn
 
