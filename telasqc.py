@@ -58,7 +58,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         AND a.ntDescripcionAcabado IN ({acabados_placeholder})
     """
     
-    params = [start_date, end_date] + clientes + [f"%{codigo}%", f"%{tela}%", f"%{color}%"] + acabado
+    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%",f"%{acabado}%"]
     df = pd.read_sql(query, conn, params=params)
     conn.close()
     return df
@@ -69,11 +69,11 @@ st.title('Consulta de Base de Datos')
 start_date = st.date_input('Fecha de inicio')
 end_date = st.date_input('Fecha de fin')
 
-clientes = st.multiselect('Clientes', options=['Cliente1', 'Cliente2', 'Cliente3'])  # Actualiza con tus valores de clientes
+clientes = st.text_input('Clientes')  # Actualiza con tus valores de clientes
 codigo = st.text_input('Código')
 tela = st.text_input('Tela')
 color = st.text_input('Color')
-acabado = st.multiselect('Acabado', options=['Acabado1', 'Acabado2', 'Acabado3'])  # Actualiza con tus valores de acabado
+acabado = st.text_input('Acabado')  # Actualiza con tus valores de acabado
 
 if st.button('Consultar'):
     if not clientes:
