@@ -81,10 +81,10 @@ if st.button('Consultar'):
     st.write(df)
     
       # Ajustar estilo de los gráficos
-    try:
-        plt.style.use('seaborn-darkgrid')
-    except OSError:
-        st.warning("No se pudo cargar el estilo 'seaborn-darkgrid'. Usando el estilo por defecto.")
+    #try:
+        #plt.style.use('seaborn-darkgrid')
+    #except OSError:
+        #st.warning("No se pudo cargar el estilo 'seaborn-darkgrid'. Usando el estilo por defecto.")
 
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
     
