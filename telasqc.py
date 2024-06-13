@@ -53,9 +53,10 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         AND b.NommaeItemInventario LIKE ?
         AND d.nommaecolor LIKE ?
         AND a.ntDescripcionAcabado LIKE ?
+        AND c.CoddocOrdenProduccion LIKE ?
     """
     
-    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%"]
+    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%", f"%{partida}%"]
     df = pd.read_sql(query, conn, params=params)
     conn.close()
     return df
@@ -69,7 +70,7 @@ with col1:
     start_date = st.date_input('Fecha de inicio')
     clientes = st.text_input('Clientes')
     color = st.text_input('Color')
-
+    partida = st.text_input('Partida')
 with col2:
     end_date = st.date_input('Fecha de fin')
     codigo = st.text_input('Código')
@@ -77,7 +78,7 @@ with col2:
     acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
-    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
+    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     st.write(df)
     
       # Ajustar estilo de los gráficos
