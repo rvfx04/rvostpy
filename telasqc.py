@@ -15,7 +15,7 @@ def get_db_connection():
     return conn
 
 # Consulta SQL con filtros
-def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
+def get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida):
     conn = get_db_connection()
     
     query = f"""
