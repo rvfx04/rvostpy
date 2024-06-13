@@ -63,19 +63,25 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
 # Interfaz de usuario
 st.title('Consulta de Reportes de Calidad')
 
-start_date = st.date_input('Fecha de inicio')
-end_date = st.date_input('Fecha de fin')
+with col1:
+    start_date = st.date_input('Fecha de inicio')
+    clientes = st.text_input('Clientes')
+    color = st.text_input('Color')
 
-clientes = st.text_input('Clientes')
-codigo = st.text_input('Código')
-tela = st.text_input('Tela')
-color = st.text_input('Color')
-acabado = st.text_input('Acabado')
+with col2:
+    end_date = st.date_input('Fecha de fin')
+    codigo = st.text_input('Código')
+    tela = st.text_input('Tela')
+    acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
     st.write(df)
-        
+    
+     # Ajustar estilo de los gráficos
+    plt.style.use('seaborn-darkgrid')
+    plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
+      
         # Histograma de DENSIDAD
     if 'DENSIDAD' in df.columns:
             st.subheader('Histograma de DENSIDAD')
