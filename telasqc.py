@@ -80,10 +80,14 @@ if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
     st.write(df)
     
-     # Ajustar estilo de los gráficos
-    plt.style.use('seaborn-darkgrid')
+      # Ajustar estilo de los gráficos
+    try:
+        plt.style.use('seaborn-darkgrid')
+    except OSError:
+        st.warning("No se pudo cargar el estilo 'seaborn-darkgrid'. Usando el estilo por defecto.")
+
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
-      
+    
         # Histograma de DENSIDAD
     if 'DENSIDAD' in df.columns:
             st.subheader('Histograma de DENSIDAD')
