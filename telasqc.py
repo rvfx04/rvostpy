@@ -51,11 +51,11 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
     WHERE 
         a.dtFechaReporte BETWEEN ? AND ?
-        AND e.NommaeAnexoCliente IN ({clientes_placeholder})
+        AND e.NommaeAnexoCliente LIKE ?
         AND b.CodmaeItemInventario LIKE ?
         AND b.NommaeItemInventario LIKE ?
         AND d.nommaecolor LIKE ?
-        AND a.ntDescripcionAcabado IN ({acabados_placeholder})
+        AND a.ntDescripcionAcabado LIKE ?
     """
     
     params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%"]
