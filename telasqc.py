@@ -18,8 +18,6 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-  
-    
     query = f"""
     SELECT  
         c.CoddocOrdenProduccion AS PARTIDA,
