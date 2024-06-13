@@ -81,8 +81,8 @@ if st.button('Consultar'):
     #elif not acabado or not any(acabado):
         #st.error('Debe seleccionar al menos un acabado')
     #else:
-df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
-st.write(df)
+    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
+    st.write(df)
         
         # Histograma de DENSIDAD
 if 'DENSIDAD' in df.columns:
