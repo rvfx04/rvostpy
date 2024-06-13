@@ -84,7 +84,7 @@ df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
 st.write(df)
         
         # Histograma de DENSIDAD
-        if 'DENSIDAD' in df.columns:
+if 'DENSIDAD' in df.columns:
             st.subheader('Histograma de DENSIDAD')
             fig, ax = plt.subplots()
             ax.hist(df['DENSIDAD'].dropna(), bins=30, edgecolor='black')
@@ -93,7 +93,7 @@ st.write(df)
             st.pyplot(fig)
 
         # Histograma de ANCHO_ACABADO
-        if 'ANCHO_ACABADO' in df.columns:
+if 'ANCHO_ACABADO' in df.columns:
             st.subheader('Histograma de ANCHO_ACABADO')
             fig, ax = plt.subplots()
             ax.hist(df['ANCHO_ACABADO'].dropna(), bins=30, edgecolor='black')
