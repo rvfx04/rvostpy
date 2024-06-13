@@ -18,8 +18,7 @@ def get_db_connection():
 def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     conn = get_db_connection()
     
-    #clientes_placeholder = ', '.join('?' for _ in clientes)
-    #acabados_placeholder = ', '.join('?' for _ in acabado)
+  
     
     query = f"""
     SELECT  
@@ -64,7 +63,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     return df
 
 # Interfaz de usuario
-st.title('Consulta de Base de Datos')
+st.title('Consulta de Reportes de Calidad')
 
 start_date = st.date_input('Fecha de inicio')
 end_date = st.date_input('Fecha de fin')
@@ -76,11 +75,6 @@ color = st.text_input('Color')
 acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
-    #if not clientes or not any(clientes):
-        #st.error('Debe seleccionar al menos un cliente')
-    #elif not acabado or not any(acabado):
-        #st.error('Debe seleccionar al menos un acabado')
-    #else:
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado)
     st.write(df)
         
@@ -95,7 +89,7 @@ if st.button('Consultar'):
 
         # Histograma de ANCHO_ACABADO
     if 'ANCHO_ACABADO' in df.columns:
-            st.subheader('Histograma de ANCHO_ACABADO')
+            st.subheader('Histograma de ANCHO')
             fig, ax = plt.subplots()
             ax.hist(df['ANCHO_ACABADO'].dropna(), bins=30, edgecolor='black')
             ax.set_xlabel('ANCHO_ACABADO')
