@@ -37,7 +37,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
         a.AATCC179_DensidadAcabada AS DENSIDAD,
         a.nvTituloObservacion AS OBSERV1,
         a.ntObservacion AS OBSERV2,
-        a.dtFechaReporte AS FECH_REPORTE,
+        CONVERT(DATE,a.dtFechaReporte) AS FECH_REPORTE,
         e.NommaeAnexoCliente AS CLIENTE
     FROM 
         [GarmentData].[dbo].[docOrdenProduccionCalidad] a
@@ -50,7 +50,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado):
     INNER JOIN 
         maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
     WHERE 
-        a.dtFechaReporte BETWEEN ? AND ?
+        CONVERT(DATE,a.dtFechaReporte) BETWEEN ? AND ?
         AND e.NommaeAnexoCliente LIKE ?
         AND b.CodmaeItemInventario LIKE ?
         AND b.NommaeItemInventario LIKE ?
