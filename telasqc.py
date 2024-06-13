@@ -62,7 +62,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado, parti
     return df
 
 # Interfaz de usuario
-st.title('Consulta de Reportes de Calidad')
+st.title('Análisis de los Reportes de Calidad')
 
 # Organización en dos columnas
 col1, col2 = st.columns(2)
