@@ -115,3 +115,11 @@ if st.button('Consultar'):
             ax.set_xlabel('REVIRADO')
             ax.set_ylabel('Frecuencia')
             st.pyplot(fig)
+     # Histograma de REVIRAD0
+    if 'ENCOG_ANCHO' in df.columns:
+            st.subheader('Histograma de ENCOG ANCHO')
+            fig, ax = plt.subplots()
+            ax.hist(df['ENCOG_ANCHO'].dropna(), bins=30, edgecolor='black')
+            ax.set_xlabel('ENCOG_ANCHO')
+            ax.set_ylabel('Frecuencia')
+            st.pyplot(fig)
