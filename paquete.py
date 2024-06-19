@@ -3,7 +3,6 @@ import pyodbc
 import pandas as pd
 
 # Función para establecer la conexión a la base de datos
-#@st.cache_resource
 def get_db_connection():
     conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
