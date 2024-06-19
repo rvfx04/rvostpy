@@ -13,10 +13,7 @@ def get_db_connection():
         "PWD=" + st.secrets["password"] + ";"
     )
     return conn
-    #secrets = st.secrets["sqlserver"]
-    #connection_string = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={secrets['server']};DATABASE={secrets['database']};UID={secrets['username']};PWD={secrets['password']}"
-    #conn = pyodbc.connect(connection_string)
-    #return conn
+   
 
 # Título del formulario
 st.title("Control de Paquetes")
@@ -112,7 +109,7 @@ if submitted:
             cantidades_totales[talla] = cantidad
 
     # Mostrar resultados
-    #st.subheader("Control de paquetes:")
+    st.subheader("Control de paquetes:")
     st.write(f"**PEDIDO:** {pedido}")
     st.write(f"**CLIENTE:** {cliente}")
     st.write(f"**PO:** {po}")
