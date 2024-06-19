@@ -2,6 +2,41 @@ import streamlit as st
 import pyodbc
 import pandas as pd
 
+# Estilos CSS para hacer la presentación más compacta
+st.markdown(
+    """
+    <style>
+    /* Reduce el tamaño de los títulos */
+    h1 {
+        font-size: 1.5em;
+    }
+    h2 {
+        font-size: 1.25em;
+    }
+    h3 {
+        font-size: 1em;
+    }
+    
+    /* Reduce el tamaño del texto */
+    .reportview-container .main .block-container {
+        font-size: 0.875em;
+    }
+    
+    /* Ajusta el tamaño de las tablas */
+    .dataframe th, .dataframe td, .stTable th, .stTable td {
+        padding: 0.25em 0.5em;
+        font-size: 0.875em;
+    }
+    
+    /* Ajusta los márgenes y el padding para mayor compacidad */
+    .main .block-container {
+        padding: 1rem 1rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Función para establecer la conexión a la base de datos
 def get_db_connection():
     conn = pyodbc.connect(
@@ -12,7 +47,6 @@ def get_db_connection():
         "PWD=" + st.secrets["password"] + ";"
     )
     return conn
-   
 
 # Título del formulario
 st.title("Control de Paquetes")
