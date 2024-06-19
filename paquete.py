@@ -19,7 +19,7 @@ def get_db_connection():
     #return conn
 
 # Título del formulario
-st.title("Formulario de Consulta")
+st.title("Control de Paquetes")
 
 # Crear el formulario en Streamlit
 with st.form("consulta_form"):
@@ -112,7 +112,7 @@ if submitted:
             cantidades_totales[talla] = cantidad
 
     # Mostrar resultados
-    st.subheader("Control de paquetes:")
+    #st.subheader("Control de paquetes:")
     st.write(f"**PEDIDO:** {pedido}")
     st.write(f"**CLIENTE:** {cliente}")
     st.write(f"**PO:** {po}")
