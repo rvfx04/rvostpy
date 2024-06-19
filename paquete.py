@@ -1,7 +1,7 @@
 import streamlit as st
 import pyodbc
 import pandas as pd
-
+ 
 # Estilos CSS para hacer la presentación más compacta
 st.markdown(
     """
