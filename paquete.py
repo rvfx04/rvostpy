@@ -24,8 +24,8 @@ st.markdown(
     
     /* Ajusta el tamaño de las tablas */
     .dataframe th, .dataframe td, .stTable th, .stTable td {
-        padding: 0.25em 0.25em;
-        font-size: 0.75em;
+        padding: 0.1em 0.1em; /* Reduce el padding para mayor compacidad */
+        font-size: 0.6em; /* Reduce el tamaño de la fuente */
         white-space: nowrap;
         max-width: 200px;
         overflow: hidden;
@@ -121,7 +121,7 @@ if st.session_state.submitted:
     for row in rows:
         talla = row.TALLA.strip()
         cantidad = int(row.CANTIDAD)
-        num_prenda_inicial = 1
+                num_prenda_inicial = 1
         
         pedido = row.PEDIDO
         cliente = row.CLIENTE
@@ -183,11 +183,12 @@ if st.session_state.submitted:
     cursor.close()
     conn.close()
 
-
 # Opción para reiniciar la aplicación y mostrar el formulario nuevamente
 if st.session_state.submitted:
     if st.button('Realizar otra consulta'):
         st.session_state.submitted = False
+
+
 
 
 
