@@ -121,7 +121,7 @@ if st.session_state.submitted:
     for row in rows:
         talla = row.TALLA.strip()
         cantidad = int(row.CANTIDAD)
-                num_prenda_inicial = 1
+        num_prenda_inicial = 1
         
         pedido = row.PEDIDO
         cliente = row.CLIENTE
