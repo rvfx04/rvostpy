@@ -2,41 +2,6 @@ import streamlit as st
 import pyodbc
 import pandas as pd
 
-# Estilos CSS para hacer la presentación más compacta
-st.markdown(
-    """
-    <style>
-    /* Reduce el tamaño de los títulos */
-    h1 {
-        font-size: 1.5em;
-    }
-    h2 {
-        font-size: 1.25em;
-    }
-    h3 {
-        font-size: 1em;
-    }
-    
-    /* Reduce el tamaño del texto */
-    .reportview-container .main .block-container {
-        font-size: 0.875em;
-    }
-    
-    /* Ajusta el tamaño de las tablas */
-    .dataframe th, .dataframe td, .stTable th, .stTable td {
-        padding: 0.25em 0.5em;
-        font-size: 0.875em;
-    }
-    
-    /* Ajusta los márgenes y el padding para mayor compacidad */
-    .main .block-container {
-        padding: 1rem 1rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Función para establecer la conexión a la base de datos
 def get_db_connection():
     conn = pyodbc.connect(
@@ -47,31 +12,18 @@ def get_db_connection():
         "PWD=" + st.secrets["password"] + ";"
     )
     return conn
+   
 
-# Variable de estado para controlar si se muestra el formulario o los resultados
-if 'submitted' not in st.session_state:
-    st.session_state.submitted = False
+# Título del formulario
+st.title("Control de Paquetes")
 
-def submit_form():
-    st.session_state.submitted = True
-    st.session_state.os = st.session_state.form_os
-    st.session_state.max_prendas = st.session_state.form_max_prendas
+# Crear el formulario en Streamlit
+with st.form("consulta_form"):
+    os = st.text_input("Número de Orden de Servicio (OS):", "")
+    max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
+    submitted = st.form_submit_button("Consultar y Generar Tabla")
 
-def reset_form():
-    st.session_state.submitted = False
-
-# Mostrar el formulario solo si no se ha enviado
-if not st.session_state.submitted:
-    # Título del formulario
-    st.title("Control de Paquetes")
-
-    # Crear el formulario en Streamlit
-    with st.form("consulta_form"):
-        st.session_state.form_os = st.text_input("Número de Orden de Servicio (OS):", "")
-        st.session_state.form_max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
-        submitted = st.form_submit_button("Consultar y Generar Tabla", on_click=submit_form)
-
-if st.session_state.submitted:
+if submitted:
     conn = get_db_connection()
 
     # Consulta SQL
@@ -112,7 +64,7 @@ if st.session_state.submitted:
     
     # Ejecutar la consulta
     cursor = conn.cursor()
-    cursor.execute(sql, (st.session_state.os, st.session_state.os))
+    cursor.execute(sql, (os, os))
     rows = cursor.fetchall()
     
     # Procesar resultados
@@ -133,13 +85,13 @@ if st.session_state.submitted:
         mp = row.MP
 
         while cantidad > 0:
-            if cantidad <= st.session_state.max_prendas:
+            if cantidad <= max_prendas:
                 prendas_en_caja = cantidad
             else:
-                if cantidad - st.session_state.max_prendas < 10:
+                if cantidad - max_prendas < 10:
                     prendas_en_caja = cantidad
                 else:
-                    prendas_en_caja = st.session_state.max_prendas
+                    prendas_en_caja = max_prendas
             num_prenda_final = num_prenda_inicial + prendas_en_caja - 1
             resultado.append((talla, prendas_en_caja, num_prenda_inicial, num_prenda_final))
             num_prenda_inicial += prendas_en_caja
@@ -157,15 +109,15 @@ if st.session_state.submitted:
 
     # Mostrar resultados
     st.subheader("Control de paquetes:")
-    st.write("**PEDIDO:** {}".format(pedido))
-    st.write("**CLIENTE:** {}".format(cliente))
-    st.write("**PO:** {}".format(po))
-    st.write("**OP:** {}".format(op))
-    st.write("**OS:** {}".format(os))
-    st.write("**ESTILO:** {}".format(estilo))
-    st.write("**COMBO:** {}".format(combo))
-    st.write("**OBS:** {}".format(obs))
-    st.write("**MP:** {}".format(mp))
+    st.write(f"**PEDIDO:** {pedido}")
+    st.write(f"**CLIENTE:** {cliente}")
+    st.write(f"**PO:** {po}")
+    st.write(f"**OP:** {op}")
+    st.write(f"**OS:** {os}")
+    st.write(f"**ESTILO:** {estilo}")
+    st.write(f"**COMBO:** {combo}")
+    st.write(f"**OBS:** {obs}")
+    st.write(f"**MP:** {mp}")
 
     # Tabla de cantidades por talla
     st.subheader("Cantidades por Talla:")
@@ -181,10 +133,5 @@ if st.session_state.submitted:
     # Cerrar la conexión
     cursor.close()
     conn.close()
-
-    # Botón para realizar otra consulta
-    if st.button('Realizar otra consulta'):
-        reset_form()
-
 
 
