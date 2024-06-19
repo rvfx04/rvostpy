@@ -112,7 +112,7 @@ if submitted:
 
     # Mostrar resultados
     st.subheader("Control de paquetes:")
-    st.write(f"**PEDIDO:** {pedido}")
+    #st.write(f"**PEDIDO:** {pedido}")
     st.write(f"**CLIENTE:** {cliente}")
     st.write(f"**PO:** {po}")
     st.write(f"**OP:** {op}")
