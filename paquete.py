@@ -8,29 +8,33 @@ st.markdown(
     <style>
     /* Reduce el tamaño de los títulos */
     h1 {
-        font-size: 1.5em;
+        font-size: 1em;
     }
     h2 {
-        font-size: 1.25em;
+        font-size: 0.875em;
     }
     h3 {
-        font-size: 1em;
+        font-size: 0.75em;
     }
     
     /* Reduce el tamaño del texto */
     .reportview-container .main .block-container {
-        font-size: 0.875em;
+        font-size: 0.75em;
     }
     
     /* Ajusta el tamaño de las tablas */
     .dataframe th, .dataframe td, .stTable th, .stTable td {
-        padding: 0.25em 0.5em;
-        font-size: 0.875em;
+        padding: 0.25em 0.25em;
+        font-size: 0.75em;
+        white-space: nowrap;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     /* Ajusta los márgenes y el padding para mayor compacidad */
     .main .block-container {
-        padding: 1rem 1rem;
+        padding: 0.5rem 0.5rem;
     }
     </style>
     """,
@@ -177,10 +181,6 @@ if st.session_state.submitted:
 
     # Cerrar la conexión
     cursor.close()
-    conn.close()
+    conn
 
-# Opción para reiniciar la aplicación y mostrar el formulario nuevamente
-if st.session_state.submitted:
-    if st.button('Realizar otra consulta'):
-        st.session_state.submitted = False
 
