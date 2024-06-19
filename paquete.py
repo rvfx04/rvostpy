@@ -173,16 +173,16 @@ if st.session_state.submitted:
 
     with col1:
         # Mostrar resultados
-    st.subheader("Control de paquetes:")
-    st.write(f"**PEDIDO:** {pedido}")
-    st.write(f"**CLIENTE:** {cliente}")
-    st.write(f"**PO:** {po}")
-    st.write(f"**OP:** {op}")
-    st.write(f"**OS:** {os}")
-    st.write(f"**ESTILO:** {estilo}")
-    st.write(f"**COMBO:** {combo}")
-    st.write(f"**OBS:** {obs}")
-    st.write(f"**MP:** {mp}")
+        st.subheader("Control de paquetes:")
+        st.write(f"**PEDIDO:** {pedido}")
+        st.write(f"**CLIENTE:** {cliente}")
+        st.write(f"**PO:** {po}")
+        st.write(f"**OP:** {op}")
+        st.write(f"**OS:** {os}")
+        st.write(f"**ESTILO:** {estilo}")
+        st.write(f"**COMBO:** {combo}")
+        st.write(f"**OBS:** {obs}")
+        st.write(f"**MP:** {mp}")
         
         # Tabla de cantidades por talla
         st.subheader("Cantidades por Talla:")
