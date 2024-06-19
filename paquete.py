@@ -52,6 +52,14 @@ def get_db_connection():
 if 'submitted' not in st.session_state:
     st.session_state.submitted = False
 
+def submit_form():
+    st.session_state.submitted = True
+    st.session_state.os = st.session_state.form_os
+    st.session_state.max_prendas = st.session_state.form_max_prendas
+
+def reset_form():
+    st.session_state.submitted = False
+
 # Mostrar el formulario solo si no se ha enviado
 if not st.session_state.submitted:
     # Título del formulario
@@ -59,14 +67,9 @@ if not st.session_state.submitted:
 
     # Crear el formulario en Streamlit
     with st.form("consulta_form"):
-        os = st.text_input("Número de Orden de Servicio (OS):", "")
-        max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
-        submitted = st.form_submit_button("Consultar y Generar Tabla")
-
-    if submitted:
-        st.session_state.submitted = True
-        st.session_state.os = os
-        st.session_state.max_prendas = max_prendas
+        st.session_state.form_os = st.text_input("Número de Orden de Servicio (OS):", "")
+        st.session_state.form_max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
+        submitted = st.form_submit_button("Consultar y Generar Tabla", on_click=submit_form)
 
 if st.session_state.submitted:
     conn = get_db_connection()
@@ -179,8 +182,8 @@ if st.session_state.submitted:
     cursor.close()
     conn.close()
 
-# Opción para reiniciar la aplicación y mostrar el formulario nuevamente
-if st.session_state.submitted:
+    # Botón para realizar otra consulta
     if st.button('Realizar otra consulta'):
-        st.session_state.submitted = False
+        reset_form()
+
 
