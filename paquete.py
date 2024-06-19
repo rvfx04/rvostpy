@@ -168,16 +168,21 @@ if st.session_state.submitted:
     st.write(f"**OBS:** {obs}")
     st.write(f"**MP:** {mp}")
 
-    # Tabla de cantidades por talla
-    st.subheader("Cantidades por Talla:")
-    cantidades_por_talla_df = pd.DataFrame(cantidades_totales.items(), columns=['Talla', 'Cantidad'])
-    st.table(cantidades_por_talla_df)
+    # Crear columnas
+    col1, col2 = st.columns(2)
 
-    # Tabla resultante con número correlativo
-    st.subheader("Distribución de Prendas en las Cajas:")
-    resultado_df = pd.DataFrame(resultado, columns=['TALLA', 'CANTIDAD', 'Prenda Ini', 'Prenda Fin'])
-    resultado_df['#'] = range(1, len(resultado_df) + 1)
-    st.table(resultado_df[['#', 'TALLA', 'CANTIDAD', 'Prenda Ini', 'Prenda Fin']])
+    with col1:
+        # Tabla de cantidades por talla
+        st.subheader("Cantidades por Talla:")
+        cantidades_por_talla_df = pd.DataFrame(cantidades_totales.items(), columns=['Talla', 'Cantidad'])
+        st.table(cantidades_por_talla_df)
+
+    with col2:
+        # Tabla resultante con número correlativo
+        st.subheader("Distribución de Prendas en las Cajas:")
+        resultado_df = pd.DataFrame(resultado, columns=['TALLA', 'CANTIDAD', 'Prenda Ini', 'Prenda Fin'])
+        resultado_df['#'] = range(1, len(resultado_df) + 1)
+        st.table(resultado_df[['#', 'TALLA', 'CANTIDAD', 'Prenda Ini', 'Prenda Fin']])
 
     # Cerrar la conexión
     cursor.close()
@@ -187,8 +192,3 @@ if st.session_state.submitted:
 if st.session_state.submitted:
     if st.button('Realizar otra consulta'):
         st.session_state.submitted = False
-
-
-
-
-
