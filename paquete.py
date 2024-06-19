@@ -25,16 +25,16 @@ st.markdown(
     /* Ajusta el tamaño de las tablas */
     .dataframe th, .dataframe td, .stTable th, .stTable td {
         padding: 0.1em 0.1em; /* Reduce el padding para mayor compacidad */
-        font-size: 0.6em; /* Reduce el tamaño de la fuente */
+        font-size: 0.3em; /* Reduce el tamaño de la fuente */
         white-space: nowrap;
-        max-width: 200px;
+        max-width: 150px;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     
     /* Ajusta los márgenes y el padding para mayor compacidad */
     .main .block-container {
-        padding: 0.5rem 0.5rem;
+        padding: 0.3rem 0.3rem;
     }
     </style>
     """,
