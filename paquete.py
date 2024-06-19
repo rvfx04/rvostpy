@@ -1,5 +1,6 @@
 import streamlit as st
 import pyodbc
+import pandas as pd
 
 # Función para establecer la conexión a la base de datos
 @st.cache_resource
