@@ -19,7 +19,7 @@ st.markdown(
     
     /* Reduce el tamaño del texto */
     .reportview-container .main .block-container {
-        font-size: 0.75em;
+        font-size: 0.5em;
     }
     
     /* Ajusta el tamaño de las tablas */
