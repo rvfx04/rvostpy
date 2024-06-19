@@ -48,16 +48,27 @@ def get_db_connection():
     )
     return conn
 
-# Título del formulario
-st.title("Control de Paquetes")
+# Variable de estado para controlar si se muestra el formulario o los resultados
+if 'submitted' not in st.session_state:
+    st.session_state.submitted = False
 
-# Crear el formulario en Streamlit
-with st.form("consulta_form"):
-    os = st.text_input("Número de Orden de Servicio (OS):", "")
-    max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
-    submitted = st.form_submit_button("Consultar y Generar Tabla")
+# Mostrar el formulario solo si no se ha enviado
+if not st.session_state.submitted:
+    # Título del formulario
+    st.title("Control de Paquetes")
 
-if submitted:
+    # Crear el formulario en Streamlit
+    with st.form("consulta_form"):
+        os = st.text_input("Número de Orden de Servicio (OS):", "")
+        max_prendas = st.number_input("Número Máximo de Prendas por Paquete:", min_value=1, step=1)
+        submitted = st.form_submit_button("Consultar y Generar Tabla")
+
+    if submitted:
+        st.session_state.submitted = True
+        st.session_state.os = os
+        st.session_state.max_prendas = max_prendas
+
+if st.session_state.submitted:
     conn = get_db_connection()
 
     # Consulta SQL
@@ -98,7 +109,7 @@ if submitted:
     
     # Ejecutar la consulta
     cursor = conn.cursor()
-    cursor.execute(sql, (os, os))
+    cursor.execute(sql, (st.session_state.os, st.session_state.os))
     rows = cursor.fetchall()
     
     # Procesar resultados
@@ -119,13 +130,13 @@ if submitted:
         mp = row.MP
 
         while cantidad > 0:
-            if cantidad <= max_prendas:
+            if cantidad <= st.session_state.max_prendas:
                 prendas_en_caja = cantidad
             else:
-                if cantidad - max_prendas < 10:
+                if cantidad - st.session_state.max_prendas < 10:
                     prendas_en_caja = cantidad
                 else:
-                    prendas_en_caja = max_prendas
+                    prendas_en_caja = st.session_state.max_prendas
             num_prenda_final = num_prenda_inicial + prendas_en_caja - 1
             resultado.append((talla, prendas_en_caja, num_prenda_inicial, num_prenda_final))
             num_prenda_inicial += prendas_en_caja
@@ -167,3 +178,9 @@ if submitted:
     # Cerrar la conexión
     cursor.close()
     conn.close()
+
+# Opción para reiniciar la aplicación y mostrar el formulario nuevamente
+if st.session_state.submitted:
+    if st.button('Realizar otra consulta'):
+        st.session_state.submitted = False
+
