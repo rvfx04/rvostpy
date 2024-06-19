@@ -4,8 +4,9 @@ import pyodbc
 # Función para establecer la conexión a la base de datos
 @st.cache_resource
 def get_db_connection():
-    secrets = st.secrets["sqlserver"]
-    connection_string = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={secrets['server']};DATABASE={secrets['database']};UID={secrets['username']};PWD={secrets['password']}"
+    
+    #secrets = st.secrets["sqlserver"]
+    #connection_string = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={secrets['server']};DATABASE={secrets['database']};UID={secrets['username']};PWD={secrets['password']}"
     conn = pyodbc.connect(connection_string)
     return conn
 
