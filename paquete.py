@@ -181,6 +181,13 @@ if st.session_state.submitted:
 
     # Cerrar la conexión
     cursor.close()
-    conn
+    conn.close()
+
+
+# Opción para reiniciar la aplicación y mostrar el formulario nuevamente
+if st.session_state.submitted:
+    if st.button('Realizar otra consulta'):
+        st.session_state.submitted = False
+
 
 
