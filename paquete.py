@@ -1,7 +1,7 @@
 import streamlit as st
 import pyodbc
 import pandas as pd
- 
+
 # Estilos CSS para hacer la presentación más compacta
 st.markdown(
     """
@@ -157,15 +157,15 @@ if st.session_state.submitted:
 
     # Mostrar resultados
     st.subheader("Control de paquetes:")
-    st.write(f"**PEDIDO:** {pedido}")
-    st.write(f"**CLIENTE:** {cliente}")
-    st.write(f"**PO:** {po}")
-    st.write(f"**OP:** {op}")
-    st.write(f"**OS:** {os}")
-    st.write(f"**ESTILO:** {estilo}")
-    st.write(f"**COMBO:** {combo}")
-    st.write(f"**OBS:** {obs}")
-    st.write(f"**MP:** {mp}")
+    st.write("**PEDIDO:** {}".format(pedido))
+    st.write("**CLIENTE:** {}".format(cliente))
+    st.write("**PO:** {}".format(po))
+    st.write("**OP:** {}".format(op))
+    st.write("**OS:** {}".format(os))
+    st.write("**ESTILO:** {}".format(estilo))
+    st.write("**COMBO:** {}".format(combo))
+    st.write("**OBS:** {}".format(obs))
+    st.write("**MP:** {}".format(mp))
 
     # Tabla de cantidades por talla
     st.subheader("Cantidades por Talla:")
@@ -185,5 +185,6 @@ if st.session_state.submitted:
     # Botón para realizar otra consulta
     if st.button('Realizar otra consulta'):
         reset_form()
+
 
 
