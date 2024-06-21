@@ -123,3 +123,11 @@ if st.button('Consultar'):
             ax.set_xlabel('ENCOG_ANCHO')
             ax.set_ylabel('Frecuencia')
             st.pyplot(fig)
+    # Histograma de ENCOG LARGO
+    if 'ENCOG_LARGO' in df.columns:
+            st.subheader('Histograma de ENCOG LARGO')
+            fig, ax = plt.subplots()
+            ax.hist(df['ENCOG_LARGO'].dropna(), bins=30, edgecolor='black')
+            ax.set_xlabel('ENCOG_LARGO')
+            ax.set_ylabel('Frecuencia')
+            st.pyplot(fig)
