@@ -56,7 +56,7 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado, parti
         AND c.CoddocOrdenProduccion LIKE ?
     """
     
-    params = [start_date, end_date] + [f"%{clientes}%",f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%", f"%{partida}%"]
+    params = [start_date, end_date] + [f"%{clientes}%", f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%", f"%{partida}%"]
     df = pd.read_sql(query, conn, params=params)
     conn.close()
     return df
@@ -91,12 +91,14 @@ if st.button('Consultar'):
             counts, bins, patches = ax.hist(data, bins=30, edgecolor='black')
             total = len(data)
             # Convertir las frecuencias a porcentajes
-            for patch in patches:
-                height = patch.get_height()
-                patch.set_height((height / total) * 100)
+            percentages = [(height / total) * 100 for height in counts]
+            for patch, percentage in zip(patches, percentages):
+                patch.set_height(percentage)
             ax.set_xlabel(xlabel)
             ax.set_ylabel('Frecuencia (%)')
             # Ajustar el eje y para que muestre porcentajes
+            max_percentage = max(percentages)
+            ax.set_ylim(0, max_percentage * 1.1)  # Ajuste del límite superior para proporcionar un poco de espacio
             ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: '{:.0f}%'.format(y)))
             st.pyplot(fig)
 
