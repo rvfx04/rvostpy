@@ -81,9 +81,9 @@ if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     
     # Agregar una columna de numeración que comience en 1
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df.rename(columns={'index': 'N°'}, inplace=True)
+    #df.index = df.index + 1
+    #df.reset_index(inplace=True)
+    #df.rename(columns={'index': 'N°'}, inplace=True)
     
     # Mostrar la tabla
     st.write(df)
