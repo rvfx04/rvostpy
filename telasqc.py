@@ -81,7 +81,7 @@ if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     st.write(df)
     
-      # Ajustar estilo de los gráficos
+    # Ajustar estilo de los gráficos
     #try:
         #plt.style.use('seaborn-darkgrid')
     #except OSError:
@@ -89,45 +89,23 @@ if st.button('Consultar'):
 
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
     
-        # Histograma de DENSIDAD
-    if 'DENSIDAD' in df.columns:
-            st.subheader('Histograma de DENSIDAD')
+    def plot_histogram(column_name, xlabel):
+        if column_name in df.columns:
+            st.subheader(f'Histograma de {xlabel}')
             fig, ax = plt.subplots()
-            ax.hist(df['DENSIDAD'].dropna(), bins=30, edgecolor='black')
-            ax.set_xlabel('DENSIDAD')
-            ax.set_ylabel('Frecuencia')
+            n, bins, patches = ax.hist(df[column_name].dropna(), bins=30, edgecolor='black', density=True)
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel('Frecuencia (%)')
+            # Convertir las frecuencias a porcentajes
+            for patch in patches:
+                height = patch.get_height()
+                patch.set_height(height * 100)
+            # Ajustar el eje y para que muestre porcentajes
+            ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: '{:.0f}%'.format(y)))
             st.pyplot(fig)
 
-        # Histograma de ANCHO_ACABADO
-    if 'ANCHO_ACABADO' in df.columns:
-            st.subheader('Histograma de ANCHO')
-            fig, ax = plt.subplots()
-            ax.hist(df['ANCHO_ACABADO'].dropna(), bins=30, edgecolor='black')
-            ax.set_xlabel('ANCHO_ACABADO')
-            ax.set_ylabel('Frecuencia')
-            st.pyplot(fig)
-
-       # Histograma de REVIRAD0
-    if 'REVIRADO' in df.columns:
-            st.subheader('Histograma de REVIRADO')
-            fig, ax = plt.subplots()
-            ax.hist(df['REVIRADO'].dropna(), bins=30, edgecolor='black')
-            ax.set_xlabel('REVIRADO')
-            ax.set_ylabel('Frecuencia')
-            st.pyplot(fig)
-     # Histograma de REVIRAD0
-    if 'ENCOG_ANCHO' in df.columns:
-            st.subheader('Histograma de ENCOG ANCHO')
-            fig, ax = plt.subplots()
-            ax.hist(df['ENCOG_ANCHO'].dropna(), bins=30, edgecolor='black')
-            ax.set_xlabel('ENCOG_ANCHO')
-            ax.set_ylabel('Frecuencia')
-            st.pyplot(fig)
-    # Histograma de ENCOG LARGO
-    if 'ENCOG_LARGO' in df.columns:
-            st.subheader('Histograma de ENCOG LARGO')
-            fig, ax = plt.subplots()
-            ax.hist(df['ENCOG_LARGO'].dropna(), bins=30, edgecolor='black')
-            ax.set_xlabel('ENCOG_LARGO')
-            ax.set_ylabel('Frecuencia')
-            st.pyplot(fig)
+    plot_histogram('DENSIDAD', 'DENSIDAD')
+    plot_histogram('ANCHO_ACABADO', 'ANCHO_ACABADO')
+    plot_histogram('REVIRADO', 'REVIRADO')
+    plot_histogram('ENCOG_ANCHO', 'ENCOG_ANCHO')
+    plot_histogram('ENCOG_LARGO', 'ENCOG_LARGO')
