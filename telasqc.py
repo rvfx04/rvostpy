@@ -84,7 +84,8 @@ if st.button('Consultar'):
     #df.index = df.index + 1
     #df.reset_index(inplace=True)
     #df.rename(columns={'index': 'N°'}, inplace=True)
-    
+    # Artificio para anular la columna que numera las filas
+    df = df.set_index(df.columns[0])
     # Mostrar la tabla
     st.write(df)
     
