@@ -68,11 +68,11 @@ st.title('Análisis de Reportes de Calidad')
 col1, col2 = st.columns(2)
 with col1:
     start_date = st.date_input('Fecha de inicio')
-    clientes = st.text_input('Clientes')
+    end_date = st.date_input('Fecha de fin')
     color = st.text_input('Color')
     partida = st.text_input('Partida')
 with col2:
-    end_date = st.date_input('Fecha de fin')
+    clientes = st.text_input('Clientes')
     codigo = st.text_input('Código')
     tela = st.text_input('Tela')
     acabado = st.text_input('Acabado')
