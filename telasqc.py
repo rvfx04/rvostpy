@@ -1,7 +1,7 @@
 import streamlit as st
 import pyodbc
 import pandas as pd
-import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Conexión a la base de datos usando Secrets
 def get_db_connection():
@@ -89,18 +89,26 @@ if st.button('Consultar'):
     # Mostrar la tabla
     st.write(df)
     
+    plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
+    
     def plot_histogram(column_name, xlabel):
         if column_name in df.columns:
             st.subheader(f'Histograma de {xlabel}')
+            fig, ax = plt.subplots()
             data = df[column_name].dropna()
+            counts, bins, patches = ax.hist(data, bins=30, edgecolor='black')
             total = len(data)
-            # Crear el histograma con Plotly
-            fig = px.histogram(data, x=column_name, nbins=30, labels={column_name: xlabel, 'count': 'Frecuencia'})
             # Convertir las frecuencias a porcentajes
-            fig.update_traces(hovertemplate='%{x}: %{y:.2f}% (%{y} de {total})', customdata=[f'{val}' for val in data])
-            fig.update_traces(y=[(y / total) * 100 for y in fig.data[0].y])
-            fig.update_yaxes(title='Frecuencia (%)', tickformat='.2f')
-            st.plotly_chart(fig)
+            percentages = [(height / total) * 100 for height in counts]
+            for patch, percentage in zip(patches, percentages):
+                patch.set_height(percentage)
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel('Frecuencia (%)')
+            # Ajustar el eje y para que muestre porcentajes
+            max_percentage = max(percentages)
+            ax.set_ylim(0, max_percentage * 1.1)  # Ajuste del límite superior para proporcionar un poco de espacio
+            ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: '{:.0f}%'.format(y)))
+            st.pyplot(fig)
 
     plot_histogram('DENSIDAD', 'DENSIDAD')
     plot_histogram('ANCHO_ACABADO', 'ANCHO_ACABADO')
