@@ -29,92 +29,92 @@ pedido = st.text_input("Ingresa un Pedido válido:")
 if pedido:
     query = f"""
     WITH ProduccionPorProceso AS (
+        SELECT 
+            c.CoddocOrdenProduccion, 
+            g.CoddocOrdenVenta, 
+            a.IdDocumento_OrdenProduccion, 
+            b.IddocOrdenProduccionRuta,
+            b.iSecuencia, 
+            b.IdmaeCentroCosto,   
+            d.NommaeCentroCosto,
+            a.dCantidadRequerido, 
+            a.dCantidadProgramado, 
+            0 AS dCantidadProducido
+        FROM dbo.docOrdenProduccion c WITH (NOLOCK)
+        INNER JOIN dbo.docOrdenProduccionItem a WITH (NOLOCK)
+            ON c.IdDocumento_OrdenProduccion = a.IdDocumento_OrdenProduccion
+        INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
+            ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
+        INNER JOIN dbo.docOrdenProduccionRuta b WITH (NOLOCK)
+            ON c.IdDocumento_OrdenProduccion = b.IdDocumento_OrdenProduccion
+        INNER JOIN dbo.maeCentroCosto d WITH (NOLOCK)
+            ON b.IdmaeCentroCosto = d.IdmaeCentroCosto
+            AND d.bConOrdenProduccion = 1
+        WHERE c.bCerrado = 0
+            AND c.bAnulado = 0
+            AND c.IdtdDocumentoForm = 127
+    ),
+    ProducidoPorProceso AS (
+        SELECT 
+            c.CoddocOrdenProduccion, 
+            g.CoddocOrdenVenta,
+            a.IdDocumento_OrdenProduccion, 
+            d.IddocOrdenProduccionRuta,
+            d.iSecuencia, 
+            a.IdmaeCentroCosto, 
+            a1.NommaeCentroCosto,
+            0 AS dCantidadRequerido, 
+            0 AS dCantidadProgramado,
+            b.dCantidadIng AS dCantidadProducido
+        FROM dbo.docNotaInventario a WITH (NOLOCK)
+        INNER JOIN dbo.maeCentroCosto a1 WITH (NOLOCK)
+            ON a.IdmaeCentroCosto = a1.IdmaeCentroCosto
+            AND a1.bConOrdenProduccion = 1
+        INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)
+            ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario
+            AND b.dCantidadIng <> 0
+        INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)
+            ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
+            AND c.bCerrado = 0
+            AND c.bAnulado = 0
+            AND c.IdtdDocumentoForm = 127
+        INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
+            ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
+        INNER JOIN dbo.docOrdenProduccionRuta d WITH (NOLOCK)
+            ON a.IddocOrdenProduccionRuta = d.IddocOrdenProduccionRuta
+        INNER JOIN dbo.docOrdenProduccionItem e WITH (NOLOCK)
+            ON c.IdDocumento_OrdenProduccion = e.IdDocumento_OrdenProduccion
+            AND b.IdmaeItem_Inventario = e.IdmaeItem
+        INNER JOIN dbo.maeItemInventario f WITH (NOLOCK)
+            ON b.IdmaeItem_Inventario = f.IdmaeItem_Inventario
+            AND f.IdtdItemForm = 10
+        WHERE a.IdtdDocumentoForm = 131
+            AND a.bDevolucion = 0
+            AND a.bDesactivado = 0
+            AND a.bAnulado = 0
+            AND a.IdDocumento_OrdenProduccion <> 0
+    )
     SELECT 
-        c.CoddocOrdenProduccion, 
-        g.CoddocOrdenVenta, 
-        a.IdDocumento_OrdenProduccion, 
-        b.IddocOrdenProduccionRuta,
-        b.iSecuencia, 
-        b.IdmaeCentroCosto,   
-        d.NommaeCentroCosto,
-        a.dCantidadRequerido, 
-        a.dCantidadProgramado, 
-        0 AS dCantidadProducido
-    FROM dbo.docOrdenProduccion c WITH (NOLOCK)
-    INNER JOIN dbo.docOrdenProduccionItem a WITH (NOLOCK)
-        ON c.IdDocumento_OrdenProduccion = a.IdDocumento_OrdenProduccion
-    INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
-        ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
-    INNER JOIN dbo.docOrdenProduccionRuta b WITH (NOLOCK)
-        ON c.IdDocumento_OrdenProduccion = b.IdDocumento_OrdenProduccion
-    INNER JOIN dbo.maeCentroCosto d WITH (NOLOCK)
-        ON b.IdmaeCentroCosto = d.IdmaeCentroCosto
-        AND d.bConOrdenProduccion = 1
-    WHERE c.bCerrado = 0
-        AND c.bAnulado = 0
-        AND c.IdtdDocumentoForm = 127
-),
-ProducidoPorProceso AS (
-    SELECT 
-        c.CoddocOrdenProduccion, 
-        g.CoddocOrdenVenta,
-        a.IdDocumento_OrdenProduccion, 
-        d.IddocOrdenProduccionRuta,
-        d.iSecuencia, 
-        a.IdmaeCentroCosto, 
-        a1.NommaeCentroCosto,
-        0 AS dCantidadRequerido, 
-        0 AS dCantidadProgramado,
-        b.dCantidadIng AS dCantidadProducido
-    FROM dbo.docNotaInventario a WITH (NOLOCK)
-    INNER JOIN dbo.maeCentroCosto a1 WITH (NOLOCK)
-        ON a.IdmaeCentroCosto = a1.IdmaeCentroCosto
-        AND a1.bConOrdenProduccion = 1
-    INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)
-        ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario
-        AND b.dCantidadIng <> 0
-    INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)
-        ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
-        AND c.bCerrado = 0
-        AND c.bAnulado = 0
-        AND c.IdtdDocumentoForm = 127
-    INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
-        ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
-    INNER JOIN dbo.docOrdenProduccionRuta d WITH (NOLOCK)
-        ON a.IddocOrdenProduccionRuta = d.IddocOrdenProduccionRuta
-    INNER JOIN dbo.docOrdenProduccionItem e WITH (NOLOCK)
-        ON c.IdDocumento_OrdenProduccion = e.IdDocumento_OrdenProduccion
-        AND b.IdmaeItem_Inventario = e.IdmaeItem
-    INNER JOIN dbo.maeItemInventario f WITH (NOLOCK)
-        ON b.IdmaeItem_Inventario = f.IdmaeItem_Inventario
-        AND f.IdtdItemForm = 10
-    WHERE a.IdtdDocumentoForm = 131
-        AND a.bDevolucion = 0
-        AND a.bDesactivado = 0
-        AND a.bAnulado = 0
-        AND a.IdDocumento_OrdenProduccion <> 0
-)
-SELECT 
-    sc.CoddocOrdenVenta AS PEDIDO,
-    sc.NommaeCentroCosto AS PROCESO,
-    SUM(sc.dCantidadRequerido) AS REQUERIDO,
-    SUM(sc.dCantidadProgramado) AS PROGRAMADO,
-    SUM(sc.dCantidadProducido) AS PRODUCIDO
-FROM (
-    SELECT CoddocOrdenProduccion, CoddocOrdenVenta, IdDocumento_OrdenProduccion, IddocOrdenProduccionRuta,
+        sc.CoddocOrdenVenta AS PEDIDO,
+        sc.NommaeCentroCosto AS PROCESO,
+        SUM(sc.dCantidadRequerido) AS REQUERIDO,
+        SUM(sc.dCantidadProgramado) AS PROGRAMADO,
+        SUM(sc.dCantidadProducido) AS PRODUCIDO
+    FROM (
+        SELECT CoddocOrdenProduccion, CoddocOrdenVenta, IdDocumento_OrdenProduccion, IddocOrdenProduccionRuta,
            iSecuencia, IdmaeCentroCosto, NommaeCentroCosto, dCantidadRequerido, dCantidadProgramado, dCantidadProducido
-    FROM ProduccionPorProceso
-    UNION ALL
-    SELECT CoddocOrdenProduccion, CoddocOrdenVenta, IdDocumento_OrdenProduccion, IddocOrdenProduccionRuta,
+        FROM ProduccionPorProceso
+        UNION ALL
+        SELECT CoddocOrdenProduccion, CoddocOrdenVenta, IdDocumento_OrdenProduccion, IddocOrdenProduccionRuta,
            iSecuencia, IdmaeCentroCosto, NommaeCentroCosto, dCantidadRequerido, dCantidadProgramado, dCantidadProducido
-    FROM ProducidoPorProceso
-) sc
-WHERE sc.CoddocOrdenVenta = {pedido}
-GROUP BY 
-    sc.CoddocOrdenVenta, 
-    sc.NommaeCentroCosto
-ORDER BY 
-    sc.NommaeCentroCosto ASC
+        FROM ProducidoPorProceso
+    ) sc
+    WHERE sc.CoddocOrdenVenta = {pedido}
+    GROUP BY 
+        sc.CoddocOrdenVenta, 
+        sc.NommaeCentroCosto
+    ORDER BY 
+        sc.NommaeCentroCosto ASC
 
 ;"""
     
