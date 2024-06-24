@@ -109,7 +109,7 @@ if pedido:
            iSecuencia, IdmaeCentroCosto, NommaeCentroCosto, dCantidadRequerido, dCantidadProgramado, dCantidadProducido
         FROM ProducidoPorProceso
     ) sc
-    WHERE sc.CoddocOrdenVenta = {pedido}
+    WHERE sc.CoddocOrdenVenta = '{pedido}'
     GROUP BY 
         sc.CoddocOrdenVenta, 
         sc.NommaeCentroCosto
