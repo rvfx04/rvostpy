@@ -68,18 +68,28 @@ st.title('Análisis de Reportes de Calidad')
 col1, col2 = st.columns(2)
 with col1:
     start_date = st.date_input('Fecha de inicio')
-    end_date = st.date_input('Fecha de fin')
+    clientes = st.text_input('Clientes')
     color = st.text_input('Color')
     partida = st.text_input('Partida')
 with col2:
-    clientes = st.text_input('Clientes')
+    end_date = st.date_input('Fecha de fin')
     codigo = st.text_input('Código')
     tela = st.text_input('Tela')
     acabado = st.text_input('Acabado')
 
 if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
+    
+    # Agregar una columna de numeración que comience en 1
+    df.index = df.index + 1
+    df.reset_index(inplace=True)
+    df.rename(columns={'index': 'N°'}, inplace=True)
+    
+    # Mostrar la tabla
     st.write(df)
+    
+    # Mostrar el número de registros
+    st.write(f"Número de registros: {len(df)}")
     
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
     
