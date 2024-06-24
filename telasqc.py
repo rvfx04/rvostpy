@@ -93,9 +93,11 @@ if st.button('Consultar'):
         if column_name in df.columns:
             st.subheader(f'Histograma de {xlabel}')
             data = df[column_name].dropna()
-            fig = px.histogram(data, x=column_name, nbins=30, labels={column_name: xlabel, 'count': 'Frecuencia'})
-            fig.update_traces(hovertemplate='%{x}: %{y:.2f}% (%{customdata})', customdata=[f'{val}' for val in data])
             total = len(data)
+            # Crear el histograma con Plotly
+            fig = px.histogram(data, x=column_name, nbins=30, labels={column_name: xlabel, 'count': 'Frecuencia'})
+            # Convertir las frecuencias a porcentajes
+            fig.update_traces(hovertemplate='%{x}: %{y:.2f}% (%{y} de {total})', customdata=[f'{val}' for val in data])
             fig.update_traces(y=[(y / total) * 100 for y in fig.data[0].y])
             fig.update_yaxes(title='Frecuencia (%)', tickformat='.2f')
             st.plotly_chart(fig)
