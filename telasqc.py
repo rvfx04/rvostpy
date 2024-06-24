@@ -81,25 +81,21 @@ if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     st.write(df)
     
-    # Ajustar estilo de los gráficos
-    #try:
-        #plt.style.use('seaborn-darkgrid')
-    #except OSError:
-        #st.warning("No se pudo cargar el estilo 'seaborn-darkgrid'. Usando el estilo por defecto.")
-
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
     
     def plot_histogram(column_name, xlabel):
         if column_name in df.columns:
             st.subheader(f'Histograma de {xlabel}')
             fig, ax = plt.subplots()
-            n, bins, patches = ax.hist(df[column_name].dropna(), bins=30, edgecolor='black', density=True)
-            ax.set_xlabel(xlabel)
-            ax.set_ylabel('Frecuencia (%)')
+            data = df[column_name].dropna()
+            counts, bins, patches = ax.hist(data, bins=30, edgecolor='black')
+            total = len(data)
             # Convertir las frecuencias a porcentajes
             for patch in patches:
                 height = patch.get_height()
-                patch.set_height(height * 100)
+                patch.set_height((height / total) * 100)
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel('Frecuencia (%)')
             # Ajustar el eje y para que muestre porcentajes
             ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: '{:.0f}%'.format(y)))
             st.pyplot(fig)
