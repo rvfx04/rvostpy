@@ -80,17 +80,14 @@ with col2:
 if st.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     
-    # Agregar una columna de numeración que comience en 1
-    #df.index = df.index + 1
-    #df.reset_index(inplace=True)
-    #df.rename(columns={'index': 'N°'}, inplace=True)
     # Artificio para anular la columna que numera las filas
     df = df.set_index(df.columns[0])
-    # Mostrar la tabla
-    st.write(df)
     
     # Mostrar el número de registros
     st.write(f"Número de registros: {len(df)}")
+    
+    # Mostrar la tabla
+    st.write(df)
     
     plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
     
