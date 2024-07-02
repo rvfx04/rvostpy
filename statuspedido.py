@@ -72,11 +72,16 @@ def load_data(start_date, end_date, pedido, cliente, po):
             df = pd.read_sql(query, conn)
             df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
             st.write(f"Número de registros: {len(df)}") # Muestra el número de registros de la tabla
+            
             # Calcular totales
             totals = df.sum(numeric_only=True)
-            totals['CLIENTE'] = 'TOTALES'
-            df = df.append(totals, ignore_index=True)
-  
+            totals['CLIENTE'] = 'TOTAL'
+            totals_df = pd.DataFrame(totals).transpose()
+            df = pd.concat([df, totals_df], ignore_index=True)
+
+
+
+            
             conn.close()
             return df
         else:
