@@ -71,6 +71,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
         if conn:
             df = pd.read_sql(query, conn)
             df = df.set_index(df.columns[0])
+            st.write(f"Número de registros: {len(df)}")
             conn.close()
             return df
         else:
