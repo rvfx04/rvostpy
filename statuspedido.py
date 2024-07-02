@@ -70,8 +70,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
         conn = get_connection()
         if conn:
             df = pd.read_sql(query, conn)
-            df = df.set_index(df.columns[0])
-            st.write(f"Número de registros: {len(df)}")
+            df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
+            st.write(f"Número de registros: {len(df)}") # Muestra el número de registros de la tabla
             conn.close()
             return df
         else:
