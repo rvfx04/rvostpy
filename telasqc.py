@@ -64,20 +64,18 @@ def get_data(start_date, end_date, clientes, codigo, tela, color, acabado, parti
 # Interfaz de usuario
 st.title('Análisis de Reportes de Calidad')
 
-# Organización en dos columnas
-col1, col2 = st.columns(2)
-with col1:
+# Sidebar para entrada de datos
+with st.sidebar:
     start_date = st.date_input('Fecha de inicio')
-    clientes = st.text_input('Clientes')
-    color = st.text_input('Color')
-    partida = st.text_input('Partida')
-with col2:
     end_date = st.date_input('Fecha de fin')
+    clientes = st.text_input('Clientes')
     codigo = st.text_input('Código')
     tela = st.text_input('Tela')
+    color = st.text_input('Color')
     acabado = st.text_input('Acabado')
+    partida = st.text_input('Partida')
 
-if st.button('Consultar'):
+if st.sidebar.button('Consultar'):
     df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
     
     # Artificio para anular la columna que numera las filas
