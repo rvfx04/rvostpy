@@ -61,8 +61,7 @@ query = f"""
         ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
         WHERE
             a.IdtdDocumentoForm = 10
-            AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
-                  
+            AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0                  
     """
 
 # Ejecutar la consulta
@@ -95,6 +94,6 @@ with sidebar:
 with columns[0]:
     
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
-    st.write(f"Número de registro: {len(filtered_df)}")
+    st.write(f"Número de registros: {len(filtered_df)}")
     st.dataframe(filtered_df, use_container_width = True)
 
