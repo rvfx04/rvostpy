@@ -24,7 +24,7 @@ query = f"""
     SELECT  
         IdmaeAnexo_Cliente, 
         NommaeAnexoCliente 
-        FROM maeAnexoCliente
+    FROM maeAnexoCliente
     """
     
 # Ejecutar la consulta y mostrar los resultados
