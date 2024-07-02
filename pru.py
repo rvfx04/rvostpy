@@ -32,7 +32,11 @@ def get_data():
         a.CoddocOrdenVenta AS PEDIDO,
         CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
         CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
-            
+        b.NommaeAnexoCliente AS CLIENTE,
+        a.nvDocumentoReferencia AS PO,
+        CONVERT(INT, a.dCantidad) AS UNID,
+        CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
+        CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
         CONVERT(INT, KG_ARM) AS KG_ARM,
         CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
         CONVERT(INT, KG_PRODUC) AS KG_PRODUC
