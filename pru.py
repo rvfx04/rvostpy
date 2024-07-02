@@ -60,6 +60,7 @@ query = f"""
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4
+            # sacar
             #AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
             #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
             #AND b.NommaeAnexoCliente LIKE '%{cliente}%'
