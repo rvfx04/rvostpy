@@ -69,7 +69,7 @@ query = f"""
 df = execute_query(query)
 
 # Mostrar el número de registros
-st.write(f"Número de registro: {len(df)}")
+#st.write(f"Número de registro: {len(df)}")
 
 # Calcular totales
 totals = df.sum(numeric_only=True)
