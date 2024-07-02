@@ -20,8 +20,37 @@ def execute_query(query):
 st.title("Visualización")
 
 #Consulta SQL
-query = "select IdmaeAnexo_Cliente, NommaeAnexoCliente from maeAnexoCliente"
-
+query = f"""
+    SELECT  
+        c.CoddocOrdenProduccion AS PARTIDA,
+        c.nvDocumentoReferencia AS REF_PEDIDO,
+        a.CoddocOrdenProduccionCalidad AS REPORTE,
+        b.CodmaeItemInventario AS CODIGO,
+        b.NommaeItemInventario AS TELA,
+        d.nommaecolor AS COLOR,
+        a.ntDescripcionAcabado AS ACABADO,
+        a.dAnchoAcabado AS ANCHO_ACABADO,
+        a.AATCC135_EncogLargo AS ENCOG_LARGO,
+        a.AATCC135_EncogAncho AS ENCOG_ANCHO,
+        a.AATCC179_ReviradoLavado AS REVIRADO,
+        a.AATCC179_DensidadAcabada AS DENSIDAD,
+        a.nvTituloObservacion AS OBSERV1,
+        a.ntObservacion AS OBSERV2,
+        CONVERT(DATE,a.dtFechaReporte) AS FECH_REPORTE,
+        e.NommaeAnexoCliente AS CLIENTE
+    FROM 
+        [GarmentData].[dbo].[docOrdenProduccionCalidad] a
+    INNER JOIN 
+        maeItemInventario b ON a.idmaeitem = b.IdmaeItem_Inventario
+    INNER JOIN 
+        docOrdenProduccion c ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
+    INNER JOIN 
+        maecolor d ON c.IdmaeColor = d.idmaecolor
+    INNER JOIN 
+        maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
+   
+    """
+    
 # Ejecutar la consulta y mostrar los resultados
 df = execute_query(query)
 st.dataframe(df)
