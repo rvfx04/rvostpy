@@ -74,7 +74,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             conn.close()
             return df
         else:
-            st.error("No se pudo establecer la conexión con la base de datos.")
+            st.error("No se pudo establecer la conexión con la BD.")
             return pd.DataFrame()  # Devolver un DataFrame vacío en caso de error
     except Exception as e:
         st.error(f"Error al cargar los datos: {e}")
