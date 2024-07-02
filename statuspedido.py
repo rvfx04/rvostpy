@@ -25,8 +25,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
         query = f"""
         SELECT
             a.CoddocOrdenVenta AS PEDIDO,
-            TRY_CONVERT(DATE, a.dtFechaEmision) AS F_EMISION,
-            TRY_CONVERT(DATE, a.dtFechaEntrega) AS F_ENTREGA,
+            CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
+            CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
             b.NommaeAnexoCliente AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
@@ -62,7 +62,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4
-            AND TRY_CONVERT(DATE, a.dtFechaEntrega) BETWEEN '{start_date}' AND '{end_date}'
+            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
             AND a.CoddocOrdenVenta LIKE '%{pedido}%'
             AND b.NommaeAnexoCliente LIKE '%{cliente}%'
             AND a.nvDocumentoReferencia LIKE '%{po}%'
@@ -103,3 +103,4 @@ if st.sidebar.button("Aplicar filtros"):
         st.write("No se encontraron datos con los filtros aplicados.")
 else:
     st.write("Por favor, aplica los filtros para ver los resultados.")
+
