@@ -25,8 +25,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
         query = f"""
         SELECT
             a.CoddocOrdenVenta AS PEDIDO,
-            a.dtFechaEmision AS F_EMISION,
-            a.dtFechaEntrega AS F_ENTREGA,
+            TRY_CONVERT(DATE, a.dtFechaEmision) AS F_EMISION,
+            TRY_CONVERT(DATE, a.dtFechaEntrega) AS F_ENTREGA,
             b.NommaeAnexoCliente AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
@@ -62,7 +62,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4
-            AND a.dtFechaEntrega BETWEEN '{start_date}' AND '{end_date}'
+            AND TRY_CONVERT(DATE, a.dtFechaEntrega) BETWEEN '{start_date}' AND '{end_date}'
             AND a.CoddocOrdenVenta LIKE '%{pedido}%'
             AND b.NommaeAnexoCliente LIKE '%{cliente}%'
             AND a.nvDocumentoReferencia LIKE '%{po}%'
