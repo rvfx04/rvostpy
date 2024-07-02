@@ -84,7 +84,7 @@ df = df.set_index(df.columns[0])
 # st.dataframe(df, use_container_width = True)
 
 cliente = sorted(df["CLIENTE"].unique())
-st.multiselect("Cliente", options=cliente, default=cliente)
+#st.multiselect("Cliente", options=cliente, default=cliente)
 
 columns= st.columns((1,2), gap="large")
 sidebar= st.sidebar
