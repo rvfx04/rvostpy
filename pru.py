@@ -81,7 +81,19 @@ df = pd.concat([df, totals_df], ignore_index=True)
 df = df.set_index(df.columns[0])
 
 # Mostrar el resultado en formato de tabla
-st.dataframe(df, use_container_width = True)
+# st.dataframe(df, use_container_width = True)
 
 cliente = sorted(df["CLIENTE"].unique())
 st.multiselect("Cliente", options=cliente, default=cliente)
+
+columns= st.columns((1,2), gap="large")
+sidebar= st.sidebar
+
+with sidebar:
+    client = st.multiselect("Cliente", options=cliente, default=cliente)
+
+with column[0]:
+    filtered_df(df.loc[df["CLIENTE"] == client]
+
+    st.dataframe(filtered_df, use_container_width = True)
+
