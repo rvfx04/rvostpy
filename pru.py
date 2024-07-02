@@ -80,3 +80,6 @@ df = df.set_index(df.columns[0])
 
 # Mostrar el resultado en formato de tabla
 st.dataframe(df, use_container_width = True)
+
+cliente = sorted(df["CLIENTE"].unique())
+st.selectbox("Cliente", options=cliente)
