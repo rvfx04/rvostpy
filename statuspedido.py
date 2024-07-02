@@ -27,7 +27,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             a.CoddocOrdenVenta AS PEDIDO,
             CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
             CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
-            b.NommaeAnexoCliente AS CLIENTE,
+            SUBSTRING(b.NommaeAnexoCliente,1,15) AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
             --CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
