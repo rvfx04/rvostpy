@@ -20,7 +20,7 @@ def execute_query(query):
 st.title("Visualización")
 
 #Consulta SQL
-query = f"""
+query = """
         SELECT
             a.CoddocOrdenVenta AS PEDIDO,
             CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
