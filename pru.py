@@ -61,12 +61,11 @@ query = f"""
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4
     """
-# Mostrar el número de registros
-st.write(f"Número de registros: {len(df)}")
-    
 
 # Ejecutar la consulta y mostrar los resultados
 df = execute_query(query)
+# Mostrar el número de registros
+st.write(f"Número de registros: {len(df)}")
 st.dataframe(df)
 
 
