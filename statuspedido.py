@@ -4,9 +4,7 @@ import pyodbc
 from datetime import datetime, timedelta
 
 # Función para conectar a la base de datos
-@st.cache_data(ttl=600)
 def get_connection():
-    
     conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
         "SERVER=" + st.secrets["server"] + ";"
@@ -90,3 +88,4 @@ if st.sidebar.button("Aplicar filtros"):
     st.dataframe(data)
 else:
     st.write("Por favor, aplica los filtros para ver los resultados.")
+
