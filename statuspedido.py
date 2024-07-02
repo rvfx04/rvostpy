@@ -25,8 +25,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
         query = f"""
         SELECT
             a.CoddocOrdenVenta AS PEDIDO,
-            CONVERT(DATE, a.dtFechaEmision) AS F_EMISION,
-            CONVERT(DATE, a.dtFechaEntrega) AS F_ENTREGA,
+            a.dtFechaEmision AS F_EMISION,
+            a.dtFechaEntrega AS F_ENTREGA,
             b.NommaeAnexoCliente AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
