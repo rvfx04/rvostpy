@@ -70,7 +70,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
         conn = get_connection()
         if conn:
             df = pd.read_sql(query, conn)
-            
+            df = df.set_index(df.columns[0])
             conn.close()
             return df
         else:
