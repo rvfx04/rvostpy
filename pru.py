@@ -62,10 +62,10 @@ query = f"""
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
-            #AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
+            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
             #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
-            #AND b.NommaeAnexoCliente LIKE '%{cliente}%'
-            #AND a.nvDocumentoReferencia LIKE '%{po}%'          
+            AND b.NommaeAnexoCliente LIKE '%{cliente}%'
+            AND a.nvDocumentoReferencia LIKE '%{po}%'          
     """
 
 # Ejecutar la consulta
@@ -96,6 +96,19 @@ with sidebar:
     client = st.multiselect("Cliente", options=cliente, default=cliente)
 
 with columns[0]:
+    # Fecha de inicio y fin por defecto al inicio y fin del mes actual
+    today = datetime.today()
+    start_date_default = today.replace(day=1)
+    end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+
+    start_date = st.sidebar.date_input("Fecha de entrega: Desde", start_date_default)
+    end_date = st.sidebar.date_input("Fecha de entrega: Hasta", end_date_default)
+
+    pedido = st.sidebar.text_input("Pedido")
+    #cliente = st.sidebar.text_input("Cliente")
+    po = st.sidebar.text_input("PO")
+
+    
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
     st.write(f"Número de registro: {len(filtered_df)}")
     st.dataframe(filtered_df, use_container_width = True)
