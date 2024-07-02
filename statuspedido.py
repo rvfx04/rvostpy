@@ -90,15 +90,15 @@ def load_data(start_date, end_date, pedido, cliente, po):
         return pd.DataFrame()  # Devolver un DataFrame vacío en caso de error
 
 # Configuración de filtros en el sidebar
-st.sidebar.header("Filtros")
+st.sidebar.header("Progreso de los Pedidos")
 
 # Fecha de inicio y fin por defecto al inicio y fin del mes actual
 today = datetime.today()
 start_date_default = today.replace(day=1)
 end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
 
-start_date = st.sidebar.date_input("Fecha de inicio", start_date_default)
-end_date = st.sidebar.date_input("Fecha de fin", end_date_default)
+start_date = st.sidebar.date_input("Fecha de entrega: Desde", start_date_default)
+end_date = st.sidebar.date_input("Fecha de entrega: Hasta", end_date_default)
 
 pedido = st.sidebar.text_input("Pedido")
 cliente = st.sidebar.text_input("Cliente")
