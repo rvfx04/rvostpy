@@ -29,9 +29,9 @@ def get_data():
     #try:
         #query = f"""
     SELECT
-        a.CoddocOrdenVenta AS PEDIDO,
-        CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-        CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
+    a.CoddocOrdenVenta AS PEDIDO,
+    CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
+    CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
         b.NommaeAnexoCliente AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
