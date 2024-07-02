@@ -30,7 +30,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             b.NommaeAnexoCliente AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
-            CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
+            #CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
             CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
             CONVERT(INT, KG_ARM) AS KG_ARM,
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
