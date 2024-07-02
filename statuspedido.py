@@ -19,7 +19,7 @@ def get_connection():
         return None
 
 # Función para cargar datos de la base de datos
-@st.cache_data(ttl=600)
+#@st.cache_data(ttl=600)
 def load_data(start_date, end_date, pedido, cliente, po):
     try:
         query = f"""
@@ -70,6 +70,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
         conn = get_connection()
         if conn:
             df = pd.read_sql(query, conn)
+            st.dataframe = (df, use_container_width = True)
             conn.close()
             return df
         else:
