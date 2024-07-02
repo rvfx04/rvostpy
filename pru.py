@@ -71,7 +71,7 @@ def get_data():
         #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
         #AND b.NommaeAnexoCliente LIKE '%{cliente}%'
         #AND a.nvDocumentoReferencia LIKE '%{po}%'
-"""
+        """
     conn = get_connection()
     if conn:
         df = pd.read_sql(query, conn)
