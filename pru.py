@@ -92,7 +92,7 @@ sidebar= st.sidebar
 with sidebar:
     client = st.multiselect("Cliente", options=cliente, default=cliente)
 
-with column[0]:
+with columns[0]:
     filtered_df = df.loc[df["CLIENTE"] == client]
 
     st.dataframe(filtered_df, use_container_width = True)
