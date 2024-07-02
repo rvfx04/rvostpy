@@ -3,6 +3,8 @@ import pandas as pd
 import pyodbc
 from datetime import datetime, timedelta
 
+st.set_page_config(layout="wide")
+
 # Función para conectarse a BD y ejecutar una consulta
 def execute_query(query):
     conn = pyodbc.connect(
