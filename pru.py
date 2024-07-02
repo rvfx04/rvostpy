@@ -79,4 +79,4 @@ df = pd.concat([df, totals_df], ignore_index=True)
 df = df.set_index(df.columns[0])
 
 # Mostrar el resultado en formato de tabla
-st.dataframe(df)
+st.dataframe(df, use_container_width = True)
