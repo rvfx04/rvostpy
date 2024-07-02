@@ -1,105 +1,117 @@
 import streamlit as st
-import pandas as pd
 import pyodbc
-from datetime import datetime, timedelta
+import pandas as pd
+import matplotlib.pyplot as plt
 
-# Función para conectar a la base de datos
-def get_connection():
-    try:
-        conn = pyodbc.connect(
-            "DRIVER={ODBC Driver 17 for SQL Server};"
-            "SERVER=" + st.secrets["server"] + ";"
-            "DATABASE=" + st.secrets["database"] + ";"
-            "UID=" + st.secrets["username"] + ";"
-            "PWD=" + st.secrets["password"] + ";"
-        )
-        return conn
-    except Exception as e:
-        st.error(f"Error al conectar a la base de datos: {e}")
-        return None
+# Conexión a la base de datos usando Secrets
+def get_db_connection():
+    conn = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=" + st.secrets["server"] + ";"
+        "DATABASE=" + st.secrets["database"] + ";"
+        "UID=" + st.secrets["username"] + ";"
+        "PWD=" + st.secrets["password"] + ";"
+    )
+    return conn
 
-# Función para cargar datos de la base de datos
-@st.cache_data(ttl=600)
-def load_data(start_date, end_date, pedido, cliente, po):
-    try:
-        query = f"""
-        SELECT
-            a.CoddocOrdenVenta AS PEDIDO,
-            CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-            CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
-            b.NommaeAnexoCliente AS CLIENTE,
-            a.nvDocumentoReferencia AS PO,
-            CONVERT(INT, a.dCantidad) AS UNID,
-            CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
-            CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
-            CONVERT(INT, KG_ARM) AS KG_ARM,
-            CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
-            CONVERT(INT, KG_PRODUC) AS KG_PRODUC
-        FROM docOrdenVenta a
-        INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
-        LEFT JOIN (
-            SELECT
-                c.IdDocumento_Referencia AS PEDIDO,
-                SUM(c.dCantidad) AS KG
-            FROM docOrdenVentaItem c
-            WHERE c.IdDocumento_Referencia > 0
-            GROUP BY c.IdDocumento_Referencia
-        ) d ON a.IdDocumento_OrdenVenta = d.PEDIDO
-        LEFT JOIN (
-            SELECT
-                x.IdDocumento_Referencia AS PEDIDO,
-                SUM(y.dCantidadProgramado) AS KG_ARM,
-                SUM(z.bcerrado * y.dCantidadRequerido) AS KG_PRODUC,
-                SUM(s.bcerrado * y.dCantidadProgramado) AS KG_TEÑIDOS
-            FROM docOrdenProduccionItem y
-            INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
-            INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
-            INNER JOIN docOrdenProduccionRuta s ON y.IdDocumento_OrdenProduccion = s.IdDocumento_OrdenProduccion
-            WHERE
-                s.IdmaeReceta > 0
-            GROUP BY x.IdDocumento_Referencia
-        ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
-        WHERE
-            a.IdtdDocumentoForm = 10
-            AND a.IdtdTipoVenta = 4
-            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
-            AND a.CoddocOrdenVenta LIKE '%{pedido}%'
-            AND b.NommaeAnexoCliente LIKE '%{cliente}%'
-            AND a.nvDocumentoReferencia LIKE '%{po}%'
-        """
-        conn = get_connection()
-        if conn:
-            df = pd.read_sql(query, conn)
-            conn.close()
-            return df
-        else:
-            st.error("No se pudo establecer la conexión con la base de datos.")
-            return pd.DataFrame()  # Devolver un DataFrame vacío en caso de error
-    except Exception as e:
-        st.error(f"Error al cargar los datos: {e}")
-        return pd.DataFrame()  # Devolver un DataFrame vacío en caso de error
+# Consulta SQL con filtros
+def get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida):
+    conn = get_db_connection()
+    
+    query = f"""
+    SELECT  
+        c.CoddocOrdenProduccion AS PARTIDA,
+        c.nvDocumentoReferencia AS REF_PEDIDO,
+        a.CoddocOrdenProduccionCalidad AS REPORTE,
+        b.CodmaeItemInventario AS CODIGO,
+        b.NommaeItemInventario AS TELA,
+        d.nommaecolor AS COLOR,
+        a.ntDescripcionAcabado AS ACABADO,
+        a.dAnchoAcabado AS ANCHO_ACABADO,
+        a.AATCC135_EncogLargo AS ENCOG_LARGO,
+        a.AATCC135_EncogAncho AS ENCOG_ANCHO,
+        a.AATCC179_ReviradoLavado AS REVIRADO,
+        a.AATCC179_DensidadAcabada AS DENSIDAD,
+        a.nvTituloObservacion AS OBSERV1,
+        a.ntObservacion AS OBSERV2,
+        CONVERT(DATE,a.dtFechaReporte) AS FECH_REPORTE,
+        e.NommaeAnexoCliente AS CLIENTE
+    FROM 
+        [GarmentData].[dbo].[docOrdenProduccionCalidad] a
+    INNER JOIN 
+        maeItemInventario b ON a.idmaeitem = b.IdmaeItem_Inventario
+    INNER JOIN 
+        docOrdenProduccion c ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
+    INNER JOIN 
+        maecolor d ON c.IdmaeColor = d.idmaecolor
+    INNER JOIN 
+        maeAnexoCliente e ON e.IdmaeAnexo_Cliente = c.IdmaeAnexo_Cliente
+    WHERE 
+        CONVERT(DATE,a.dtFechaReporte) BETWEEN ? AND ?
+        AND e.NommaeAnexoCliente LIKE ?
+        AND b.CodmaeItemInventario LIKE ?
+        AND b.NommaeItemInventario LIKE ?
+        AND d.nommaecolor LIKE ?
+        AND a.ntDescripcionAcabado LIKE ?
+        AND c.CoddocOrdenProduccion LIKE ?
+    """
+    
+    params = [start_date, end_date] + [f"%{clientes}%", f"%{codigo}%", f"%{tela}%", f"%{color}%", f"%{acabado}%", f"%{partida}%"]
+    df = pd.read_sql(query, conn, params=params)
+    conn.close()
+    return df
 
-# Configuración de filtros en el sidebar
-st.sidebar.header("Filtros")
+# Interfaz de usuario
+st.title('Análisis de Reportes de Calidad')
 
-# Fecha de inicio y fin por defecto al inicio y fin del mes actual
-today = datetime.today()
-start_date_default = today.replace(day=1)
-end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+# Organización en dos columnas
+col1, col2 = st.columns(2)
+with col1:
+    start_date = st.date_input('Fecha de inicio')
+    clientes = st.text_input('Clientes')
+    color = st.text_input('Color')
+    partida = st.text_input('Partida')
+with col2:
+    end_date = st.date_input('Fecha de fin')
+    codigo = st.text_input('Código')
+    tela = st.text_input('Tela')
+    acabado = st.text_input('Acabado')
 
-start_date = st.sidebar.date_input("Fecha de inicio", start_date_default)
-end_date = st.sidebar.date_input("Fecha de fin", end_date_default)
+if st.button('Consultar'):
+    df = get_data(start_date, end_date, clientes, codigo, tela, color, acabado, partida)
+    
+    # Artificio para anular la columna que numera las filas
+    df = df.set_index(df.columns[0])
+    
+    # Mostrar el número de registros
+    st.write(f"Número de registros: {len(df)}")
+    
+    # Mostrar la tabla
+    st.write(df)
+    
+    plt.rcParams.update({'figure.figsize': (6, 3), 'axes.titlesize': 'medium', 'axes.labelsize': 'small', 'xtick.labelsize': 'small', 'ytick.labelsize': 'small'})
+    
+    def plot_histogram(column_name, xlabel):
+        if column_name in df.columns:
+            st.subheader(f'Histograma de {xlabel}')
+            fig, ax = plt.subplots()
+            data = df[column_name].dropna()
+            counts, bins, patches = ax.hist(data, bins=30, edgecolor='black')
+            total = len(data)
+            # Convertir las frecuencias a porcentajes
+            percentages = [(height / total) * 100 for height in counts]
+            for patch, percentage in zip(patches, percentages):
+                patch.set_height(percentage)
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel('Frecuencia (%)')
+            # Ajustar el eje y para que muestre porcentajes
+            max_percentage = max(percentages)
+            ax.set_ylim(0, max_percentage * 1.1)  # Ajuste del límite superior para proporcionar un poco de espacio
+            ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: '{:.0f}%'.format(y)))
+            st.pyplot(fig)
 
-pedido = st.sidebar.text_input("Pedido")
-cliente = st.sidebar.text_input("Cliente")
-po = st.sidebar.text_input("PO")
-
-# Botón para aplicar filtros
-if st.sidebar.button("Aplicar filtros"):
-    data = load_data(start_date, end_date, pedido, cliente, po)
-    if not data.empty:
-        st.dataframe(data)
-    else:
-        st.write("No se encontraron datos con los filtros aplicados.")
-else:
-    st.write("Por favor, aplica los filtros para ver los resultados.")
+    plot_histogram('DENSIDAD', 'DENSIDAD')
+    plot_histogram('ANCHO_ACABADO', 'ANCHO_ACABADO')
+    plot_histogram('REVIRADO', 'REVIRADO')
+    plot_histogram('ENCOG_ANCHO', 'ENCOG_ANCHO')
+    plot_histogram('ENCOG_LARGO', 'ENCOG_LARGO')
