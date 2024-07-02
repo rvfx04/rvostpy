@@ -74,7 +74,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             st.write(f"Número de registros: {len(df)}") # Muestra el número de registros de la tabla
             # Calcular totales
             totals = df.sum(numeric_only=True)
-            totals['CLIENTE'] = 'TOTAL'
+            totals['CLIENTE'] = 'TOTALES'
             df = df.append(totals, ignore_index=True)
   
             conn.close()
