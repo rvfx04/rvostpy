@@ -60,26 +60,23 @@ query = f"""
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
-            
-           
+                      
     """
 
 # Ejecutar la consulta
 df = execute_query(query)
 
-# Artificio para quitar la columna que numera las filas
-# df = df.set_index(df.columns[0])
-
 # Mostrar el número de registros
 st.write(f"Número de registros: {len(df)}")
 
-
-
- # Calcular totales
+# Calcular totales
 totals = df.sum(numeric_only=True)
 totals['CLIENTE'] = 'TOTAL' # La etiqueta de TOTAL la coloca al final de la columna CLIENTE
 totals_df = pd.DataFrame(totals).transpose()
 df = pd.concat([df, totals_df], ignore_index=True)
-df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
+
+# Quita la columna que numera los registros
+df = df.set_index(df.columns[0])
+
 # Mostrar el resultado en formato de tabla
 st.dataframe(df)
