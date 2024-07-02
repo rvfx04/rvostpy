@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 @st.cache_data(ttl=600)
 def get_connection():
     
-     conn = pyodbc.connect(
+    conn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};"
         "SERVER=" + st.secrets["server"] + ";"
         "DATABASE=" + st.secrets["database"] + ";"
@@ -15,8 +15,6 @@ def get_connection():
         "PWD=" + st.secrets["password"] + ";"
     )
     return conn
-
-
 
 # Función para cargar datos de la base de datos
 @st.cache_data(ttl=600)
