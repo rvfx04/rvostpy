@@ -82,4 +82,4 @@ df = df.set_index(df.columns[0])
 st.dataframe(df, use_container_width = True)
 
 cliente = sorted(df["CLIENTE"].unique())
-st.selectbox("Cliente", options=cliente)
+st.multiselect("Cliente", options=cliente, default=cliente)
