@@ -62,10 +62,13 @@ query = f"""
             AND a.IdtdTipoVenta = 4
     """
 
-# Ejecutar la consulta y mostrar los resultados
+# Ejecutar la consulta
 df = execute_query(query)
+
 # Mostrar el número de registros
 st.write(f"Número de registros: {len(df)}")
+
+# Mostrar el resultado en formato de tabla
 st.dataframe(df)
 
 
