@@ -70,7 +70,7 @@ query = f"""
 df = execute_query(query)
 
 # Mostrar el número de registros
-#st.write(f"Número de registros: {len(df)}")
+#st.write(f"Número de registros: {len(df)-1}")
 
 # Calcular totales
 totals = df.sum(numeric_only=True)
@@ -79,7 +79,7 @@ totals_df = pd.DataFrame(totals).transpose()
 df = pd.concat([df, totals_df], ignore_index=True)
 
 # Quita la columna que numera los registros
-#df = df.set_index(df.columns[0])
+df = df.set_index(df.columns[0])
 
 # Mostrar el resultado en formato de tabla
 # st.dataframe(df, use_container_width = True)
