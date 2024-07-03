@@ -8,7 +8,7 @@ st.set_page_config(layout="wide")
 custom_css = """
 <style>
 div[data-baseweb="table"] .datagrid-container table {
-    font-size: 2px; /* Tamaño de la fuente */
+    font-size: 26px; /* Tamaño de la fuente */
     border-spacing: 0px; /* Espacio entre celdas */
 }
 </style>
