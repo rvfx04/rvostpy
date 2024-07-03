@@ -79,9 +79,9 @@ with st.sidebar:
     cliente = st.text_input("Cliente", "")
     pedido = st.text_input("Pedido", "")
     po = st.text_input("PO", "")
+    
     # Botón para aplicar filtros y mostrar resultados
     if st.button("Aplicar Filtros"):
-
         # Aplicar filtros al DataFrame
         filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False) 
                          & df["PEDIDO"].astype(str).str.contains(pedido, case=False) 
