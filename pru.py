@@ -90,13 +90,13 @@ with st.sidebar:
 
 with columns[0]:
     # Calcular los totales
-    #totals = filtered_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
+    totals = filtered_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
 
     # Crear un DataFrame temporal con los totales para concatenar
-    #totals_df = pd.DataFrame(totals).T
+    totals_df = pd.DataFrame(totals).T
 
     # Concatenar la fila de totales al DataFrame
-    #filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
+    filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
 
 
     st.write(f"Número de registros: {len(filtered_df)-1}")
