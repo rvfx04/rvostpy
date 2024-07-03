@@ -99,6 +99,5 @@ with columns[0]:
     
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
     st.write(f"Número de registros: {len(filtered_df)}")
-
     st.dataframe(filtered_df, use_container_width = True)
 
