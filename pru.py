@@ -85,7 +85,7 @@ with st.sidebar:
 filtered_df = df.loc[df["CLIENTE"].isin(client) 
                  & df["PEDIDO"].astype(str).str.contains(pedido_filter, case=False) 
                  & df["PO"].astype(str).str.contains(po_filter, case=False) 
-                 & (df["F_ENTREGA"] >= start_date) & (df["F-ENTREGA"] <= end_date)]
+                 & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
 
 with st.expander("Resultados"):
     st.write(f"Número de registros: {len(filtered_df)}")
