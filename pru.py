@@ -68,18 +68,22 @@ query = f"""
 
 # Ejecutar la consulta
 df = execute_query(query)
+ # Fecha de inicio y fin por defecto al inicio y fin del mes actual
+today = datetime.today()
+start_date_default = today.replace(day=1)
+end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
 
 columns= st.columns(1)
 
 # Definir los filtros en el sidebar
 with st.sidebar:
     st.sidebar.header("Progreso de los Pedidos")
-    start_date = st.date_input("Fecha de entrega - Desde", datetime(2024, 7, 1))
-    end_date = st.date_input("Fecha de entrega - Hasta", datetime(2024, 8, 31))
+    start_date = st.date_input("Fecha de entrega - Desde", start_date_default)
+    end_date = st.date_input("Fecha de entrega - Hasta",end_date_default )
     cliente = st.text_input("Cliente", "")
     pedido = st.text_input("Pedido", "")
     po = st.text_input("PO", "")
-    
+
     # Botón para aplicar filtros y mostrar resultados
     if st.button("Aplicar Filtros"):
         # Aplicar filtros al DataFrame
