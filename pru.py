@@ -91,8 +91,9 @@ with st.sidebar:
         totals = filtered_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
-        st.write(f"Número de registros: {len(filtered_df)-1}")
-        st.dataframe(filtered_df, hide_index=True)
+        with columns[0]:
+            st.write(f"Número de registros: {len(filtered_df)-1}")
+            st.dataframe(filtered_df, hide_index=True)
 
 #with columns[0]:
     # Calcular los totales
