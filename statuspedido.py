@@ -15,7 +15,7 @@ st.markdown("""
     }
     .dataframe thead th {
         padding: 2px 4px; /* Espaciado de las celdas de encabezado */
-        font-size: 10px;  /* Tamaño de la fuente de encabezado */
+        font-size: 4px;  /* Tamaño de la fuente de encabezado */
     }
     </style>
     """, unsafe_allow_html=True)
