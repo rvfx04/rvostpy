@@ -72,17 +72,17 @@ df = execute_query(query)
 
 # Definir los filtros en el sidebar
 with st.sidebar:
-    cliente = st.text_input("Cliente", "")
-    pedido_filter = st.text_input("Pedido", "")
-    po_filter = st.text_input("PO", "")
     start_date = st.date_input("Fecha de entrega - Desde", datetime(2024, 7, 1))
     end_date = st.date_input("Fecha de entrega - Hasta", datetime(2024, 8, 31))
+    cliente = st.text_input("Cliente", "")
+    pedido = st.text_input("Pedido", "")
+    po = st.text_input("PO", "")
+    
 
 # Aplicar filtros al DataFrame
-#f_df = df.loc[df["CLIENTE"].isin(client)]
 filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False) 
-                 & df["PEDIDO"].astype(str).str.contains(pedido_filter, case=False) 
-                 & df["PO"].astype(str).str.contains(po_filter, case=False) 
+                 & df["PEDIDO"].astype(str).str.contains(pedido, case=False) 
+                 & df["PO"].astype(str).str.contains(po, case=False) 
                  & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
 
 with st.expander("Resultados"):
