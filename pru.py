@@ -81,7 +81,8 @@ with st.sidebar:
     end_date = st.date_input("Fecha de entrega - Hasta", datetime(2024, 8, 31))
 
 # Aplicar filtros al DataFrame
-filtered_df = df[df["cliente"].isin(client) 
+#f_df = df.loc[df["CLIENTE"].isin(client)]
+filtered_df = df.loc[df["CLIENTE"].isin(client) 
                  & df["pedido"].astype(str).str.contains(pedido_filter, case=False) 
                  & df["po"].astype(str).str.contains(po_filter, case=False) 
                  & (df["f_entrega"] >= start_date) & (df["f_entrega"] <= end_date)]
