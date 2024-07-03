@@ -68,6 +68,7 @@ query = f"""
 
 # Ejecutar la consulta
 df = execute_query(query)
+
  # Fecha de inicio y fin por defecto al inicio y fin del mes actual
 today = datetime.today()
 start_date_default = today.replace(day=1)
