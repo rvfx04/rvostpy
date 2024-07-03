@@ -19,7 +19,7 @@ def execute_query(query):
     return df
     
 #Título de la aplicación 
-st.title("Visualización")
+#st.title("Visualización")
 
 #Consulta SQL
 query = f"""
