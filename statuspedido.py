@@ -80,7 +80,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             totals['CLIENTE'] = 'TOTAL' # La etiqueta de TOTAL la coloca al final de la columna CLIENTE
             totals_df = pd.DataFrame(totals).transpose()
             df = pd.concat([df, totals_df], ignore_index=True)
-            df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
+            #df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
 
             conn.close()
             return df
