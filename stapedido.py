@@ -35,6 +35,7 @@ query = f"""
             CONVERT(INT, KG_ARM) AS KG_ARM,
             CONVERT(INT,COALESCE(d.KG, 0) *1.09 - KG_ARM) AS KG_X_ARM,
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
+            CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_PRODUC
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
