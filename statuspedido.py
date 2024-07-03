@@ -11,7 +11,7 @@ st.markdown("""
     .dataframe tbody tr th,
     .dataframe tbody tr td {
         padding: 2px 4px; /* Espaciado de las celdas */
-        font-size: 6px;  /* Tamaño de la fuente */
+        font-size: 2px;  /* Tamaño de la fuente */
     }
     .dataframe thead th {
         padding: 2px 4px; /* Espaciado de las celdas de encabezado */
