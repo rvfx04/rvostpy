@@ -87,7 +87,7 @@ filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False)
 
 with st.expander("Resultados"):
     st.write(f"Número de registros: {len(filtered_df)}")
-    st.dataframe(filtered_df)
+    st.dataframe(filtered_df, hide_index=True)
 
  
 
