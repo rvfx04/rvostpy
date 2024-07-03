@@ -81,7 +81,7 @@ columns= st.columns(1)
 
 # Definir los filtros en el sidebar
 with st.sidebar:
-    st.sidebar.header("Progreso de los Pedidos")
+    st.sidebar.header("Progreso de los Pedido")
     start_date = st.date_input("Fecha de entrega - Desde", start_date_default)
     end_date = st.date_input("Fecha de entrega - Hasta",end_date_default )
     cliente = st.text_input("Cliente", "")
