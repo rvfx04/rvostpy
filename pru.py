@@ -5,6 +5,16 @@ from datetime import datetime, timedelta
 
 st.set_page_config(layout="wide")
 
+custom_css = """
+<style>
+div[data-baseweb="table"] .datagrid-container table {
+    font-size: 6px; /* Tamaño de la fuente */
+    border-spacing: 0px; /* Espacio entre celdas */
+}
+</style>
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
+
 # Función para conectarse a BD y ejecutar una consulta
 def execute_query(query):
     conn = pyodbc.connect(
@@ -95,5 +105,9 @@ with columns[0]:
     
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
     st.write(f"Número de registros: {len(filtered_df)}")
+
+    # Agregar el estilo CSS personalizado a la tabla
+    st.markdown(custom_css, unsafe_allow_html=True)
+    
     st.dataframe(filtered_df, use_container_width = True)
 
