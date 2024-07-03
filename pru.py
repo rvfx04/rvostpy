@@ -69,6 +69,7 @@ query = f"""
 # Ejecutar la consulta
 df = execute_query(query)
 
+columns= st.columns(1)
 
 # Definir los filtros en el sidebar
 with st.sidebar:
@@ -85,7 +86,7 @@ filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False)
                  & df["PO"].astype(str).str.contains(po, case=False) 
                  & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
 
-with st.expander("Resultados"):
+with columns[0]:
     st.write(f"Número de registros: {len(filtered_df)}")
     st.dataframe(filtered_df, hide_index=True)
 
