@@ -101,7 +101,7 @@ with st.sidebar:
         filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
         with columns[0]:
             st.write(f"Número de registros: {len(filtered_df)-1}")
-            st.dataframe(filtered_df, hide_index=True)
+            st.dataframe(filtered_df[['PEDIDO'],['CLIENTE']], hide_index=True)
     else:
         with columns[0]:
             st.write("Por favor, aplica los filtros para ver resultados.")
