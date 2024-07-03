@@ -5,6 +5,21 @@ from datetime import datetime, timedelta
 
 st.set_page_config(layout="wide")
 
+# CSS para hacer que la fuente y los recuadros sean más pequeños y compactos
+st.markdown("""
+    <style>
+    .dataframe tbody tr th,
+    .dataframe tbody tr td {
+        padding: 2px 4px; /* Espaciado de las celdas */
+        font-size: 10px;  /* Tamaño de la fuente */
+    }
+    .dataframe thead th {
+        padding: 2px 4px; /* Espaciado de las celdas de encabezado */
+        font-size: 10px;  /* Tamaño de la fuente de encabezado */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # Función para conectar a la base de datos
 def get_connection():
     try:
