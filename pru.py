@@ -5,14 +5,6 @@ from datetime import datetime, timedelta
 
 st.set_page_config(layout="wide")
 
-custom_css = """
-<style>
-div[data-baseweb="table"] .datagrid-container table {
-    font-size: 26px; /* Tamaño de la fuente */
-    border-spacing: 0px; /* Espacio entre celdas */
-}
-</style>
-"""
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # Función para conectarse a BD y ejecutar una consulta
@@ -89,7 +81,7 @@ totals_df = pd.DataFrame(totals).transpose()
 df = pd.concat([df, totals_df], ignore_index=True)
 
 # Quita la columna que numera los registros
-df = df.set_index(df.columns[0])
+#df = df.set_index(df.columns[0])
 
 # Mostrar el resultado en formato de tabla
 # st.dataframe(df, use_container_width = True)
@@ -108,8 +100,5 @@ with columns[0]:
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
     st.write(f"Número de registros: {len(filtered_df)}")
 
-    # Agregar el estilo CSS personalizado a la tabla
-    st.markdown(custom_css, unsafe_allow_html=True)
-    
     st.dataframe(filtered_df, use_container_width = True)
 
