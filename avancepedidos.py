@@ -102,7 +102,7 @@ with st.sidebar:
 
     else:
         with columns[0]:
-        st.write("Por favor, aplica los filtros para ver resultados.")
+            st.write("Por favor, aplica los filtros para ver resultados.")
 
 #with columns[0]:
     # Calcular los totales
