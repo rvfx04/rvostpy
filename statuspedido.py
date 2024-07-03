@@ -3,6 +3,8 @@ import pandas as pd
 import pyodbc
 from datetime import datetime, timedelta
 
+st.set_page_config(layout="wide")
+
 # Función para conectar a la base de datos
 def get_connection():
     try:
