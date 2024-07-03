@@ -70,12 +70,6 @@ query = f"""
 df = execute_query(query)
 
 
-# Calcular totales
-#totals = df.sum(numeric_only=True)
-#totals['CLIENTE'] = 'TOTAL' # La etiqueta de TOTAL la coloca al final de la columna CLIENTE
-#totals_df = pd.DataFrame(totals).transpose()
-#df = pd.concat([df, totals_df], ignore_index=True)
-
 # Quita la columna que numera los registros
 df = df.set_index(df.columns[0])
 
@@ -94,13 +88,12 @@ with sidebar:
 with columns[0]:
     
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
+    st.write(f"Número de registros: {len(filtered_df)}")
     # Calcular totales
     totals = filtered_df.sum(numeric_only=True)
     totals['CLIENTE'] = 'TOTAL' # La etiqueta de TOTAL la coloca al final de la columna CLIENTE
     totals_df = pd.DataFrame(totals).transpose()
     filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
     
-    
-    st.write(f"Número de registros: {len(filtered_df)}")
     st.dataframe(filtered_df, use_container_width = True)
 
