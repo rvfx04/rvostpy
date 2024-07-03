@@ -87,9 +87,15 @@ filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False)
                  & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
 
 with columns[0]:
-    # Agregar una fila con los totales
+    # Calcular los totales
     totals = filtered_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
-    filtered_df = filtered_df.append(totals)
+
+    # Crear un DataFrame temporal con los totales para concatenar
+    totals_df = pd.DataFrame(totals).T
+
+    # Concatenar la fila de totales al DataFrame
+    filtered_df = pd.concat([filtered_df, totals_df], ignore_index=True)
+
 
     st.write(f"Número de registros: {len(filtered_df)}")
     st.dataframe(filtered_df, hide_index=True)
