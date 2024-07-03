@@ -79,13 +79,14 @@ with st.sidebar:
     cliente = st.text_input("Cliente", "")
     pedido = st.text_input("Pedido", "")
     po = st.text_input("PO", "")
-    
+    # Botón para aplicar filtros y mostrar resultados
+    if st.button("Aplicar Filtros"):
 
-# Aplicar filtros al DataFrame
-filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False) 
-                 & df["PEDIDO"].astype(str).str.contains(pedido, case=False) 
-                 & df["PO"].astype(str).str.contains(po, case=False) 
-                 & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
+        # Aplicar filtros al DataFrame
+        filtered_df = df.loc[df["CLIENTE"].astype(str).str.contains(cliente, case=False) 
+                         & df["PEDIDO"].astype(str).str.contains(pedido, case=False) 
+                         & df["PO"].astype(str).str.contains(po, case=False) 
+                         & (df["F_ENTREGA"] >= start_date) & (df["F_ENTREGA"] <= end_date)]
 
 with columns[0]:
     # Calcular los totales
