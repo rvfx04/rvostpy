@@ -69,7 +69,7 @@ query = f"""
 # Ejecutar la consulta
 df = execute_query(query)
 
- # Fecha de inicio y fin por defecto al inicio y fin del mes actual
+# Fecha de inicio y fin por defecto al inicio y fin del mes actual
 today = datetime.today()
 start_date_default = today.replace(day=1)
 end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
@@ -102,7 +102,7 @@ with st.sidebar:
 
     else:
         with columns[0]:
-        st.write("Por favor, aplica los filtros para ver los resultados.")
+        st.write("Por favor, aplica los filtros para ver resultados.")
 
 #with columns[0]:
     # Calcular los totales
