@@ -70,7 +70,7 @@ query = f"""
 df = execute_query(query)
 
 # Lista de opciones para el filtro de cliente
-cliente = sorted(df["cliente"].unique())
+cliente = sorted(df["CLIENTE"].unique())
 
 # Definir los filtros en el sidebar
 with st.sidebar:
