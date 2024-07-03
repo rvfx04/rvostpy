@@ -34,17 +34,21 @@ st.title("Visualización")
 #Consulta SQL
 query = f"""
     SELECT
+          SELECT
             a.CoddocOrdenVenta AS PEDIDO,
-            CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-            CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
+            CONVERT(DATE, a.dtFechaEmision) AS F_EMISION,
+            CONVERT(DATE, a.dtFechaEntrega) AS F_ENTREGA,
             SUBSTRING(b.NommaeAnexoCliente,1,15) AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
             --CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
             CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
             CONVERT(INT, KG_ARM) AS KG_ARM,
+			CONVERT(INT,COALESCE(d.KG, 0) *1.09 - KG_ARM) AS KG_X_ARM,
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
-            CONVERT(INT, KG_PRODUC) AS KG_PRODUC
+			CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
+            CONVERT(INT, KG_PRODUC) AS KG_PRODUC,
+			CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_PRODUC
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -71,7 +75,8 @@ query = f"""
         ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
         WHERE
             a.IdtdDocumentoForm = 10
-            AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0                  
+            AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
+			AND a.dtFechaEntrega BETWEEN '01-07-2024' AND '31-12-2024'                
     """
 
 # Ejecutar la consulta
