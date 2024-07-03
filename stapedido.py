@@ -33,6 +33,7 @@ query = f"""
             --CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
             CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
             CONVERT(INT, KG_ARM) AS KG_ARM,
+            CONVERT(INT,COALESCE(d.KG, 0) *1.09 - KG_ARM) AS KG_X_ARM,
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT, KG_PRODUC) AS KG_PRODUC
         FROM docOrdenVenta a
