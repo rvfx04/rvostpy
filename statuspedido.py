@@ -81,8 +81,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
             totals_df = pd.DataFrame(totals).transpose()
             df = pd.concat([df, totals_df], ignore_index=True)
             
-            df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
-            st.dataframe(df)
+            #df = df.set_index(df.columns[0]) # Quita la columna que numera los registros
+            #st.dataframe(df)
             conn.close()
             return df
         else:
