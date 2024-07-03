@@ -69,9 +69,6 @@ query = f"""
 # Ejecutar la consulta
 df = execute_query(query)
 
-# Mostrar el número de registros
-n=len(df)-1
-#st.write(f"Número de registros: {n}")
 
 # Calcular totales
 totals = df.sum(numeric_only=True)
@@ -97,6 +94,6 @@ with sidebar:
 with columns[0]:
     
     filtered_df = df.loc[df["CLIENTE"].isin(client)]
-    st.write(f"Número de registros: {len(filtered_df)}")
+    st.write(f"Número de registros: {len(filtered_df)}-1")
     st.dataframe(filtered_df, use_container_width = True)
 
