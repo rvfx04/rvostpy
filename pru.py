@@ -101,4 +101,4 @@ with st.sidebar:
             st.dataframe(filtered_df, hide_index=True)
     else:
         with columns[0]:
-            st.write("Aplica los filtros para ver resultados")
+        st.write("Aplica los filtros para ver resultados")
