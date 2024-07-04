@@ -18,7 +18,7 @@ def execute_query(query):
     conn.close()
     return df
     
-Título de la aplicación 
+#Título de la aplicación 
 st.title("Visualización")
 
 #Consulta SQL
