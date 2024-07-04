@@ -37,7 +37,7 @@ query = f"""
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_PRODUC,
-            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_PRODUC
+            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_P_PRODUC
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -121,7 +121,7 @@ with st.sidebar:
             st.write(f"Por Teñir lo Armado {len(kgxtenir_df)-1} registros")
             st.dataframe(kgxtenir_df, hide_index=True)
 
-            kgproduc_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
+            kgproduc_df = filtered_df.loc[df['KG_P_PRODUC'] > 0]
             totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
             totals_df = pd.DataFrame(totals).T
             kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
