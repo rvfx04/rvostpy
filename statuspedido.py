@@ -42,6 +42,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
             CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH,
             KG_PRODUC/COALESCE(d.KG, 0)*100 AS R
+            KG_ARM/COALESCE(d.KG, 0) *1.09 *100 AS R1
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -121,7 +122,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM','R1']
         st.write(f"Por armar: {len(kgxarm_df)-1} Pedidos")
         st.dataframe(kgxarm_df[columns_to_show], hide_index=True)
         
