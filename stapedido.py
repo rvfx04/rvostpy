@@ -106,8 +106,8 @@ with st.sidebar:
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
            
             
-           
-            kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
+        
+            """kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
             totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
             totals_df = pd.DataFrame(totals).T
             kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
@@ -127,7 +127,7 @@ with st.sidebar:
             kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
             st.write(f"Por Producir {len(kgproduc_df)-1} registros")
             st.dataframe(kgproduc_df, hide_index=True)
-
+        """
             
             
     else:
