@@ -37,7 +37,7 @@ query = f"""
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_PRODUC,
-            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_P_PRODUC
+            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_PRODUC
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -105,5 +105,6 @@ with st.sidebar:
             
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
            
+    else:
         with columns[0]:
             st.write("Por favor, aplica los filtros para ver resultados.")
