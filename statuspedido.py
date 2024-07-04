@@ -122,7 +122,7 @@ if st.sidebar.button("Aplicar filtros"):
         kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
-        kgxarm_df = pd.concat([kxarm_df, totals_df], ignore_index=True)
+        kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
         st.write(f"Por Producir {len(kgxarm_df)-1} registros")
         st.dataframe(kgxarm_df, hide_index=True)
         
