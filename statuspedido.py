@@ -119,7 +119,7 @@ if st.sidebar.button("Aplicar filtros"):
         #st.markdown(custom_css, unsafe_allow_html=True)
         st.dataframe(data)
         
-        kgproduc_df = data.loc[df['KG_X_PRODUC'] > 0]
+        kgproduc_df = data.loc[data['KG_X_PRODUC'] > 0]
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
