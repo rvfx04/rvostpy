@@ -104,7 +104,7 @@ with st.sidebar:
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
             kgxproduc_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
             kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
-            kgxtenir_df = filtered_df.loc[df['KG_X_TEÑIR'] > 0]
+            #kgxtenir_df = filtered_df.loc[df['KG_X_TEÑIR'] > 0]
             
             st.dataframe(filtered_df, hide_index=True)
             
