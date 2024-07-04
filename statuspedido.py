@@ -133,7 +133,7 @@ if st.sidebar.button("Aplicar filtros"):
         
         #kgproduc_df = data.loc[data['KG_X_DESPACH'] / data['KG_REQ'] * 100> 98]
         #kgproduc_df = data.loc[data['KG_X_DESPACH'].astype(float) / data['KG_REQ'].astype(float) > 0.975]
-        kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
+        kgproduc_df = data.loc[data['R'] < 97.5]
        
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
