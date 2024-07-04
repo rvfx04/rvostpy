@@ -131,6 +131,13 @@ if st.sidebar.button("Aplicar filtros"):
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
         st.write(f"Por armar {len(kgxarm_df)-1} registros")
         st.dataframe(kgxarm_df, hide_index=True)
+
+        kgxtenir_df = data.loc[data['KG_ARM_X_TEÑIR'] > 0]
+        totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
+        totals_df = pd.DataFrame(totals).T
+        kgxtenir_df = pd.concat([kgxtenir_df, totals_df], ignore_index=True)
+        st.write(f"Por armar {len(kgxtenir_df)-1} registros")
+        st.dataframe(kgxtenir_df, hide_index=True)
         
         kgproduc_df = data.loc[data['KG_X_PRODUC'] > 0]
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
