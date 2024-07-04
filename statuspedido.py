@@ -110,7 +110,7 @@ if st.sidebar.button("Aplicar filtros"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','R']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
@@ -138,7 +138,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_X_DESPACH','R']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_X_DESPACH']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
 
