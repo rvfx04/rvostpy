@@ -117,8 +117,9 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
+        #st.dataframe(data[columns_to_show])
         st.write(f"Por armar {len(kgxarm_df)-1} registros")
-        st.dataframe(kgxarm_df, hide_index=True)
+        st.dataframe(kgxarm_df['PEDIDO','F_EMISION], hide_index=True)
 
         kgxtenir_df = data.loc[data['KG_ARM_X_TEÑIR'] > 0]
         totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
