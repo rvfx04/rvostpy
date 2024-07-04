@@ -40,7 +40,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_PRODUC,
-            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_PRODUC
+            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -129,12 +129,13 @@ if st.sidebar.button("Aplicar filtros"):
         st.write(f"Por teñir lo armado {len(kgxtenir_df)-1} registros")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
-        kgproduc_df = data.loc[data['KG_X_PRODUC'] > 0]
+        kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_ARM_X_DESPACH']
         st.write(f"Por Producir {len(kgproduc_df)-1} registros")
-        st.dataframe(kgproduc_df, hide_index=True)
+        st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
 
     else:
         st.write("No se encontraron datos con los filtros aplicados.")
