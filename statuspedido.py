@@ -134,7 +134,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_DESPACH']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_X_DESPACH']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
 
