@@ -116,7 +116,7 @@ if st.sidebar.button("Aplicar filtros"):
     
     data = load_data(start_date, end_date, pedido, cliente, po)
     
-    totals = .select_dtypes(include=["int", "float"]).sum().rename("Total")
+    totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
     st.write(f"Por Producir {len(data1)-1} registros")
