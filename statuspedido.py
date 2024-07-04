@@ -118,6 +118,20 @@ if st.sidebar.button("Aplicar filtros"):
         # Agrega el estilo CSS personalizado a la tabla
         #st.markdown(custom_css, unsafe_allow_html=True)
         st.dataframe(data)
+        
+        kgproduc_df = data.loc[df['KG_X_PRODUC'] > 0]
+        totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
+        totals_df = pd.DataFrame(totals).T
+        kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
+        st.write(f"Por Producir {len(kgproduc_df)-1} registros")
+        st.dataframe(kgproduc_df, hide_index=True)
+
+
+
+
+
+
+    
     else:
         st.write("No se encontraron datos con los filtros aplicados.")
 else:
