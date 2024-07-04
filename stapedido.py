@@ -122,9 +122,9 @@ with st.sidebar:
             st.dataframe(kgxtenir_df, hide_index=True)
 
             kgxproduc_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
-            totals = kgxproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
-            totals_df = pd.DataFrame(totals).T
-            kgxproduc_df = pd.concat([kgxproduc_df, totals_df], ignore_index=True)
+            #totals = kgxproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
+            #totals_df = pd.DataFrame(totals).T
+            #kgxproduc_df = pd.concat([kgxproduc_df, totals_df], ignore_index=True)
             st.write(f"Por Producir {len(kgxproduc_df)-1} registros")
             st.dataframe(kgxproduc_df, hide_index=True)
             
