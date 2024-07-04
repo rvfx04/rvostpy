@@ -105,14 +105,20 @@ with st.sidebar:
             
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
             kgxproduc_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
-            kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
+            #kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
             
             kgxtenir_df = filtered_df.loc[df['KG_ARM_X_TEÑIR'] > 0]
             
-            #st.dataframe(filtered_df, hide_index=True)
+           
+            kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0]
+            totals1 = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
+            totals_df = pd.DataFrame(totals1).T
+            kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
             
             st.write(f"Por Armar {len(kgxarm_df)-1} registros")
             st.dataframe(kgxarm_df, hide_index=True)
+
+    
             
     else:
         with columns[0]:
