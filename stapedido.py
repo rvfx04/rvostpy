@@ -103,6 +103,7 @@ with st.sidebar:
             st.write(f"Número de registros: {len(filtered_df)-1}")
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
             filtered_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
+            st.write(f"Número de registros: {len(filtered_df)-1}")
             st.dataframe(filtered_df, hide_index=True)
 
     else:
