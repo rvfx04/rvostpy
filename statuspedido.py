@@ -40,7 +40,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
-            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH
+            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH,
             CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS R
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
