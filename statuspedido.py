@@ -131,8 +131,8 @@ if st.sidebar.button("Aplicar filtros"):
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
-        #kgproduc_df = data.loc[data['KG_X_DESPACH'] / data['KG_REQ'] > 0.975]
-        kgproduc_df = data.loc[data['KG_X_DESPACH'].astype(float) / data['KG_REQ'].astype(float) > 0.975]
+        kgproduc_df = data.loc[data['KG_X_DESPACH'] / data['KG_REQ'] * 100> 98]
+        #kgproduc_df = data.loc[data['KG_X_DESPACH'].astype(float) / data['KG_REQ'].astype(float) > 0.975]
         #kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
        
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
