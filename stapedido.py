@@ -73,7 +73,6 @@ query = f"""
 df = execute_query(query)
 st.dataframe(df, hide_index=True)
 
-"""
 # Fecha de inicio y fin por defecto al inicio y fin del mes actual
 today = datetime.today()
 start_date_default = today.replace(day=1)
@@ -110,4 +109,3 @@ with st.sidebar:
     else:
         with columns[0]:
             st.write("Por favor, aplica los filtros para ver resultados.")
-"""
