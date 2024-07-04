@@ -111,7 +111,7 @@ if st.sidebar.button("Aplicar filtros"):
     data1 = pd.concat([data, totals_df], ignore_index=True)
     columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
     st.write(f"Número de registros: {len(data1)-1}")
-    st.dataframe(data1, hide_index=True)
+    st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
         
         kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
