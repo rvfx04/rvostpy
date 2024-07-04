@@ -110,7 +110,7 @@ if st.sidebar.button("Aplicar filtros"):
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
     columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
-    st.write(f"Número de registros: {len(data1)-1}")
+    st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
         
@@ -119,7 +119,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM']
-        st.write(f"Por armar: {len(kgxarm_df)-1} registros")
+        st.write(f"Por armar: {len(kgxarm_df)-1} Pedidos")
         st.dataframe(kgxarm_df[columns_to_show], hide_index=True)
         
         kgxtenir_df = data.loc[data['KG_ARM_X_TEÑIR'] > 0]
@@ -127,7 +127,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals_df = pd.DataFrame(totals).T
         kgxtenir_df = pd.concat([kgxtenir_df, totals_df], ignore_index=True)
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_ARM_X_TEÑIR']
-        st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} registros")
+        st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
         kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
@@ -135,7 +135,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_DESPACH']
-        st.write(f"Por Despachar: {len(kgproduc_df)-1} registros")
+        st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
 
     else:
