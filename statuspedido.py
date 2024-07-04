@@ -5,16 +5,6 @@ from datetime import datetime, timedelta
 
 st.set_page_config(layout="wide")
 
-custom_css = """
-<style>
-div[data-baseweb="table"] .datagrid-container table {
-    font-size: 6px; /* Tamaño de la fuente */
-    border-spacing: 0px; /* Espacio entre celdas */
-}
-</style>
-"""
-
-st.markdown(custom_css, unsafe_allow_html=True)
 
 # Función para conectar a la base de datos
 def get_connection():
@@ -123,7 +113,7 @@ if st.sidebar.button("Aplicar filtros"):
     data = load_data(start_date, end_date, pedido, cliente, po)
     if not data.empty:
         # Agrega el estilo CSS personalizado a la tabla
-        st.markdown(custom_css, unsafe_allow_html=True)
+        #st.markdown(custom_css, unsafe_allow_html=True)
         st.dataframe(data)
     else:
         st.write("No se encontraron datos con los filtros aplicados.")
