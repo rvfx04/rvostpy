@@ -102,7 +102,6 @@ with st.sidebar:
         with columns[0]:
             st.write(f"Número de registros: {len(filtered_df)-1}")
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
-            filtered_df= df[['PEDIDO'],['CLIENTE']]
             st.dataframe(filtered_df, hide_index=True)
 
     else:
