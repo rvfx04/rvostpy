@@ -100,8 +100,8 @@ with st.sidebar:
             st.write(f"Número de registros: {len(filtered_df)-1}")
             st.dataframe(filtered_df, hide_index=True)
     else:
-    with columns[0]:
-        st.write("Aplica los filtros para ver resultados")
+        with columns[0]:
+            st.write("Aplica los filtros para ver resultados")
         
 #with columns[0]:
     # Calcular los totales
