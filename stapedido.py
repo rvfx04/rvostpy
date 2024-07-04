@@ -65,8 +65,8 @@ query = f"""
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
-            #AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '01-07-2023' AND '31-12-2024'
-            AND a.dtFechaEntrega between '01-07-2023' AND '31-12-2024'       
+            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '01-07-2024' AND '31-08-2024'
+            
     """
 
 # Ejecutar la consulta
