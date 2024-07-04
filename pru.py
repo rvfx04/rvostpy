@@ -62,7 +62,7 @@ query = f"""
         WHERE
             a.IdtdDocumentoForm = 10
             AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
-            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '01-07-2024' AND '31-08-2024'
+            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '01-01-2024' AND '31-12-2024'
                       
     """
 
@@ -100,9 +100,9 @@ with st.sidebar:
             st.write(f"Número de registros: {len(filtered_df)-1}")
             st.dataframe(filtered_df, hide_index=True)
 
-    else:
-        with columns[0]:
-        st.write("Por favor, aplica los filtros para ver resultados.")
+    #else:
+        #with columns[0]:
+        #st.write("Por favor, aplica los filtros para ver resultados.")
 
 #with columns[0]:
     # Calcular los totales
