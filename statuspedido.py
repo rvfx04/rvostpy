@@ -113,11 +113,18 @@ po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
 if st.sidebar.button("Aplicar filtros"):
+    
     data = load_data(start_date, end_date, pedido, cliente, po)
-    if not data.empty:
+    
+    totals = .select_dtypes(include=["int", "float"]).sum().rename("Total")
+    totals_df = pd.DataFrame(totals).T
+    data1 = pd.concat([data, totals_df], ignore_index=True)
+    st.write(f"Por Producir {len(data1)-1} registros")
+    st.dataframe(data1, hide_index=True)
+    if not data1.empty:
         # Agrega el estilo CSS personalizado a la tabla
         #st.markdown(custom_css, unsafe_allow_html=True)
-        st.dataframe(data)
+        st.dataframe(data1)
 
         kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
         #totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
