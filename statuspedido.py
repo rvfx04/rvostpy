@@ -41,6 +41,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
             CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH
+            CONVERT(INT,KG_PRODUC/COALESCE(d.KG, 0)*100) AS RDESPACH
             
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
@@ -110,7 +111,7 @@ if st.sidebar.button("Aplicar filtros"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','RDESPACH']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
@@ -131,9 +132,9 @@ if st.sidebar.button("Aplicar filtros"):
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
-        kgproduc_df = data.loc[data['KG_X_DESPACH'] / data['KG_REQ'] * 100> 98]
+        #kgproduc_df = data.loc[data['KG_X_DESPACH'] / data['KG_REQ'] * 100> 98]
         #kgproduc_df = data.loc[data['KG_X_DESPACH'].astype(float) / data['KG_REQ'].astype(float) > 0.975]
-        #kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
+        kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
        
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
