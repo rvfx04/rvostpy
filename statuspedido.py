@@ -41,6 +41,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
             CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH
+            KG_PRODUC/COALESCE(d.KG, 0)) AS RATIO
         FROM docOrdenVenta a
         INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
         LEFT JOIN (
@@ -130,7 +131,7 @@ if st.sidebar.button("Aplicar filtros"):
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
-        kgproduc_df = data.loc[data['KG_X_DESPACH'] > 0]
+        kgproduc_df = data.loc[data['RATIO'] < 0.98]
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
