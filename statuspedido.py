@@ -113,7 +113,7 @@ if st.sidebar.button("Aplicar filtros"):
     st.dataframe(data1, hide_index=True)
     if not data1.empty:
         
-        st.dataframe(data1)
+        #st.dataframe(data1)
 
         kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
