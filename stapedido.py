@@ -102,10 +102,15 @@ with st.sidebar:
         with columns[0]:
             st.write(f"Número de registros: {len(filtered_df)-1}")
             #filtered_df = df.loc[:, ['PEDIDO', 'CLIENTE']]
-            filtered_df = filtered_df.loc[df['KG_X_PRODUC'] > 0]
-            st.write(f"Número de registros: {len(filtered_df)-1}")
+            kgxproduc_df = filtered_df.loc[df['KG_X_PRODUC'] > 0
+            kgxarm_df = filtered_df.loc[df['KG_X_ARM'] > 0
+            kgxtenir_df = filtered_df.loc[df['KG_X_TEÑIR'] > 0
+            
             st.dataframe(filtered_df, hide_index=True)
-
+            
+            st.write(f"Por Armar {len(kgxarm_df)-1} registros")
+            st.dataframe(kgxarm_df, hide_index=True)
+            
     else:
         with columns[0]:
             st.write("Por favor, aplica los filtros para ver resultados.")
