@@ -266,17 +266,15 @@ if pedido:
 else:
     st.write("")
     pass
-
-# Crear un contenedor para la aplicación seleccionada
-#container = st.empty()
+ainer = st.empty()
 
 # Create a sidebar navigation to switch between the app pages
 app_selection = st.sidebar.radio("Selecciona una aplicación", ("GTOP", "GTPedido"))
 
 # Definir la lógica para mostrar la aplicación seleccionada
 if app_selection == "GTOP":
-    #container.empty()  # Limpiar el contenedor
-    app_gtop()
+    st.page(app_gtop())
+    #app_gtop()
 elif app_selection == "GTPedido":
-    #container.empty()  # Limpiar el contenedor
-    app_gtpedido()
+    st.page(app_gtpedido())
+    #app_gtpedido()
