@@ -273,8 +273,8 @@ app_selection = st.sidebar.radio("Selecciona una aplicación", ("GTOP", "GTPedid
 
 # Definir la lógica para mostrar la aplicación seleccionada
 if app_selection == "GTOP":
-    st.page('app_gtop()')
-    #app_gtop()
+    
+    app_gtop()
 elif app_selection == "GTPedido":
-    st.page('app_gtpedido()')
-    #app_gtpedido()
+   
+    app_gtpedido()
