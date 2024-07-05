@@ -268,10 +268,11 @@ else:
     pass
 
 # Create a sidebar navigation to switch between the app pages
+st.empty()
 app_selection = st.sidebar.radio("Selecciona una aplicación", ("GTOP", "GTPedido"))
 
 # Clean the contents of the page before showing the selected app
-st.empty()
+#st.empty()
 
 # Show the selected app page based on user selection
 if app_selection == "GTOP":
