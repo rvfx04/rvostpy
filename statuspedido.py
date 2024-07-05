@@ -30,6 +30,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             a.CoddocOrdenVenta AS PEDIDO,
             CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
             CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
+            CONVERT(INT,a.dtFechaEntrega-a.dtFechaEmision) AS DIAS,
             SUBSTRING(b.NommaeAnexoCliente,1,15) AS CLIENTE,
             a.nvDocumentoReferencia AS PO,
             CONVERT(INT, a.dCantidad) AS UNID,
@@ -111,7 +112,7 @@ if st.sidebar.button("Aplicar filtros"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','UNID','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
