@@ -135,7 +135,8 @@ if st.sidebar.button("Aplicar filtros"):
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
-        kgproduc_df = data.loc[data['R'] < 97.5]
+        #kgproduc_df = data.loc[data['R'] < 97.5]
+        kgproduc_df = data.loc[(data['R'] < 97.5) | (data['R'].isnull())]
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
