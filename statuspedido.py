@@ -105,7 +105,7 @@ cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
-if st.sidebar.button("Aplicar filtros"):
+if st.sidebar.button("Aplicar filtro"):
     
     data = load_data(start_date, end_date, pedido, cliente, po)
     
