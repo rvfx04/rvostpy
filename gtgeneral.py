@@ -268,7 +268,7 @@ else:
     pass
 
 # Create a sidebar navigation to switch between the app pages
-app_selection = st.sidebar.radio("Selecciona la aplicación", ("GTOP", "GTPedido"))
+app_selection = st.sidebar.radio("Selecciona una aplicación", ("GTOP", "GTPedido"))
 
 # Show the selected app page based on user selection
 if app_selection == "GTOP":
