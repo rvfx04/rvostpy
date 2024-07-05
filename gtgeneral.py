@@ -267,15 +267,16 @@ else:
     st.write("")
     pass
 
+# Crear un contenedor para la aplicación seleccionada
+container = st.empty()
+
 # Create a sidebar navigation to switch between the app pages
-st.empty()
 app_selection = st.sidebar.radio("Selecciona una aplicación", ("GTOP", "GTPedido"))
 
-# Clean the contents of the page before showing the selected app
-#st.empty()
-
-# Show the selected app page based on user selection
+# Definir la lógica para mostrar la aplicación seleccionada
 if app_selection == "GTOP":
+    container.empty()  # Limpiar el contenedor
     app_gtop()
-else:
+elif app_selection == "GTPedido":
+    container.empty()  # Limpiar el contenedor
     app_gtpedido()
