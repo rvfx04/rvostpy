@@ -118,7 +118,8 @@ if st.sidebar.button("Aplicar filtros"):
 
         # Generación de las tablas adicionales
         
-        kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
+        #kgxarm_df = data.loc[data['KG_X_ARM'] > 0]
+        kgxarm_df = data.loc[(data['KG_x_ARM'] <= 0) | (data['KG_x_ARM'].isnull())]
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
