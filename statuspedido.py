@@ -143,7 +143,13 @@ if st.sidebar.button("Aplicar filtro"):
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_X_DESPACH']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
+        
+        filtro_valor = st.number_input('Introduce el valor para filtrar:', min_value=0)
+        
         st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
+        
+        filtro_df = kgproduc_df[kgproduc_df['Edad'] > filtro_valor]
+        st.write(filtro_df)
 
     else:
         st.write("No se encontraron datos con los filtros aplicados.")
