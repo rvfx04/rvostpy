@@ -42,5 +42,5 @@ else:
    filtered_df = df
 
 # Mostrar el DataFrame filtrado
-st.dataframe(filtered_df)
+st.dataframe(filtered_df, hide_index=True)
 #st.dataframe(df) 
