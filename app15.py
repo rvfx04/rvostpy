@@ -26,8 +26,7 @@ columns, rows = run_query("SELECT * from defecto;")
 rows = [tuple(row) for row in rows]
 # Convertir datos a un DataFrame de pandas
 df = pd.DataFrame(rows, columns=columns)
-# Artificio para anular la columna que numera las filas
-#df = df.set_index(df.columns[0])
+
 
 # Obtener valores únicos del campo 'idgrupodefecto'
 unique_idgrupodefecto = df['idgrupodefecto'].unique()
@@ -41,6 +40,5 @@ if selected_idgrupodefecto:
 else:
    filtered_df = df
 
-# Mostrar el DataFrame filtrado
+# Mostrar el DataFrame filtrado, sin la columna de numeración de filas
 st.dataframe(filtered_df, hide_index=True)
-#st.dataframe(df) 
