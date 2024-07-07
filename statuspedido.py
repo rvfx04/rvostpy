@@ -148,7 +148,7 @@ if st.sidebar.button("Aplicar filtro"):
         
         st.dataframe(kgproduc_df[columns_to_show], hide_index=True)
         
-        filtro_df = kgproduc_df[kgproduc_df['Edad'] > filtro_valor]
+        filtro_df = kgproduc_df[kgproduc_df['KG_DESPACH'] > filtro_valor]
         st.write(filtro_df)
 
     else:
