@@ -26,155 +26,56 @@ def get_connection():
 def load_data(start_date, end_date, pedido, cliente, po):
     try:
         query = f"""
-      WITH cte_produccion AS (
-    SELECT 
-        g.CoddocOrdenVenta,
-        ISNULL(programado.PROGRAMADO, 0) AS PROGRAMADO,
-        ISNULL(cortado.CORTADO, 0) AS CORTADO,
-        ISNULL(cosido.COSIDO, 0) AS COSIDO
-    FROM dbo.docOrdenVenta g
-    LEFT JOIN (
-        SELECT 
-            g.IdDocumento_OrdenVenta,
-            SUM(a.dCantidadProgramado) AS PROGRAMADO
-        FROM dbo.docOrdenProduccion c WITH (NOLOCK)
-        INNER JOIN dbo.docOrdenProduccionItem a WITH (NOLOCK)
-            ON c.IdDocumento_OrdenProduccion = a.IdDocumento_OrdenProduccion
-        INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
-            ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
-        INNER JOIN dbo.docOrdenProduccionRuta b WITH (NOLOCK)
-            ON c.IdDocumento_OrdenProduccion = b.IdDocumento_OrdenProduccion
-        INNER JOIN dbo.maeCentroCosto d WITH (NOLOCK)
-            ON b.IdmaeCentroCosto = d.IdmaeCentroCosto
-            AND d.bConOrdenProduccion = 1
-        WHERE c.bCerrado = 0
-            AND c.bAnulado = 0
-            AND c.IdtdDocumentoForm = 127
-            AND b.IdmaeCentroCosto = 29
-        GROUP BY g.IdDocumento_OrdenVenta
-    ) AS programado
-    ON g.IdDocumento_OrdenVenta = programado.IdDocumento_OrdenVenta
-    LEFT JOIN (
-        SELECT 
-            g.IdDocumento_OrdenVenta,
-            SUM(b.dCantidadIng) AS CORTADO
-        FROM dbo.docNotaInventario a WITH (NOLOCK)
-        INNER JOIN dbo.maeCentroCosto a1 WITH (NOLOCK)
-            ON a.IdmaeCentroCosto = a1.IdmaeCentroCosto
-            AND a1.bConOrdenProduccion = 1
-        INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)
-            ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario
-            AND b.dCantidadIng <> 0
-        INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)
-            ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
-            AND c.bCerrado = 0
-            AND c.bAnulado = 0
-            AND c.IdtdDocumentoForm = 127
-        INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
-            ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
-        INNER JOIN dbo.docOrdenProduccionRuta d WITH (NOLOCK)
-            ON a.IddocOrdenProduccionRuta = d.IddocOrdenProduccionRuta
-        INNER JOIN dbo.docOrdenProduccionItem e WITH (NOLOCK)
-            ON c.IdDocumento_OrdenProduccion = e.IdDocumento_OrdenProduccion
-            AND b.IdmaeItem_Inventario = e.IdmaeItem
-        INNER JOIN dbo.maeItemInventario f WITH (NOLOCK)
-            ON b.IdmaeItem_Inventario = f.IdmaeItem_Inventario
-            AND f.IdtdItemForm = 10
-        WHERE a.IdtdDocumentoForm = 131
-            AND a.bDevolucion = 0
-            AND a.bDesactivado = 0
-            AND a.bAnulado = 0
-            AND a.IdDocumento_OrdenProduccion <> 0
-            AND a.IdmaeCentroCosto = 29
-        GROUP BY g.IdDocumento_OrdenVenta
-    ) AS cortado
-    ON g.IdDocumento_OrdenVenta = cortado.IdDocumento_OrdenVenta
-    LEFT JOIN (
-        SELECT 
-            g.IdDocumento_OrdenVenta,
-            SUM(b.dCantidadIng) AS COSIDO
-        FROM dbo.docNotaInventario a WITH (NOLOCK)
-        INNER JOIN dbo.maeCentroCosto a1 WITH (NOLOCK)
-            ON a.IdmaeCentroCosto = a1.IdmaeCentroCosto
-            AND a1.bConOrdenProduccion = 1
-        INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)
-            ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario
-            AND b.dCantidadIng <> 0
-        INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)
-            ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
-            AND c.bCerrado = 0
-            AND c.bAnulado = 0
-            AND c.IdtdDocumentoForm = 127
-        INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
-            ON c.IdDocumento_Referencia = g.IdDocumento_OrdenVenta
-        INNER JOIN dbo.docOrdenProduccionRuta d WITH (NOLOCK)
-            ON a.IddocOrdenProduccionRuta = d.IddocOrdenProduccionRuta
-        INNER JOIN dbo.docOrdenProduccionItem e WITH (NOLOCK)
-            ON c.IdDocumento_OrdenProduccion = e.IdDocumento_OrdenProduccion
-            AND b.IdmaeItem_Inventario = e.IdmaeItem
-        INNER JOIN dbo.maeItemInventario f WITH (NOLOCK)
-            ON b.IdmaeItem_Inventario = f.IdmaeItem_Inventario
-            AND f.IdtdItemForm = 10
-        WHERE a.IdtdDocumentoForm = 131
-            AND a.bDevolucion = 0
-            AND a.bDesactivado = 0
-            AND a.bAnulado = 0
-            AND a.IdDocumento_OrdenProduccion <> 0
-            AND a.IdmaeCentroCosto = 47
-        GROUP BY g.IdDocumento_OrdenVenta
-    ) AS cosido
-    ON g.IdDocumento_OrdenVenta = cosido.IdDocumento_OrdenVenta
-)
-SELECT
-    a.CoddocOrdenVenta AS PEDIDO,
-    CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-    CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
-    CONVERT(INT, a.dtFechaEntrega - a.dtFechaEmision) AS DIAS,
-    SUBSTRING(b.NommaeAnexoCliente, 1, 15) AS CLIENTE,
-    a.nvDocumentoReferencia AS PO,
-    CONVERT(INT, a.dCantidad) AS UNID,
-    CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
-    CONVERT(INT, KG_ARM) AS KG_ARM,
-    CONVERT(INT, COALESCE(d.KG, 0) * 1.09 - KG_ARM) AS KG_X_ARM,
-    CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
-    CONVERT(INT, KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
-    CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
-    CONVERT(INT, COALESCE(d.KG, 0) - KG_PRODUC) AS KG_X_DESPACH,
-    KG_PRODUC / COALESCE(d.KG, 0) * 100 AS R,
-    KG_ARM / COALESCE(d.KG, 0) * 100 AS R1,
-    CONVERT(INT,cte_produccion.PROGRAMADO) AS PROGRAMADO,
-    CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
-    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
-FROM docOrdenVenta a
-INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
-LEFT JOIN (
-    SELECT
-        c.IdDocumento_Referencia AS PEDIDO,
-        SUM(c.dCantidad) AS KG
-    FROM docOrdenVentaItem c
-    WHERE c.IdDocumento_Referencia > 0
-    GROUP BY c.IdDocumento_Referencia
-) d ON a.IdDocumento_OrdenVenta = d.PEDIDO
-LEFT JOIN (
-    SELECT
-        x.IdDocumento_Referencia AS PEDIDO,
-        SUM(y.dCantidadProgramado) AS KG_ARM,
-        SUM(z.bcerrado * y.dCantidadRequerido) AS KG_PRODUC,
-        SUM(s.bcerrado * y.dCantidadProgramado) AS KG_TEÑIDOS
-    FROM docOrdenProduccionItem y
-    INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
-    INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
-    INNER JOIN docOrdenProduccionRuta s ON y.IdDocumento_OrdenProduccion = s.IdDocumento_OrdenProduccion
-    WHERE s.IdmaeReceta > 0
-    GROUP BY x.IdDocumento_Referencia
-) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
-LEFT JOIN cte_produccion ON a.CoddocOrdenVenta = cte_produccion.CoddocOrdenVenta
-WHERE
-    a.IdtdDocumentoForm = 10
-    AND a.IdtdTipoVenta = 4
-    AND a.bAnulado = 0
-    AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '01-01-2024' AND '31-12-2024'
-ORDER BY a.CoddocOrdenVenta;
+      SELECT
+            a.CoddocOrdenVenta AS PEDIDO,
+            CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
+            CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
+            CONVERT(INT,a.dtFechaEntrega-a.dtFechaEmision) AS DIAS,
+            SUBSTRING(b.NommaeAnexoCliente,1,15) AS CLIENTE,
+            a.nvDocumentoReferencia AS PO,
+            CONVERT(INT, a.dCantidad) AS UNID,
+            --CONVERT(INT, a.dCantidadProducido) AS UNID_PRODUC,
+            CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
+            CONVERT(INT, KG_ARM) AS KG_ARM,
+            CONVERT(INT,COALESCE(d.KG, 0) *1.09 - KG_ARM) AS KG_X_ARM,
+            CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
+            CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
+            CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
+            CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH,
+            KG_PRODUC/COALESCE(d.KG, 0)*100 AS R,
+            KG_ARM/COALESCE(d.KG, 0) *100 AS R1
+        FROM docOrdenVenta a
+        INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
+        LEFT JOIN (
+            SELECT
+                c.IdDocumento_Referencia AS PEDIDO,
+                SUM(c.dCantidad) AS KG
+            FROM docOrdenVentaItem c
+            WHERE c.IdDocumento_Referencia > 0
+            GROUP BY c.IdDocumento_Referencia
+        ) d ON a.IdDocumento_OrdenVenta = d.PEDIDO
+        LEFT JOIN (
+            SELECT
+                x.IdDocumento_Referencia AS PEDIDO,
+                SUM(y.dCantidadProgramado) AS KG_ARM,
+                SUM(z.bcerrado * y.dCantidadRequerido) AS KG_PRODUC,
+                SUM(s.bcerrado * y.dCantidadProgramado) AS KG_TEÑIDOS
+            FROM docOrdenProduccionItem y
+            INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
+            INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
+            INNER JOIN docOrdenProduccionRuta s ON y.IdDocumento_OrdenProduccion = s.IdDocumento_OrdenProduccion
+            WHERE
+                s.IdmaeReceta > 0
+            GROUP BY x.IdDocumento_Referencia
+        ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
+        WHERE
+            a.IdtdDocumentoForm = 10
+            AND a.IdtdTipoVenta = 4 AND a.bAnulado = 0
+            AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
+            AND a.CoddocOrdenVenta LIKE '%{pedido}%'
+            AND b.NommaeAnexoCliente LIKE '%{cliente}%'
+            AND a.nvDocumentoReferencia LIKE '%{po}%'
+        ;
 
         """
         conn = get_connection()
