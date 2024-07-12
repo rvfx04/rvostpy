@@ -41,6 +41,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
             CONVERT(INT,KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
             CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
+            CONVERT(INT, KG_APROB_D) AS KG_APROB_D,
             CONVERT(INT,COALESCE(d.KG, 0)- KG_PRODUC) AS KG_X_DESPACH,
             KG_PRODUC/COALESCE(d.KG, 0)*100 AS R,
             KG_ARM/COALESCE(d.KG, 0) *100 AS R1
@@ -59,7 +60,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
                 x.IdDocumento_Referencia AS PEDIDO,
                 SUM(y.dCantidadProgramado) AS KG_ARM,
                 SUM(z.bcerrado * y.dCantidadRequerido) AS KG_PRODUC,
-                SUM(s.bcerrado * y.dCantidadProgramado) AS KG_TEÑIDOS
+                SUM(s.bcerrado * y.dCantidadProgramado) AS KG_TEÑIDOS,
+                SUM(z.bCierreAprobado * y.dCantidadProgramado*0.9) AS KG_APROB_D
             FROM docOrdenProduccionItem y
             INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
             INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
