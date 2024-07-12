@@ -102,7 +102,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             AND b.dCantidadIng <> 0
         INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)
             ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion
-            AND c.bCerrado = 0
+            #AND c.bCerrado = 0
             AND c.bAnulado = 0
             AND c.IdtdDocumentoForm = 127
         INNER JOIN dbo.docOrdenVenta g WITH (NOLOCK)
