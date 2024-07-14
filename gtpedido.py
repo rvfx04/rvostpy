@@ -29,14 +29,14 @@ def load_data(start_date, end_date, pedido, cliente, po):
       WITH cte_produccion AS (
     SELECT 
         g.CoddocOrdenVenta,
-        ISNULL(programado.PROGRAMADO, 0) AS PROGRAMADO,
+        ISNULL(programado.PROG, 0) AS PROG,
         ISNULL(cortado.CORTADO, 0) AS CORTADO,
         ISNULL(cosido.COSIDO, 0) AS COSIDO
     FROM dbo.docOrdenVenta g
     LEFT JOIN (
         SELECT 
             g.IdDocumento_OrdenVenta,
-            SUM(a.dCantidadProgramado) AS PROGRAMADO
+            SUM(a.dCantidadProgramado) AS PROG
         FROM dbo.docOrdenProduccion c WITH (NOLOCK)
         INNER JOIN dbo.docOrdenProduccionItem a WITH (NOLOCK)
             ON c.IdDocumento_OrdenProduccion = a.IdDocumento_OrdenProduccion
@@ -143,7 +143,7 @@ SELECT
     CONVERT(INT, COALESCE(d.KG, 0) - KG_PRODUC) AS KG_X_DESPACH,
     KG_PRODUC / COALESCE(d.KG, 0) * 100 AS R,
     KG_ARM / COALESCE(d.KG, 0) * 100 AS R1,
-    CONVERT(INT,cte_produccion.PROGRAMADO) AS PROGRAMADO,
+    CONVERT(INT,cte_produccion.PROG) AS PROG,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
     CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
 FROM docOrdenVenta a
@@ -220,7 +220,7 @@ if st.sidebar.button("Aplicar filtro"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROGRAMADO','CORTADO','COSIDO']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
