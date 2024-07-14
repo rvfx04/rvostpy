@@ -260,6 +260,6 @@ if st.sidebar.button("Aplicar filtro"):
         #st.write(filtro_df[columns_to_show], hide_index=True)
 
     else:
-        st.write("No se encontraron datos con los filtros aplicados.")
+        st.write("No se  encontraron datos con los filtros aplicados.")
 else:
     st.write("Por favor, aplica los filtros para ver los resultados.")
