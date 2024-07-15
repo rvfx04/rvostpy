@@ -149,7 +149,7 @@ SELECT
     FORMAT(COALESCE(d.KG, 0) * 1.075 - KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_X_ARMP,
     FORMAT(KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_TEÑIDOSP,
     FORMAT(KG_ARM - KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_ARM_X_TEÑIRP,
-    FORMAT(KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_PRODUCP,
+    FORMAT(KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_DESPACHP,
     FORMAT(KG_APROB_D / COALESCE(d.KG, 0), '0%') AS KG_APROB_DP,
     FORMAT(COALESCE(d.KG, 0) - KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_X_DESPACHP,
     FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
@@ -240,7 +240,7 @@ if st.sidebar.button("Aplicar filtro"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_DESPACHP','UNID','PROG','CORTADO','COSIDO']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
