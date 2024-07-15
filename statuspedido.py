@@ -150,11 +150,11 @@ SELECT
 
     CONVERT(INT, a.dCantidad) AS UNID,
     CONVERT(INT,cte_produccion.PROG) AS PROG,
-    FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
+    #FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
-    FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
+    #FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
     CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
-    FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP,
+    #FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP,
 
 FROM docOrdenVenta a
 INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
