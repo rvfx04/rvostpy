@@ -252,7 +252,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM','KG_ARMP']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARMP','KG_ARMP']
         st.write(f"Por armar: {len(kgxarm_df)-1} Pedidos")
         st.dataframe(kgxarm_df[columns_to_show], hide_index=True)
         
@@ -260,7 +260,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxtenir_df = pd.concat([kgxtenir_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_ARM_X_TEÑIR']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_ARM_X_TEÑIRP']
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
         
@@ -269,7 +269,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_APROB_D','KG_X_DESPACH']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACHP','KG_APROB_DP','KG_X_DESPACHP']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         
         #filtro_valor = st.number_input('Introduce un valor:', min_value=0)
