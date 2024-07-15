@@ -151,6 +151,7 @@ SELECT
     FORMAT(KG_ARM - KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_ARM_X_TEÑIRP,
     FORMAT(KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_PRODUCP,
     FORMAT(KG_APROB_D / COALESCE(d.KG, 0), '0%') AS KG_APROB_DP,
+    FORMAT(COALESCE(d.KG, 0) - KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_X_DESPACHP,
     FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
     FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP
