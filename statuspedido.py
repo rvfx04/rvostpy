@@ -132,29 +132,21 @@ SELECT
     CONVERT(INT, a.dtFechaEntrega - a.dtFechaEmision) AS DIAS,
     SUBSTRING(b.NommaeAnexoCliente, 1, 15) AS CLIENTE,
     a.nvDocumentoReferencia AS PO,
+    CONVERT(INT, a.dCantidad) AS UNID,
     CONVERT(INT, COALESCE(d.KG, 0)) AS KG_REQ,
     CONVERT(INT, KG_ARM) AS KG_ARM,
-    FORMAT(KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_ARMP,
     CONVERT(INT, COALESCE(d.KG, 0) * 1.075 - KG_ARM) AS KG_X_ARM,
-    #FORMAT(COALESCE(d.KG, 0) * 1.075 - KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_X_ARMP,
     CONVERT(INT, KG_TEÑIDOS) AS KG_TEÑIDOS,
-    #FORMAT(KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_TEÑIDOSP,
     CONVERT(INT, KG_ARM - KG_TEÑIDOS) AS KG_ARM_X_TEÑIR,
-    #FORMAT(KG_ARM - KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_ARM_X_TEÑIRP,
     CONVERT(INT, KG_PRODUC) AS KG_DESPACH,
-    #FORMAT(KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_PRODUCP,
     CONVERT(INT, KG_APROB_D) AS KG_APROB_D,
-    #FORMAT(KG_APROB_D / COALESCE(d.KG, 0), '0%') AS KG_APROB_DP,
     CONVERT(INT, COALESCE(d.KG, 0) - KG_PRODUC) AS KG_X_DESPACH,
-    #FORMAT(COALESCE(d.KG, 0) - KG_PRODUC / COALESCE(d.KG, 0), '0%') AS KG_X_DESPACHP,
-
-    CONVERT(INT, a.dCantidad) AS UNID,
+    KG_PRODUC / COALESCE(d.KG, 0) * 100 AS R,
+    FORMAT(KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_ARMP,
     CONVERT(INT,cte_produccion.PROG) AS PROG,
-    #FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
-    #FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
-    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO,
-    #FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP,
+    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
+
 
 FROM docOrdenVenta a
 INNER JOIN maeAnexoCliente b ON a.IdmaeAnexo_Cliente = b.IdmaeAnexo_Cliente
