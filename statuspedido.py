@@ -240,7 +240,7 @@ if st.sidebar.button("Aplicar filtro"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_DESPACHP','UNID','PROG','CORTADO','COSIDO']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_DESPACHP','UNID','PROGP','CORTADOP','COSIDOP']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
