@@ -142,7 +142,7 @@ SELECT
 	CONVERT(INT, KG_APROB_D) AS KG_APROB_D,
     CONVERT(INT, COALESCE(d.KG, 0) - KG_PRODUC) AS KG_X_DESPACH,
     KG_PRODUC / COALESCE(d.KG, 0) * 100 AS R,
-    KG_ARM / COALESCE(d.KG, 0) AS R1,
+    KG_ARM / COALESCE(d.KG, 0) AS KG_ARM%,
     CONVERT(INT,cte_produccion.PROG) AS PROG,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
     CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
@@ -232,7 +232,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
-        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM','R1']
+        columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM','KG_ARM%']
         st.write(f"Por armar: {len(kgxarm_df)-1} Pedidos")
         st.dataframe(kgxarm_df[columns_to_show], hide_index=True)
         
