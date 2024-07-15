@@ -223,7 +223,7 @@ cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
-if st.sidebar.button("Aplicar filtros"):
+if st.sidebar.button("Aplicar filtro"):
     st.session_state.start_date = start_date
     st.session_state.end_date = end_date
     st.session_state.pedido = pedido
