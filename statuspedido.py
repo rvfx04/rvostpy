@@ -145,7 +145,11 @@ SELECT
     FORMAT(KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_ARMP,
     CONVERT(INT,cte_produccion.PROG) AS PROG,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
-    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
+    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO,
+    FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
+    FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
+    FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP
+
 
 
 FROM docOrdenVenta a
