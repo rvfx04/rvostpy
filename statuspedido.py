@@ -214,8 +214,16 @@ po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
 if st.sidebar.button("Aplicar filtro"):
-    
+    st.session_state.start_date = start_date
+    st.session_state.end_date = end_date
+    st.session_state.pedido = pedido
+    st.session_state.cliente = cliente
+    st.session_state.po = po
+
+    # Cargar los datos con los filtros aplicados
     data = load_data(start_date, end_date, pedido, cliente, po)
+
+   
     
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
