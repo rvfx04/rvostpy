@@ -148,6 +148,7 @@ SELECT
     CONVERT(INT,cte_produccion.COSIDO) AS COSIDO,
     FORMAT(COALESCE(d.KG, 0) * 1.075 - KG_ARM / COALESCE(d.KG, 0), '0%') AS KG_X_ARMP,
     FORMAT(KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_TEÑIDOSP,
+    FORMAT(KG_ARM - KG_TEÑIDOS / COALESCE(d.KG, 0), '0%') AS KG_ARM_X_TEÑIRP,
     FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
     FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP
