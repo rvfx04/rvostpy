@@ -153,7 +153,7 @@ SELECT
     #FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     CONVERT(INT,cte_produccion.CORTADO) AS CORTADO,
     #FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
-    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO
+    CONVERT(INT,cte_produccion.COSIDO) AS COSIDO,
     #FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP,
 
 FROM docOrdenVenta a
