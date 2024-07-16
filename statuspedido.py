@@ -215,7 +215,9 @@ st.sidebar.write("Sólo incluye OPs activas")
 # Fecha de inicio y fin por defecto al inicio y fin del mes actual
 today = datetime.today()
 start_date_default = today.replace(day=1)
-end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+#end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+end_date_default = '31-12-2014'
+
 
 start_date = st.sidebar.date_input("Fecha de entrega: Desde", start_date_default)
 end_date = st.sidebar.date_input("Fecha de entrega: Hasta", end_date_default)
