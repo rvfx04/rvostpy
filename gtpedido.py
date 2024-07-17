@@ -220,6 +220,7 @@ if st.sidebar.button("Aplicar filtros"):
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
+    data1.fillna('', inplace=True)	
     columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
@@ -232,6 +233,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxarm_df = pd.concat([kgxarm_df, totals_df], ignore_index=True)
+        kgxarm_df.fillna('', inplace=True)	    
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_X_ARM','R1']
         st.write(f"Por armar: {len(kgxarm_df)-1} Pedidos")
         st.dataframe(kgxarm_df[columns_to_show], hide_index=True)
@@ -240,6 +242,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxtenir_df = pd.concat([kgxtenir_df, totals_df], ignore_index=True)
+        kgxtenir_df.fillna('', inplace=True)        
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_TEÑIDOS','KG_ARM_X_TEÑIR']
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
@@ -249,6 +252,7 @@ if st.sidebar.button("Aplicar filtros"):
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
+        kgproduc_df.fillna('', inplace=True)	    
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACH','KG_APROB_D','KG_X_DESPACH']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         
