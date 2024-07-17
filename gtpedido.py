@@ -216,7 +216,7 @@ cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
-if st.sidebar.button("Aplicar filtros"):
+if st.sidebar.button("Aplicar filtro"):
 	
     pedidos = [p.strip() for p in pedido.split(",") if p.strip()]  # Separar los pedidos por comas y eliminar espacios adicionales
     pedidos_condition = "''" if not pedidos else "', '".join(pedidos)
