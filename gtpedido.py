@@ -177,8 +177,9 @@ WHERE
     AND a.bAnulado = 0
     
     AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
-    AND a.CoddocOrdenVenta LIKE '%{pedido}%'
+    #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
+    and a.coddocordenventa in ({pedidos_condition})
     AND a.nvDocumentoReferencia LIKE '%{po}%'
         ;
 
@@ -208,13 +209,18 @@ end_date_default = (start_date_default + timedelta(days=32)).replace(day=1) - ti
 start_date = st.sidebar.date_input("Fecha de entrega: Desde", start_date_default)
 end_date = st.sidebar.date_input("Fecha de entrega: Hasta", end_date_default)
 
-pedido = st.sidebar.text_input("Pedido")
+#pedido = st.sidebar.text_input("Pedido")
+pedido = st.sidebar.text_input("pedido", value="", help="Ingrese uno o varios pedidos separados por comas.")
+
 cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
 if st.sidebar.button("Aplicar filtros"):
-    
+	
+    pedidos = [p.strip() for p in pedido.split(",") if p.strip()]  # Separar los pedidos por comas y eliminar espacios adicionales
+    pedidos_condition = "''" if not pedidos else "', '".join(pedidos)
+	
     data = load_data(start_date, end_date, pedido, cliente, po)
     
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
