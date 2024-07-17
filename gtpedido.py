@@ -23,9 +23,8 @@ def get_connection():
 
 # Función para cargar datos de la base de datos
 #@st.cache_data(ttl=600)
-#def load_data(start_date, end_date, pedido, cliente, po):
-def load_data(start_date, end_date, pedidos_list, cliente, po):
-    pedidos_condition = "''" if not pedidos_list else "', '".join(pedidos_list)	
+def load_data(start_date, end_date, pedido, cliente, po):
+
     try:
         query = f"""
       WITH cte_produccion AS (
@@ -179,8 +178,7 @@ WHERE
     AND a.bAnulado = 0
     
     AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
-    #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
-    AND a.CoddocOrdenVenta in ({pedidos_condition})
+    AND a.CoddocOrdenVenta LIKE '%{pedido}%'
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
     
     AND a.nvDocumentoReferencia LIKE '%{po}%'
@@ -218,17 +216,12 @@ pedido = st.sidebar.text_input("Pedido")
 cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
-# Lista para almacenar los pedidos ingresados
-pedidos_list = []
 
 # Botón para aplicar filtros
 if st.sidebar.button("Aplicar filtro"):
 	
-    # Separar los pedidos por coma y extender la lista
-    for p in pedido.split(","):
-        pedidos_list.extend([p.strip()])
-    data = load_data(start_date, end_date, pedidos_list, cliente, po)	
-    #data = load_data(start_date, end_date, pedido, cliente, po)
+
+    data = load_data(start_date, end_date, pedido, cliente, po)
     
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
