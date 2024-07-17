@@ -263,6 +263,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgxtenir_df = pd.concat([kgxtenir_df, totals_df], ignore_index=True)
+        kgxtenir_df.fillna('', inplace=True) 	    
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_ARM_X_TEÑIRP']
         st.write(f"Por teñir lo armado: {len(kgxtenir_df)-1} Pedidos")
         st.dataframe(kgxtenir_df[columns_to_show], hide_index=True)
@@ -272,6 +273,7 @@ if st.sidebar.button("Aplicar filtro"):
         totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
         totals_df = pd.DataFrame(totals).T
         kgproduc_df = pd.concat([kgproduc_df, totals_df], ignore_index=True)
+        kgproduc_df.fillna('', inplace=True) 	    
         columns_to_show = ['PEDIDO', 'F_ENTREGA','CLIENTE','UNID','KG_REQ','KG_DESPACHP','KG_APROB_DP','KG_X_DESPACHP']
         st.write(f"Por Despachar: {len(kgproduc_df)-1} Pedidos")
         
