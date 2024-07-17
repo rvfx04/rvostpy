@@ -218,13 +218,17 @@ pedido = st.sidebar.text_input("Pedido")
 cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
+# Lista para almacenar los pedidos ingresados
+pedidos_list = []
+
 # Botón para aplicar filtros
 if st.sidebar.button("Aplicar filtro"):
 	
-    #pedidos = [p.strip() for p in pedido.split(",") if p.strip()]  # Separar los pedidos por comas y eliminar espacios adicionales
-    #pedidos_condition = "''" if not pedidos else "', '".join(pedidos)
-	
-    data = load_data(start_date, end_date, pedido, cliente, po)
+    # Separar los pedidos por coma y extender la lista
+    for p in pedido.split(","):
+        pedidos_list.extend([p.strip()])
+    data = load_data(start_date, end_date, pedidos_list, cliente, po)	
+    #data = load_data(start_date, end_date, pedido, cliente, po)
     
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
