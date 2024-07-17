@@ -235,11 +235,13 @@ if st.sidebar.button("Aplicar filtro"):
     # Cargar los datos con los filtros aplicados
     data = load_data(start_date, end_date, pedido, cliente, po)
 
-   
-    
     totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
+
+    # Rellenar los valores 'None' con espacio en blanco
+    data1.fillna('', inplace=True)
+	
     columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_DESPACHP','UNID','PROGP','CORTADOP','COSIDOP']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
