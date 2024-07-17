@@ -179,7 +179,7 @@ WHERE
     AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
     #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
-    and a.coddocordenventa in ({pedidos_condition})
+    and a.CoddocOrdenVenta in ({pedidos_condition})
     AND a.nvDocumentoReferencia LIKE '%{po}%'
         ;
 
@@ -216,7 +216,7 @@ cliente = st.sidebar.text_input("Cliente")
 po = st.sidebar.text_input("PO")
 
 # Botón para aplicar filtros
-if st.sidebar.button("Aplicar filtro"):
+if st.sidebar.button("Aplicar filtros"):
 	
     pedidos = [p.strip() for p in pedido.split(",") if p.strip()]  # Separar los pedidos por comas y eliminar espacios adicionales
     pedidos_condition = "''" if not pedidos else "', '".join(pedidos)
