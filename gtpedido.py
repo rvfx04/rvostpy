@@ -23,7 +23,9 @@ def get_connection():
 
 # Función para cargar datos de la base de datos
 #@st.cache_data(ttl=600)
-def load_data(start_date, end_date, pedido, cliente, po):
+#def load_data(start_date, end_date, pedido, cliente, po):
+def load_data(start_date, end_date, pedidos_list, cliente, po):
+    pedidos_condition = "''" if not pedidos_list else "', '".join(pedidos_list)	
     try:
         query = f"""
       WITH cte_produccion AS (
@@ -177,7 +179,8 @@ WHERE
     AND a.bAnulado = 0
     
     AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
-    AND a.CoddocOrdenVenta LIKE '%{pedido}%'
+    #AND a.CoddocOrdenVenta LIKE '%{pedido}%'
+    AND a.CoddocOrdenVenta in ({pedidos_condition})
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
     
     AND a.nvDocumentoReferencia LIKE '%{po}%'
