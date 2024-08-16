@@ -199,7 +199,7 @@ WHERE
         return pd.DataFrame()  # Devolver un DataFrame vacío en caso de error
 
 # Configuración de filtros en el sidebar
-st.sidebar.header("Progreso de los Pedidos")
+st.sidebar.header("Avance de los Pedidos")
 st.sidebar.write("Sólo incluye OPs activas  ")
 
 # Fecha de inicio y fin por defecto al inicio y fin del mes actual
