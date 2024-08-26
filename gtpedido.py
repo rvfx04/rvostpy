@@ -52,7 +52,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
             AND c.bAnulado = 0
             AND c.IdtdDocumentoForm = 127
             AND b.IdmaeCentroCosto = 29
-	    AND g.bCerrado = 0
+	    
         GROUP BY g.IdDocumento_OrdenVenta
     ) AS programado
     ON g.IdDocumento_OrdenVenta = programado.IdDocumento_OrdenVenta
