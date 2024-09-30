@@ -23,7 +23,7 @@ def ejecutar_consulta(dias, cliente_seleccionado=None):
     SELECT 
         a.CoddocOrdenProduccion as PARTIDA, 
         a.dtFechaEmision AS F_EMISION,
-        CONVERT(INT, GETDATE() - a.dtFechaEmision) as DIAS,
+        --CONVERT(INT, GETDATE() - a.dtFechaEmision) as DIAS,
         SUBSTRING(b.NommaeAnexoCliente, 1, 15) AS CLIENTE,
         a.nvDocumentoReferencia AS PEDIDO,
         SUBSTRING(c.NommaeItemInventario,1,25) AS TELA,
