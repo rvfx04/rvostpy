@@ -17,7 +17,7 @@ def get_connection():
         st.error(f"Error al conectar a la base de datos: {e}")
         return None
 
-# Función para ejecutar la consulta SQL usando pyodbc directamente
+# Función para ejecutar la consulta SQL
 def ejecutar_consulta(dias, cliente_seleccionado=None):
     query = f"""
     SELECT 
@@ -48,28 +48,34 @@ def ejecutar_consulta(dias, cliente_seleccionado=None):
     
     if cliente_seleccionado:
         query += f" AND SUBSTRING(b.NommaeAnexoCliente, 1, 15) = '{cliente_seleccionado}'"
-    
+
     query += " ORDER BY DIAS DESC"
-    
+
     conn = get_connection()
     if conn:
-        try:
-            # Ejecutar la consulta directamente con pyodbc
-            cursor = conn.cursor()
-            cursor.execute(query)
-            rows = cursor.fetchall()
-
-            # Obtener los nombres de las columnas
-            columns = [column[0] for column in cursor.description]
-
-            # Cargar los resultados en un DataFrame de pandas
-            df = pd.DataFrame.from_records(rows, columns=columns)
-
-            return df
-        except Exception as e:
-            st.error(f"Error al ejecutar la consulta: {e}")
-            return pd.DataFrame()
-        finally:
-            conn.close()
+        df = pd.read_sql(query, conn)
+        conn.close()
+        return df
     else:
         return pd.DataFrame()  # Retorna un DataFrame vacío si no hay conexión
+
+# Interfaz de la aplicación
+st.title('Partidas de Teñido')
+
+# Seleccionar número de días
+dias = st.number_input('Días desde emisión', value=10, min_value=1)
+
+# Ejecutar la consulta sin cliente seleccionado inicialmente
+df = ejecutar_consulta(dias)
+
+# Combobox para seleccionar cliente de las opciones obtenidas
+clientes = df['CLIENTE'].unique()
+cliente_seleccionado = st.selectbox('Seleccionar Cliente', options=['Todos'] + list(clientes))
+
+# Filtrar según cliente seleccionado
+if cliente_seleccionado != 'Todos':
+    df = ejecutar_consulta(dias, cliente_seleccionado)
+
+# Mostrar la tabla con el resultado
+st.dataframe(df)
+
