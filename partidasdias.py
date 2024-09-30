@@ -43,14 +43,10 @@ def ejecutar_consulta():
       AND a.dtFechaEmision > '2023-12-31'
       AND a.bAnulado = 0
       AND a.IdmaeReceta > 0
-      --AND CONVERT(INT, GETDATE() - a.dtFechaEmision) <= {dias}
+      
     """
     
-    #if cliente_seleccionado:
-        #query += f" AND SUBSTRING(b.NommaeAnexoCliente, 1, 15) = '{cliente_seleccionado}'"
-
-    #query += " ORDER BY DIAS DESC"
-
+  
     conn = get_connection()
     if conn:
         df = pd.read_sql(query, conn)
@@ -62,19 +58,11 @@ def ejecutar_consulta():
 # Interfaz de la aplicación
 st.title('Partidas de Teñido')
 
-# Seleccionar número de días
-#dias = st.number_input('Días desde emisión', value=10, min_value=1)
 
 # Ejecutar la consulta sin cliente seleccionado inicialmente
 df = ejecutar_consulta()
 
-# Combobox para seleccionar cliente de las opciones obtenidas
-#clientes = df['CLIENTE'].unique()
-#cliente_seleccionado = st.selectbox('Seleccionar Cliente', options=['Todos'] + list(clientes))
 
-# Filtrar según cliente seleccionado
-#if cliente_seleccionado != 'Todos':
-    #df = ejecutar_consulta(dias, cliente_seleccionado)
 
 # Mostrar la tabla con el resultado
 st.dataframe(df)
