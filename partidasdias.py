@@ -18,7 +18,7 @@ def get_connection():
         return None
 
 # Función para ejecutar la consulta SQL
-def ejecutar_consulta(dias, cliente_seleccionado=None):
+def ejecutar_consulta():
     query = f"""
     SELECT 
         a.CoddocOrdenProduccion as PARTIDA, 
@@ -43,13 +43,13 @@ def ejecutar_consulta(dias, cliente_seleccionado=None):
       AND a.dtFechaEmision > '2023-12-31'
       AND a.bAnulado = 0
       AND a.IdmaeReceta > 0
-      AND CONVERT(INT, GETDATE() - a.dtFechaEmision) <= {dias}
+      --AND CONVERT(INT, GETDATE() - a.dtFechaEmision) <= {dias}
     """
     
-    if cliente_seleccionado:
-        query += f" AND SUBSTRING(b.NommaeAnexoCliente, 1, 15) = '{cliente_seleccionado}'"
+    #if cliente_seleccionado:
+        #query += f" AND SUBSTRING(b.NommaeAnexoCliente, 1, 15) = '{cliente_seleccionado}'"
 
-    query += " ORDER BY DIAS DESC"
+    #query += " ORDER BY DIAS DESC"
 
     conn = get_connection()
     if conn:
@@ -63,18 +63,18 @@ def ejecutar_consulta(dias, cliente_seleccionado=None):
 st.title('Partidas de Teñido')
 
 # Seleccionar número de días
-dias = st.number_input('Días desde emisión', value=10, min_value=1)
+#dias = st.number_input('Días desde emisión', value=10, min_value=1)
 
 # Ejecutar la consulta sin cliente seleccionado inicialmente
-df = ejecutar_consulta(dias)
+df = ejecutar_consulta()
 
 # Combobox para seleccionar cliente de las opciones obtenidas
-clientes = df['CLIENTE'].unique()
-cliente_seleccionado = st.selectbox('Seleccionar Cliente', options=['Todos'] + list(clientes))
+#clientes = df['CLIENTE'].unique()
+#cliente_seleccionado = st.selectbox('Seleccionar Cliente', options=['Todos'] + list(clientes))
 
 # Filtrar según cliente seleccionado
-if cliente_seleccionado != 'Todos':
-    df = ejecutar_consulta(dias, cliente_seleccionado)
+#if cliente_seleccionado != 'Todos':
+    #df = ejecutar_consulta(dias, cliente_seleccionado)
 
 # Mostrar la tabla con el resultado
 st.dataframe(df)
