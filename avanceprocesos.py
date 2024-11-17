@@ -6,16 +6,14 @@ import plotly.express as px
 def create_connection():
     """Crear conexión a SQL Server"""
     try:
-       
         conn = pyodbc.connect(
-            "DRIVER={ODBC Driver 17 for SQL Server};"
-            "SERVER=" + st.secrets["server"] + ";"
-            "DATABASE=" + st.secrets["database"] + ";"
-            "UID=" + st.secrets["username"] + ";"
-            "PWD=" + st.secrets["password"] + ";"
+            'DRIVER={SQL Server};'
+            'SERVER=' + st.secrets["server"] + ';'
+            'DATABASE=' + st.secrets["database"] + ';'
+            'UID=' + st.secrets["username"] + ';'
+            'PWD=' + st.secrets["password"]
         )
         return conn
-    
     except Exception as e:
         st.error(f"Error al conectar a la base de datos: {e}")
         return None
@@ -28,16 +26,16 @@ def get_data(conn):
         b.CoddocOrdenProduccion AS OP, 
         c.NommaeCentroCosto AS PROCESO, 
         e.NommaeCombo AS COMBO, 
-        f.NommaeTalla AS TALLA,
         SUBSTRING(i.NommaeAnexoCliente,1,15) AS CLIENTE, 
         h.nvModelo AS ESTILO, 
-        a.dCantidadRequerido AS Q_REQ, 
-        a.dCantidadProgramado AS Q_PROG, 
-        a.dCantidadProducido AS Q_PROD,
-        a.dCantidadProgramado - a.dCantidadProducido AS Q_PEND,
+        SUM(a.dCantidadRequerido) AS Q_REQ, 
+        SUM(a.dCantidadProgramado) AS Q_PROG, 
+        SUM(a.dCantidadProducido) AS Q_PROD,
+        SUM(a.dCantidadProgramado - a.dCantidadProducido) AS Q_PEND,
         ROUND(
             CASE
-                WHEN a.dCantidadProgramado <> 0 THEN a.dCantidadProducido / a.dCantidadRequerido
+                WHEN SUM(a.dCantidadProgramado) <> 0 
+                THEN SUM(a.dCantidadProducido) / SUM(a.dCantidadRequerido)
                 ELSE 0
             END, 5
         ) AS AVANCE_PORC
@@ -59,25 +57,62 @@ def get_data(conn):
     INNER JOIN dbo.docOrdenVenta j WITH (NOLOCK)
         ON b.IdDocumento_Referencia = j.IdDocumento_OrdenVenta
     WHERE b.dtFechaEntrega > '30-07-2024'
+    GROUP BY 
+        j.CoddocOrdenVenta,
+        b.CoddocOrdenProduccion,
+        c.NommaeCentroCosto,
+        e.NommaeCombo,
+        i.NommaeAnexoCliente,
+        h.nvModelo
     """
     return pd.read_sql(query, conn)
 
+def create_pivot_table(df):
+    """Crear tabla dinámica con procesos como columnas"""
+    # Crear un DataFrame base con la información principal
+    base_df = df[['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO']].drop_duplicates()
+    
+    # Crear pivotes para cada métrica
+    pivot_prod = pd.pivot_table(
+        df,
+        values='Q_PROD',
+        index=['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO'],
+        columns='PROCESO',
+        aggfunc='sum',
+        fill_value=0
+    )
+    
+    pivot_req = pd.pivot_table(
+        df,
+        values='Q_REQ',
+        index=['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO'],
+        columns='PROCESO',
+        aggfunc='sum',
+        fill_value=0
+    )
+    
+    # Renombrar columnas para diferenciar producido y requerido
+    pivot_prod.columns = [f"{col} (Prod)" for col in pivot_prod.columns]
+    pivot_req.columns = [f"{col} (Req)" for col in pivot_req.columns]
+    
+    # Combinar los pivotes
+    result = pd.concat([pivot_req, pivot_prod], axis=1)
+    
+    # Ordenar las columnas para que Requerido y Producido estén juntos por proceso
+    all_processes = df['PROCESO'].unique()
+    sorted_columns = []
+    for proceso in all_processes:
+        sorted_columns.extend([f"{proceso} (Req)", f"{proceso} (Prod)"])
+    
+    result = result[sorted_columns]
+    
+    # Resetear el índice para tener las columnas de identificación
+    result = result.reset_index()
+    
+    return result
+
 def main():
     st.set_page_config(page_title="Dashboard de Producción", layout="wide")
-    
-    # Aplicar estilo personalizado
-    st.markdown("""
-        <style>
-        .stSelectbox, .stMultiSelect {
-            margin-bottom: 1rem;
-        }
-        .metric-card {
-            background-color: #f0f2f6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-        </style>
-    """, unsafe_allow_html=True)
     
     st.title("Dashboard de Avance de Producción")
     
@@ -96,106 +131,72 @@ def main():
     finally:
         conn.close()
 
-    # Crear layout de dos columnas
-    col_filtros, col_contenido = st.columns([1, 3])
+    # Filtros en la barra lateral
+    st.sidebar.title("Filtros")
     
-    with col_filtros:
-        st.subheader("Filtros")
-        
-        # Filtro de Cliente
-        clientes = ['Todos'] + sorted(df['CLIENTE'].unique().tolist())
-        cliente_seleccionado = st.selectbox(
-            'Cliente:',
-            clientes,
-            key='cliente_filter'
-        )
-        
-        # Filtrar datos por cliente
-        if cliente_seleccionado != 'Todos':
-            df_filtered = df[df['CLIENTE'] == cliente_seleccionado]
-        else:
-            df_filtered = df.copy()
-        
-        # Filtro de Pedidos
-        pedidos = sorted(df_filtered['PEDIDO'].unique().tolist())
-        pedidos_seleccionados = st.multiselect(
-            'Pedido(s):',
-            pedidos,
-            key='pedido_filter'
-        )
-        
-        # Filtrar por pedidos seleccionados
-        if pedidos_seleccionados:
-            df_filtered = df_filtered[df_filtered['PEDIDO'].isin(pedidos_seleccionados)]
-        
-        # Filtro de OPs
-        ops = sorted(df_filtered['OP'].unique().tolist())
-        ops_seleccionados = st.multiselect(
-            'OP(s):',
-            ops,
-            default=ops,  # Por defecto selecciona todas las OPs
-            key='op_filter'
-        )
-        
-        # Filtrar por OPs seleccionadas
-        if ops_seleccionados:
-            df_filtered = df_filtered[df_filtered['OP'].isin(ops_seleccionados)]
+    # Filtro de Cliente
+    clientes = ['Todos'] + sorted(df['CLIENTE'].unique().tolist())
+    cliente_seleccionado = st.sidebar.selectbox('Cliente:', clientes)
     
-    with col_contenido:
-        # Métricas principales
-        st.subheader("Resumen de Cantidades")
-        met1, met2, met3, met4 = st.columns(4)
+    # Filtrar datos por cliente
+    if cliente_seleccionado != 'Todos':
+        df_filtered = df[df['CLIENTE'] == cliente_seleccionado]
+    else:
+        df_filtered = df.copy()
+    
+    # Filtro de Pedidos
+    pedidos = sorted(df_filtered['PEDIDO'].unique().tolist())
+    pedidos_seleccionados = st.sidebar.multiselect(
+        'Pedido(s):',
+        pedidos
+    )
+    
+    # Filtrar por pedidos seleccionados
+    if pedidos_seleccionados:
+        df_filtered = df_filtered[df_filtered['PEDIDO'].isin(pedidos_seleccionados)]
+    
+    # Filtro de OPs
+    ops = sorted(df_filtered['OP'].unique().tolist())
+    ops_seleccionados = st.sidebar.multiselect(
+        'OP(s):',
+        ops,
+        default=ops
+    )
+    
+    # Filtrar por OPs seleccionadas
+    if ops_seleccionados:
+        df_filtered = df_filtered[df_filtered['OP'].isin(ops_seleccionados)]
+    
+    # Crear y mostrar tabla dinámica
+    if not df_filtered.empty:
+        pivot_df = create_pivot_table(df_filtered)
         
-        with met1:
-            st.metric(
-                "Total Requerido",
-                f"{df_filtered['Q_REQ'].sum():,.0f}",
-                delta=None
-            )
-        with met2:
-            st.metric(
-                "Total Programado",
-                f"{df_filtered['Q_PROG'].sum():,.0f}",
-                delta=None
-            )
-        with met3:
-            st.metric(
-                "Total Producido",
-                f"{df_filtered['Q_PROD'].sum():,.0f}",
-                delta=None
-            )
-        with met4:
-            st.metric(
-                "Total Pendiente",
-                f"{df_filtered['Q_PEND'].sum():,.0f}",
-                delta=None
-            )
+        st.subheader("Avance de Producción por Proceso")
         
-        # Gráfico de avance por proceso
-        if not df_filtered.empty:
-            st.subheader("Avance por Proceso")
-            fig = px.bar(
-                df_filtered, 
-                x='PROCESO', 
-                y='AVANCE_PORC',
-                color='PROCESO',
-                labels={'AVANCE_PORC': 'Porcentaje de Avance', 'PROCESO': 'Proceso'},
-                height=400
-            )
-            fig.update_layout(
-                xaxis_tickangle=-45,
-                showlegend=False,
-                margin=dict(l=20, r=20, t=20, b=20)
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        # Formatear los números en la tabla
+        formatted_df = pivot_df.copy()
+        numeric_columns = formatted_df.select_dtypes(include=['float64', 'int64']).columns
+        for col in numeric_columns:
+            formatted_df[col] = formatted_df[col].apply(lambda x: f"{x:,.0f}")
         
-        # Tabla de datos
-        st.subheader("Detalle de Producción")
         st.dataframe(
-            df_filtered,
+            formatted_df,
             use_container_width=True,
             hide_index=True
         )
+        
+        # Gráfico de avance por proceso
+        avg_progress = df_filtered.groupby('PROCESO')['AVANCE_PORC'].mean().reset_index()
+        fig = px.bar(
+            avg_progress,
+            x='PROCESO',
+            y='AVANCE_PORC',
+            title='Porcentaje de Avance por Proceso',
+            labels={'AVANCE_PORC': 'Porcentaje de Avance', 'PROCESO': 'Proceso'},
+            color='PROCESO'
+        )
+        fig.update_layout(showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
