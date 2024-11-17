@@ -184,19 +184,6 @@ def main():
             use_container_width=True,
             hide_index=True
         )
-        
-        # Gráfico de avance por proceso
-        #avg_progress = df_filtered.groupby('PROCESO')['AVANCE_PORC'].mean().reset_index()
-        #fig = px.bar(
-            #avg_progress,
-            #x='PROCESO',
-            #y='AVANCE_PORC',
-            #title='Porcentaje de Avance por Proceso',
-            #labels={'AVANCE_PORC': 'Porcentaje de Avance', 'PROCESO': 'Proceso'},
-            #color='PROCESO'
-        #)
-        #fig.update_layout(showlegend=False)
-        #st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
