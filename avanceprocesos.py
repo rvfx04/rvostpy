@@ -7,7 +7,7 @@ def create_connection():
     """Crear conexión a SQL Server"""
     try:
         conn = pyodbc.connect(
-            'DRIVER={SQL Server};'
+            'DRIVER={ODBC Driver 17 for SQL Server};'
             'SERVER=' + st.secrets["server"] + ';'
             'DATABASE=' + st.secrets["database"] + ';'
             'UID=' + st.secrets["username"] + ';'
