@@ -7,7 +7,7 @@ def create_connection():
     """Crear conexión a SQL Server"""
     try:
         conn = pyodbc.connect(
-            'DRIVER={ODBC Driver 17 for SQL Server};'
+            'DRIVER={SQL Server};'
             'SERVER=' + st.secrets["server"] + ';'
             'DATABASE=' + st.secrets["database"] + ';'
             'UID=' + st.secrets["username"] + ';'
@@ -29,15 +29,13 @@ def get_data(conn):
         SUBSTRING(i.NommaeAnexoCliente,1,15) AS CLIENTE, 
         h.nvModelo AS ESTILO, 
         SUM(a.dCantidadRequerido) AS Q_REQ, 
-        SUM(a.dCantidadProgramado) AS Q_PROG, 
         SUM(a.dCantidadProducido) AS Q_PROD,
-        SUM(a.dCantidadProgramado - a.dCantidadProducido) AS Q_PEND,
         ROUND(
             CASE
-                WHEN SUM(a.dCantidadProgramado) <> 0 
-                THEN SUM(a.dCantidadProducido) / SUM(a.dCantidadRequerido)
+                WHEN SUM(a.dCantidadRequerido) <> 0 
+                THEN SUM(a.dCantidadProducido) / SUM(a.dCantidadRequerido) * 100
                 ELSE 0
-            END, 5
+            END, 1
         ) AS AVANCE_PORC
     FROM dbo.fntOrdenProduccion_AvanceProduccion_ComboTalla() a
     INNER JOIN dbo.docOrdenProduccion b WITH (NOLOCK)
@@ -68,11 +66,13 @@ def get_data(conn):
     return pd.read_sql(query, conn)
 
 def create_pivot_table(df):
-    """Crear tabla dinámica con procesos como columnas"""
-    # Crear un DataFrame base con la información principal
-    base_df = df[['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO']].drop_duplicates()
+    """Crear tabla dinámica con una columna de requerido y procesos como columnas de producido"""
+    # Crear un DataFrame base con la información principal y cantidad requerida
+    base_info = df[['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO']].drop_duplicates()
+    req_info = df[['OP', 'Q_REQ']].drop_duplicates()
+    base_df = base_info.merge(req_info, on='OP')
     
-    # Crear pivotes para cada métrica
+    # Crear pivote para cantidades producidas por proceso
     pivot_prod = pd.pivot_table(
         df,
         values='Q_PROD',
@@ -82,32 +82,35 @@ def create_pivot_table(df):
         fill_value=0
     )
     
-    pivot_req = pd.pivot_table(
+    # Crear pivote para porcentajes de avance
+    pivot_avance = pd.pivot_table(
         df,
-        values='Q_REQ',
+        values='AVANCE_PORC',
         index=['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO'],
         columns='PROCESO',
-        aggfunc='sum',
+        aggfunc='max',
         fill_value=0
     )
     
-    # Renombrar columnas para diferenciar producido y requerido
-    pivot_prod.columns = [f"{col} (Prod)" for col in pivot_prod.columns]
-    pivot_req.columns = [f"{col} (Req)" for col in pivot_req.columns]
+    # Renombrar columnas del pivote de avance
+    pivot_avance.columns = [f"{col} %" for col in pivot_avance.columns]
     
-    # Combinar los pivotes
-    result = pd.concat([pivot_req, pivot_prod], axis=1)
+    # Combinar toda la información
+    result = pd.concat([pivot_prod, pivot_avance], axis=1).reset_index()
     
-    # Ordenar las columnas para que Requerido y Producido estén juntos por proceso
-    all_processes = df['PROCESO'].unique()
-    sorted_columns = []
-    for proceso in all_processes:
-        sorted_columns.extend([f"{proceso} (Req)", f"{proceso} (Prod)"])
+    # Asegurar que las columnas estén en el orden correcto
+    processes = df['PROCESO'].unique()
+    ordered_columns = ['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO', 'Q_REQ']
     
-    result = result[sorted_columns]
+    # Ordenar las columnas de procesos intercalando cantidad y porcentaje
+    for process in processes:
+        ordered_columns.extend([process, f"{process} %"])
     
-    # Resetear el índice para tener las columnas de identificación
-    result = result.reset_index()
+    # Merge con la cantidad requerida
+    result = result.merge(req_info, on='OP')
+    
+    # Reordenar columnas
+    result = result[ordered_columns]
     
     return result
 
@@ -175,9 +178,11 @@ def main():
         
         # Formatear los números en la tabla
         formatted_df = pivot_df.copy()
-        numeric_columns = formatted_df.select_dtypes(include=['float64', 'int64']).columns
-        for col in numeric_columns:
-            formatted_df[col] = formatted_df[col].apply(lambda x: f"{x:,.0f}")
+        for col in formatted_df.columns:
+            if col.endswith('%'):
+                formatted_df[col] = formatted_df[col].apply(lambda x: f"{x:.1f}%")
+            elif col not in ['PEDIDO', 'OP', 'CLIENTE', 'ESTILO', 'COMBO']:
+                formatted_df[col] = formatted_df[col].apply(lambda x: f"{x:,.0f}")
         
         st.dataframe(
             formatted_df,
