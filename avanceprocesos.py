@@ -6,14 +6,16 @@ import plotly.express as px
 def create_connection():
     """Crear conexión a SQL Server"""
     try:
+       
         conn = pyodbc.connect(
-            'DRIVER={SQL Server};'
-            'SERVER=' + st.secrets["server"] + ';'
-            'DATABASE=' + st.secrets["database"] + ';'
-            'UID=' + st.secrets["username"] + ';'
-            'PWD=' + st.secrets["password"]
+            "DRIVER={ODBC Driver 17 for SQL Server};"
+            "SERVER=" + st.secrets["server"] + ";"
+            "DATABASE=" + st.secrets["database"] + ";"
+            "UID=" + st.secrets["username"] + ";"
+            "PWD=" + st.secrets["password"] + ";"
         )
         return conn
+    
     except Exception as e:
         st.error(f"Error al conectar a la base de datos: {e}")
         return None
