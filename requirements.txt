@@ -5,3 +5,4 @@ pyodbc
 streamlit_option_menu
 plotly.express
 openpyxl
+streamlit-aggrid
