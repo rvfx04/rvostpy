@@ -18,9 +18,12 @@ def configure_grid(df, height=400):
     )
     
     # Configuraciones específicas para columnas clave
-    gb.configure_column("PEDIDO", filter=True, pinned="left")
-    gb.configure_column("F_ENTREGA", filter=True)
-    gb.configure_column("CLIENTE", filter=True)
+    if "PEDIDO" in df.columns:
+        gb.configure_column("PEDIDO", filter=True, pinned="left")
+    if "F_ENTREGA" in df.columns:
+        gb.configure_column("F_ENTREGA", filter=True)
+    if "CLIENTE" in df.columns:
+        gb.configure_column("CLIENTE", filter=True)
     
     # Formato para columnas numéricas
     for col in df.select_dtypes(include=['int', 'float']).columns:
@@ -231,6 +234,24 @@ WHERE
         st.error(f"Error al cargar los datos: {e}")
         return pd.DataFrame()
 
+# Función para mostrar totales sin errores
+def display_totals(df, columns_to_show):
+    # Crear un dataframe para los totales solamente con columnas numéricas
+    numeric_cols = df.select_dtypes(include=["int", "float"]).columns
+    totals = df[numeric_cols].sum().to_frame().T
+    
+    # Añadir una etiqueta para la fila de totales
+    for col in df.columns:
+        if col not in numeric_cols:
+            if col in totals.columns:
+                totals[col] = "Total"
+            else:
+                totals[col] = "Total"
+    
+    # Reordenar las columnas según columns_to_show, pero solo incluir las que existen en totals
+    available_cols = [col for col in columns_to_show if col in totals.columns]
+    st.dataframe(totals[available_cols], hide_index=True)
+
 # Configuración de filtros en el sidebar
 st.sidebar.header("Progreso de los Pedidos")
 st.sidebar.write("Sólo incluye OPs activas")
@@ -257,16 +278,12 @@ if st.sidebar.button("Aplicar filtro"):
         columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
         main_data = data[columns_to_show].copy()
         
-        # Añadir fila de totales para mostrar después de la tabla AgGrid
-        totals = data.select_dtypes(include=["int", "float"]).sum().rename("Total")
-        totals_df = pd.DataFrame(totals).T
-        
         # Mostrar tabla principal interactiva
         configure_grid(main_data)
         
         # Mostrar totales
         st.write("Totales:")
-        st.dataframe(totals_df[columns_to_show], hide_index=True)
+        display_totals(data, columns_to_show)
         
         # Tabla Por armar
         st.subheader("Por armar")
@@ -277,10 +294,8 @@ if st.sidebar.button("Aplicar filtro"):
             configure_grid(kgxarm_df[columns_to_show])
             
             # Mostrar totales
-            totals = kgxarm_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
-            totals_df = pd.DataFrame(totals).T
             st.write("Totales:")
-            st.dataframe(totals_df[columns_to_show], hide_index=True)
+            display_totals(kgxarm_df, columns_to_show)
         else:
             st.write("No hay pedidos por armar.")
         
@@ -293,10 +308,8 @@ if st.sidebar.button("Aplicar filtro"):
             configure_grid(kgxtenir_df[columns_to_show])
             
             # Mostrar totales
-            totals = kgxtenir_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
-            totals_df = pd.DataFrame(totals).T
             st.write("Totales:")
-            st.dataframe(totals_df[columns_to_show], hide_index=True)
+            display_totals(kgxtenir_df, columns_to_show)
         else:
             st.write("No hay pedidos por teñir.")
         
@@ -309,10 +322,8 @@ if st.sidebar.button("Aplicar filtro"):
             configure_grid(kgproduc_df[columns_to_show])
             
             # Mostrar totales
-            totals = kgproduc_df.select_dtypes(include=["int", "float"]).sum().rename("Total")
-            totals_df = pd.DataFrame(totals).T
             st.write("Totales:")
-            st.dataframe(totals_df[columns_to_show], hide_index=True)
+            display_totals(kgproduc_df, columns_to_show)
         else:
             st.write("No hay pedidos por despachar.")
     else:
