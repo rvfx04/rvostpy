@@ -1,10 +1,10 @@
 matplotlib==3.9.0
-pandas==2.2.2
 SQLAlchemy==2.0.30
 streamlit_option_menu
 plotly.express
 openpyxl
 streamlit-aggrid
-streamlit
+streamlit==1.28.1
 pyodbc==4.0.39
+pandas==2.1.1
 python-dateutil==2.8.2
