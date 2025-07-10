@@ -179,7 +179,7 @@ WHERE
     AND a.bAnulado = 0
   
     
-    AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
+    AND (CASE WHEN ISDATE(a.dtFechaPlanea) = 1 THEN CONVERT(DATE, a.dtFechaPlanea) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
     AND a.CoddocOrdenVenta LIKE '%{pedido}%'
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
     
