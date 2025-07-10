@@ -130,7 +130,7 @@ def load_data(start_date, end_date, pedido, cliente, po):
 SELECT
     a.CoddocOrdenVenta AS PEDIDO,
     CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-    CASE WHEN ISDATE(a.dtFechaPlanea) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
+    CASE WHEN ISDATE(a.dtFechaPlanea) = 1 THEN CONVERT(DATE, a.dtFechaPlanea) ELSE NULL END AS F_ENTREGA,
     CONVERT(INT, a.dtFechaPlanea - a.dtFechaEmision) AS DIAS,
     SUBSTRING(b.NommaeAnexoCliente, 1, 15) AS CLIENTE,
     a.nvDocumentoReferencia AS PO,
