@@ -128,8 +128,8 @@ def load_data(start_date, end_date, pedido, cliente, po):
 SELECT
     a.CoddocOrdenVenta AS PEDIDO,
     CASE WHEN ISDATE(a.dtFechaEmision) = 1 THEN CONVERT(DATE, a.dtFechaEmision) ELSE NULL END AS F_EMISION,
-    CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END AS F_ENTREGA,
-    CONVERT(INT, a.dtFechaEntrega - a.dtFechaEmision) AS DIAS,
+    CASE WHEN ISDATE(a.dtFechaPlanea) = 1 THEN CONVERT(DATE, a.dtFechaPlanea) ELSE NULL END AS F_ENTREGA,
+    CONVERT(INT, a.dtFechaPlanea - a.dtFechaEmision) AS DIAS,
     SUBSTRING(b.NommaeAnexoCliente, 1, 15) AS CLIENTE,
     a.nvDocumentoReferencia AS PO,
     CONVERT(INT, a.dCantidad) AS UNID,
@@ -179,7 +179,7 @@ LEFT JOIN (
     INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
     INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
     INNER JOIN docOrdenProduccionRuta s ON y.IdDocumento_OrdenProduccion = s.IdDocumento_OrdenProduccion
-    WHERE s.IdmaeReceta > 0
+    WHERE s.IdmaeReceta > 0 and z.bAnulado=0
     GROUP BY x.IdDocumento_Referencia
 ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
 LEFT JOIN cte_produccion ON a.CoddocOrdenVenta = cte_produccion.CoddocOrdenVenta
@@ -188,7 +188,7 @@ WHERE
     AND a.IdtdTipoVenta = 4
     AND a.bAnulado = 0
     
-    AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaEntrega) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
+    AND (CASE WHEN ISDATE(a.dtFechaEntrega) = 1 THEN CONVERT(DATE, a.dtFechaPlanea) ELSE NULL END) BETWEEN '{start_date}' AND '{end_date}'
     AND a.CoddocOrdenVenta LIKE '%{pedido}%'
     AND b.NommaeAnexoCliente LIKE '%{cliente}%'
     AND a.nvDocumentoReferencia LIKE '%{po}%'
