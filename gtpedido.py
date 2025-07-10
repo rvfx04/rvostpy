@@ -169,7 +169,7 @@ LEFT JOIN (
     INNER JOIN docOrdenProduccion z ON y.IdDocumento_OrdenProduccion = z.IdDocumento_OrdenProduccion
     INNER JOIN docOrdenVentaItem x ON (z.IdDocumento_Referencia = x.IdDocumento_OrdenVenta AND y.idmaeItem = x.IdmaeItem)
     INNER JOIN docOrdenProduccionRuta s ON y.IdDocumento_OrdenProduccion = s.IdDocumento_OrdenProduccion
-    WHERE s.IdmaeReceta > 0
+    WHERE s.IdmaeReceta > 0 and z.bAnulado=0
     GROUP BY x.IdDocumento_Referencia
 ) t ON a.IdDocumento_OrdenVenta = t.PEDIDO
 LEFT JOIN cte_produccion ON a.CoddocOrdenVenta = cte_produccion.CoddocOrdenVenta
