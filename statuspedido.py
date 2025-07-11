@@ -155,6 +155,25 @@ SELECT
     FORMAT(cte_produccion.PROG / a.dCantidad, '0%') AS PROGP,
     FORMAT(cte_produccion.CORTADO / a.dCantidad, '0%') AS CORTADOP,
     FORMAT(cte_produccion.COSIDO / a.dCantidad, '0%') AS COSIDOP
+    ,GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) AS disp_tela,
+CASE 
+    WHEN GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) > 1 
+    THEN 1 
+    ELSE GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
+END AS disp_ajuste,
+cte_produccion.CORTADO AS cortado,
+CASE 
+    WHEN GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) > 1 
+    THEN 1 
+    ELSE GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
+END * cte_produccion.PROG AS puede_cortar,
+CONVERT(INT, 
+    CASE 
+        WHEN GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) > 1 
+        THEN 1 
+        ELSE GREATEST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
+    END * cte_produccion.PROG - cte_produccion.CORTADO
+) AS con_tela
 
 
 
@@ -242,7 +261,8 @@ if st.sidebar.button("Aplicar filtro"):
     # Rellenar los valores 'None' con espacio en blanco
     data1.fillna('', inplace=True)
 	
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_APROB_DP','KG_DESPACHP','UNID','PROGP','CORTADOP','COSIDOP']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_APROB_DP','KG_DESPACHP','UNID','PROGP','CORTADOP','COSIDOP','disp_tela','disp_ajuste','cortado','puede_cortar','con_tela']
+	
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
