@@ -229,7 +229,7 @@ if st.sidebar.button("Aplicar filtro"):
     totals_df = pd.DataFrame(totals).T
     data1 = pd.concat([data, totals_df], ignore_index=True)
     data1.fillna('', inplace=True)	
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARM','KG_TEÑIDOS','KG_APROB_D','KG_DESPACH','UNID','PROG','CORTADO','COSIDO']
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
     if not data1.empty:
