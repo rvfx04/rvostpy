@@ -167,12 +167,29 @@ CASE
     THEN 1 
     ELSE LEAST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
 END * cte_produccion.PROG AS puede_cortar,
+--CONVERT(INT, 
+    --CASE 
+        --WHEN LEAST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) > 1 
+        --THEN 1 
+        --ELSE LEAST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
+    --END * cte_produccion.PROG - cte_produccion.CORTADO
+--) AS con_tela
 CONVERT(INT, 
     CASE 
-        WHEN LEAST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) > 1 
-        THEN 1 
-        ELSE LEAST(KG_APROB_D / COALESCE(d.KG, 0), KG_PRODUC / COALESCE(d.KG, 0)) 
-    END * cte_produccion.PROG - cte_produccion.CORTADO
+        WHEN 
+            (CASE 
+                WHEN KG_APROB_D / COALESCE(d.KG, 0) > 1 
+                THEN 1 
+                ELSE KG_APROB_D / COALESCE(d.KG, 0)
+            END * cte_produccion.PROG - cte_produccion.CORTADO) < 0
+        THEN 0
+        ELSE 
+            (CASE 
+                WHEN KG_APROB_D / COALESCE(d.KG, 0) > 1 
+                THEN 1 
+                ELSE KG_APROB_D / COALESCE(d.KG, 0)
+            END * cte_produccion.PROG - cte_produccion.CORTADO)
+    END
 ) AS con_tela
 
 
