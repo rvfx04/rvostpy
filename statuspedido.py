@@ -278,7 +278,7 @@ if st.sidebar.button("Aplicar filtro"):
     # Rellenar los valores 'None' con espacio en blanco
     data1.fillna('', inplace=True)
 	
-    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_APROB_DP','KG_DESPACHP','UNID','PROGP','CORTADOP','COSIDOP','con_tela']
+    columns_to_show = ['PEDIDO','F_EMISION', 'F_ENTREGA','DIAS','CLIENTE','PO','KG_REQ','KG_ARMP','KG_TEÑIDOSP','KG_APROB_DP','KG_DESPACHP','UNID','PROGP','CORTADO','CORTADOP','COSIDOP','con_tela']
 	
     st.write(f"Número de Pedidos: {len(data1)-1}")
     st.dataframe(data1[columns_to_show], hide_index=True)
